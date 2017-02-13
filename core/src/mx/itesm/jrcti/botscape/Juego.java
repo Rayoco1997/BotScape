@@ -18,6 +18,7 @@ public class Juego extends ApplicationAdapter {
 		img = new Texture("badlogic.jpg");
 	}
 	//comentario
+	//COMENTARIO TOMMY
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
