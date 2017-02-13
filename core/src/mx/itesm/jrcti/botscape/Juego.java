@@ -10,7 +10,6 @@ public class Juego extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 
-	//Comentario de prueba
 
 	@Override
 	public void create () {
@@ -19,6 +18,7 @@ public class Juego extends ApplicationAdapter {
 	}
 	//comentario
 	//COMENTARIO TOMMY
+	//Comentario Julio
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
