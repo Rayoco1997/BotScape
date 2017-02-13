@@ -19,6 +19,8 @@ public class Juego extends ApplicationAdapter {
 	//comentario
 	//COMENTARIO TOMMY
 	//Comentario Julio
+	//Cinthya was here
+
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
