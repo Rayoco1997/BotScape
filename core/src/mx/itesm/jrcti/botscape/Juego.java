@@ -1,27 +1,27 @@
 package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Juego extends ApplicationAdapter {
+public class Juego extends Game {
 	SpriteBatch batch;
 	Texture img;
 
 
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		setScreen(new MenuPrincipal(this));
 	}
 	//comentario
 	//COMENTARIO TOMMY
 	//Comentario Julio
 	//Cinthya was here
 
-	@Override
+	/*@Override
 	public void render () {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -34,5 +34,5 @@ public class Juego extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		img.dispose();
-	}
+	}*/
 }
