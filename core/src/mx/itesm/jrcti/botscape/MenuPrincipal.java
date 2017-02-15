@@ -65,7 +65,7 @@ public class MenuPrincipal extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click");
-                //juego.setScreen(new MenuSeleccionNivel(juego));
+                juego.setScreen(new MenuSeleccionNivel(juego));
             }
         });
 
@@ -73,7 +73,7 @@ public class MenuPrincipal extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click CREDITOS");
-                //juego.setScreen(new MenuCreditos(juego));
+                juego.setScreen(new MenuCreditos(juego));
             }
         });
 
