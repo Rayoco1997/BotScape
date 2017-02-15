@@ -2,6 +2,9 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Julio on 15/02/2017.
@@ -19,10 +22,24 @@ public class MenuSeleccionNivel extends Pantalla {
     // Ayuda a dibujar
     private SpriteBatch batch;
 
+    //Los 4 botones que muestra el menu
+    private final int NUM_BOTONES = 4;
+    private Array<ImageButton> arrBtn;
 
+    //Escenas
+    private Stage escenaSeleccionNivel;
+
+    public MenuSeleccionNivel(Juego juego){
+        super();
+        this.juego=juego;
+    }
 
     @Override
     public void show() {
+        cargarTexturas();
+    }
+
+    private void cargarTexturas() {
 
     }
 
