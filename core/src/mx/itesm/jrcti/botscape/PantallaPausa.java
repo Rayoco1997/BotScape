@@ -107,6 +107,7 @@ public class PantallaPausa extends Pantalla {
     }
 
 
+
     /*private void crearCamara() {
         camara= new OrthographicCamera(ANCHO,ALTO);
         camara.position.set(ANCHO/2,ALTO/2,0);
@@ -116,6 +117,8 @@ public class PantallaPausa extends Pantalla {
 
     @Override
     public void render(float delta) {
+        borrarPantalla();
+        escenaPantallaPausa.draw();
 
     }
 
