@@ -59,7 +59,7 @@ public class MenuCreditos extends Pantalla {
     }
 
     private void cargarTexturas(){
-        //fondoCreditos= new Texture("fondoCreditos");
+        fondoCreditos= new Texture("CreditosFondo.jpg");
     }
 
     @Override
