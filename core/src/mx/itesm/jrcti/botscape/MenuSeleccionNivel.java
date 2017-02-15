@@ -67,7 +67,7 @@ public class MenuSeleccionNivel extends Pantalla {
 
         TextureRegionDrawable trdBtnBack = new TextureRegionDrawable(new TextureRegion(texturaBtnRegresar));
         ImageButton btnBack = new ImageButton(trdBtnBack);
-        btnBack.setPosition(ANCHO/4-btnBack.getWidth()/2, ALTO/4-btnBack.getWidth()/2);
+        btnBack.setPosition(ANCHO/8-btnBack.getWidth()/2, ALTO/4-btnBack.getWidth()/2);
 
         escenaSeleccionNivel.addActor(btnNivel1);
         escenaSeleccionNivel.addActor(btnNivel2);
@@ -78,7 +78,7 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click lvl1");
-                //juego.setScreen(new MenuSeleccionNivel(juego));
+                juego.setScreen(new NivelTutorial(juego));
             }
         });
 
@@ -86,7 +86,7 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click lvl2");
-                //juego.setScreen(new MenuSeleccionNivel(juego));
+                juego.setScreen(new NivelTutorial(juego));
             }
         });
 
@@ -94,7 +94,7 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click lvl3");
-                //juego.setScreen(new MenuSeleccionNivel(juego));
+                juego.setScreen(new NivelTutorial(juego));
             }
         });
 
@@ -102,7 +102,7 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click back");
-                //juego.setScreen(new MenuSeleccionNivel(juego));
+                juego.setScreen(new MenuPrincipal(juego));
             }
         });
 

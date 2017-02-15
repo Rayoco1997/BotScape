@@ -90,7 +90,7 @@ public class PantallaPausa extends Pantalla {
         buttonSeleecionarNivel.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 Gdx.app.log("Aviso", "POS ME VOY A LA SELECCION DE NIVEL");
-                juego.setScreen(new MenuSeleccionNivel(juego);
+                juego.setScreen(new MenuSeleccionNivel(juego));
             }
         });
 
