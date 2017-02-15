@@ -1,9 +1,15 @@
 package mx.itesm.jrcti.botscape;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -37,6 +43,71 @@ public class MenuSeleccionNivel extends Pantalla {
     @Override
     public void show() {
         cargarTexturas();
+        crearObjetos();
+    }
+
+    private void crearObjetos() {
+        batch = new SpriteBatch();
+
+        escenaSeleccionNivel = new Stage(vista, batch);
+        Image imgFondo = new Image(texturaFondo);
+        escenaSeleccionNivel.addActor(imgFondo);
+
+        TextureRegionDrawable trdBtnNivel1 = new TextureRegionDrawable(new TextureRegion(texturaBtnNivel1));
+        ImageButton btnNivel1 = new ImageButton(trdBtnNivel1);
+        btnNivel1.setPosition(ANCHO/4-btnNivel1.getWidth()/2, ALTO/2-btnNivel1.getWidth()/2);
+
+        TextureRegionDrawable trdBtnNivel2 = new TextureRegionDrawable(new TextureRegion(texturaBtnNivel2));
+        ImageButton btnNivel2 = new ImageButton(trdBtnNivel2);
+        btnNivel2.setPosition(ANCHO/2-btnNivel2.getWidth()/2, ALTO/2-btnNivel2.getWidth()/2);
+
+        TextureRegionDrawable trdBtnNivel3 = new TextureRegionDrawable(new TextureRegion(texturaBtnNivel3));
+        ImageButton btnNivel3 = new ImageButton(trdBtnNivel3);
+        btnNivel3.setPosition(3*ANCHO/4-btnNivel3.getWidth()/2, ALTO/2-btnNivel3.getWidth()/2);
+
+        TextureRegionDrawable trdBtnBack = new TextureRegionDrawable(new TextureRegion(texturaBtnRegresar));
+        ImageButton btnBack = new ImageButton(trdBtnBack);
+        btnBack.setPosition(ANCHO/4-btnBack.getWidth()/2, ALTO/4-btnBack.getWidth()/2);
+
+        escenaSeleccionNivel.addActor(btnNivel1);
+        escenaSeleccionNivel.addActor(btnNivel2);
+        escenaSeleccionNivel.addActor(btnNivel3);
+        escenaSeleccionNivel.addActor(btnBack);
+
+        btnNivel1.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("clicked","Me hicieron click lvl1");
+                //juego.setScreen(new MenuSeleccionNivel(juego));
+            }
+        });
+
+        btnNivel2.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("clicked","Me hicieron click lvl2");
+                //juego.setScreen(new MenuSeleccionNivel(juego));
+            }
+        });
+
+        btnNivel3.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("clicked","Me hicieron click lvl3");
+                //juego.setScreen(new MenuSeleccionNivel(juego));
+            }
+        });
+
+        btnBack.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("clicked","Me hicieron click back");
+                //juego.setScreen(new MenuSeleccionNivel(juego));
+            }
+        });
+
+        Gdx.input.setInputProcessor(escenaSeleccionNivel);
+
     }
 
     private void cargarTexturas() {
@@ -51,7 +122,8 @@ public class MenuSeleccionNivel extends Pantalla {
 
     @Override
     public void render(float delta) {
-
+        borrarPantalla();
+        escenaSeleccionNivel.draw();
     }
 
     @Override
