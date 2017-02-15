@@ -15,7 +15,7 @@ public abstract class Pantalla implements Screen {
 
     public static final float ANCHO = 1920;
     public static final float ALTO =  1080;
-    private Juego juego;
+    protected Juego juego;
 
     protected OrthographicCamera camara;
     protected Viewport vista;
