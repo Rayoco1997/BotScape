@@ -29,7 +29,7 @@ public class MenuPrincipal extends Pantalla {
     private Stage escenaMenu;
 
     //Menu
-    private final Juego juego;
+    //private final Juego juego;
 
 
     public MenuPrincipal (Juego juego){
@@ -52,15 +52,28 @@ public class MenuPrincipal extends Pantalla {
         //Botón
         TextureRegionDrawable trdBtnJugar = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
         ImageButton btnJugar = new ImageButton(trdBtnJugar);
-        btnJugar.setPosition(ANCHO/2-btnJugar.getWidth()/2, ANCHO/2-btnJugar.getWidth());
+        btnJugar.setPosition(ANCHO/2-btnJugar.getWidth()/2, ANCHO/2-2*btnJugar.getWidth());
+
+        TextureRegionDrawable trdBtnCreditos = new TextureRegionDrawable(new TextureRegion(texturaBtnCreditos));
+        ImageButton btnCreditos =new ImageButton(trdBtnCreditos);
+        btnCreditos.setPosition(ANCHO-btnCreditos.getWidth(), 0);
 
         escenaMenu.addActor(btnJugar);
+        escenaMenu.addActor(btnCreditos);
 
         btnJugar.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click");
-                //juego.setScreen();
+                //juego.setScreen(new MenuSeleccionNivel(juego));
+            }
+        });
+
+        btnCreditos.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("clicked","Me hicieron click CREDITOS");
+                //juego.setScreen(new MenuCreditos(juego));
             }
         });
 
@@ -69,8 +82,9 @@ public class MenuPrincipal extends Pantalla {
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("fondoMenu.jpg");
-        texturaBtnJugar = new Texture("playButton.png");
+        texturaFondo = new Texture("fondoMenuPrincipal.jpg");
+        texturaBtnJugar = new Texture("playButtonPrincipal.png");
+        texturaBtnCreditos = new Texture("creditsButtonPrincipal.png");
     }
 
     @Override
