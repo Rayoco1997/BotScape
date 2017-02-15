@@ -1,6 +1,7 @@
 package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -56,6 +57,9 @@ public class MenuCreditos extends Pantalla {
                 juego.setScreen(new MenuPrincipal(juego));
             }
         });
+
+        Gdx.input.setInputProcessor(escenaMenuCreditos);
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void cargarTexturas(){
@@ -65,7 +69,12 @@ public class MenuCreditos extends Pantalla {
 
     @Override
     public void render(float delta) {
+        borrarPantalla();
+        escenaMenuCreditos.draw();
 
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            juego.setScreen(new MenuPrincipal(juego));
+        }
     }
 
     @Override
