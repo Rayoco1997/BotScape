@@ -1,6 +1,7 @@
 package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -94,6 +95,9 @@ public class PantallaPausa extends Pantalla {
             }
         });
 
+        Gdx.input.setInputProcessor(escenaPantallaPausa);
+        Gdx.input.setCatchBackKey(true);
+
 
     }
 
@@ -119,6 +123,10 @@ public class PantallaPausa extends Pantalla {
     public void render(float delta) {
         borrarPantalla();
         escenaPantallaPausa.draw();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            juego.setScreen(new NivelTutorial(juego));
+        }
 
     }
 
