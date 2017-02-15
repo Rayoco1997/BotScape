@@ -82,9 +82,9 @@ public class MenuPrincipal extends Pantalla {
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("fondoMenuPrincipal.jpg");
-        texturaBtnJugar = new Texture("playButtonPrincipal.png");
-        texturaBtnCreditos = new Texture("creditsButtonPrincipal.png");
+        texturaFondo = new Texture("PrincipalFondo.jpg");
+        texturaBtnJugar = new Texture("PrincipalBtnPlay.png");
+        texturaBtnCreditos = new Texture("PrincipalBtnCredits.png");
     }
 
     @Override
