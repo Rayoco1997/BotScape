@@ -37,6 +37,7 @@ public class PantallaPausa extends Pantalla {
     }
 
     private void cargarTexturas() {
+        texturaFondo= new Texture("")
 
     }
 
