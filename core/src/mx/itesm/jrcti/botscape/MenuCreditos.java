@@ -64,7 +64,7 @@ public class MenuCreditos extends Pantalla {
 
     private void cargarTexturas(){
         fondoCreditos= new Texture("CreditosFondo.jpg");
-        texturabtnBack=new Texture("CreditosBtnBack.png");
+        texturabtnBack=new Texture("SeleccionNivelBtnBack.png");
     }
 
     @Override
