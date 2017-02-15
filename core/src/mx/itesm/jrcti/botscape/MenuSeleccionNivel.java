@@ -1,6 +1,7 @@
 package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -107,6 +108,7 @@ public class MenuSeleccionNivel extends Pantalla {
         });
 
         Gdx.input.setInputProcessor(escenaSeleccionNivel);
+        Gdx.input.setCatchBackKey(true);
 
     }
 
@@ -124,6 +126,11 @@ public class MenuSeleccionNivel extends Pantalla {
     public void render(float delta) {
         borrarPantalla();
         escenaSeleccionNivel.draw();
+
+        //Teclado
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            juego.setScreen(new MenuPrincipal(juego));
+        }
     }
 
     @Override
