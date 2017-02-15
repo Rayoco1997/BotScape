@@ -1,12 +1,15 @@
 package mx.itesm.jrcti.botscape;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -69,6 +72,28 @@ public class PantallaPausa extends Pantalla {
         escenaPantallaPausa.addActor(buttonMenuPrincipal);
         escenaPantallaPausa.addActor(buttonSeleecionarNivel);
         escenaPantallaPausa.addActor(imgFondo);
+
+        buttonReanudar.addListener(new ClickListener(){
+           public void clicked(InputEvent event, float x, float y){
+               Gdx.app.log("Aviso", "POS ME VOY A REANUDAR");
+               juego.setScreen(new NivelTutorial(juego));
+           }
+        });
+
+        buttonMenuPrincipal.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y){
+                Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
+                juego.setScreen(new MenuPrincipal(juego));
+            }
+        });
+
+        buttonSeleecionarNivel.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y){
+                Gdx.app.log("Aviso", "POS ME VOY A LA SELECCION DE NIVEL");
+                juego.setScreen(new MenuSeleccionNivel(juego);
+            }
+        });
+
 
     }
 
