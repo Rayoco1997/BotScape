@@ -52,7 +52,7 @@ public class MenuPrincipal extends Pantalla {
         //Botón
         TextureRegionDrawable trdBtnJugar = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
         ImageButton btnJugar = new ImageButton(trdBtnJugar);
-        btnJugar.setPosition(ANCHO/2-btnJugar.getWidth()/2, ALTO/2-btnJugar.getWidth()/2);
+        btnJugar.setPosition(5*ANCHO/8 + btnJugar.getWidth()/8, ALTO/2-btnJugar.getHeight()/2);
 
         TextureRegionDrawable trdBtnCreditos = new TextureRegionDrawable(new TextureRegion(texturaBtnCreditos));
         ImageButton btnCreditos =new ImageButton(trdBtnCreditos);
