@@ -107,7 +107,7 @@ public class PantallaPausa extends Pantalla {
 
     //cargar las texturas
     private void cargarTexturas() {
-        texturaFondo= new Texture("PausaFondoBlanco.png");
+        texturaFondo= new Texture("PausaFondo.jpg");
         texturaButtonReanudar= new Texture("PrincipalBtnPlay.png");
         texturaButtonMenuPrincipal= new Texture("PrincipalBtnPlay.png");
         texturaButtonSelecNivel= new Texture("PrincipalBtnPlay.png");
