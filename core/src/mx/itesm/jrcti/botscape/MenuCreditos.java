@@ -66,6 +66,10 @@ public class MenuCreditos extends Pantalla {
         fotoCinth.setPosition(0,0);
         escenaMenuCreditos.addActor(btnBack);
         escenaMenuCreditos.addActor(fotoRay);
+        escenaMenuCreditos.addActor(fotoJulio);
+        escenaMenuCreditos.addActor(fotoTommy);
+        escenaMenuCreditos.addActor(fotoZuren);
+        escenaMenuCreditos.addActor(fotoCinth);
 
 
         btnBack.addListener( new ClickListener(){
