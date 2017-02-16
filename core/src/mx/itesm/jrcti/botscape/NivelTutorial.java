@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 
 public class NivelTutorial extends Pantalla{
-    //heyyy baby
+
     //Texturas
     private Texture texturaVIU;
     private Texture texturaEnemigo;
@@ -200,7 +200,7 @@ public class NivelTutorial extends Pantalla{
         texturaPiso = new Texture("NivelPiso.png");
         texturaEscalon = new Texture("NivelPiso.png");
         texturaSalida = new Texture("NivelSalida.png");
-        texturaFondoTutorial = new Texture("CreditosFondo.png");
+        texturaFondoTutorial = new Texture("PausaFondo.jpg");
         texturaBtnPausa = new Texture("NivelPausa.png");
         texturaBtnIzquierda = new Texture("NivelIzquierda.png");
         texturaBtnDerecha = new Texture("NivelDerecha.png");
