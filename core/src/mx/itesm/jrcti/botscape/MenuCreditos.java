@@ -64,6 +64,7 @@ public class MenuCreditos extends Pantalla {
         fotoZuren.setPosition(785,620);
         Image fotoCinth = new Image(textureCinth);
         fotoCinth.setPosition(145,620);
+
         escenaMenuCreditos.addActor(btnBack);
         escenaMenuCreditos.addActor(fotoRay);
         escenaMenuCreditos.addActor(fotoJulio);
