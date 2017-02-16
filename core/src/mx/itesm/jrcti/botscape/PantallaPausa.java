@@ -64,9 +64,9 @@ public class PantallaPausa extends Pantalla {
         ImageButton buttonMenuPrincipal = new ImageButton(trdButtonMenuPrincipal);
 
         //UBICANDO LOS BOTONES EN LA PANTALLA
-        buttonReanudar.setPosition(ANCHO/2-buttonReanudar.getWidth()/2,ALTO/2);
+        buttonReanudar.setPosition(ANCHO/2-buttonReanudar.getWidth()/2,ALTO/2+50);
         buttonSeleecionarNivel.setPosition(ANCHO/2-buttonSeleecionarNivel.getWidth()/2,1*ALTO/3);
-        buttonMenuPrincipal.setPosition(ANCHO/2-buttonMenuPrincipal.getWidth()/2,ALTO/6);
+        buttonMenuPrincipal.setPosition(ANCHO/2-buttonMenuPrincipal.getWidth()/2,ALTO/6-50);
 
         imgTextPausa.setPosition(ANCHO/2-imgTextPausa.getWidth()/2,5*ALTO/6);
         imgFondo.setPosition(0,0);
@@ -109,9 +109,9 @@ public class PantallaPausa extends Pantalla {
     //cargar las texturas
     private void cargarTexturas() {
         texturaFondo= new Texture("PausaFondo.jpg");
-        texturaButtonReanudar= new Texture("PrincipalBtnPlay.png");
-        texturaButtonMenuPrincipal= new Texture("PrincipalBtnPlay.png");
-        texturaButtonSelecNivel= new Texture("PrincipalBtnPlay.png");
+        texturaButtonReanudar= new Texture("PausaButtonReanudar.png");
+        texturaButtonMenuPrincipal= new Texture("PausaButtonMenuPrin.png");
+        texturaButtonSelecNivel= new Texture("PausaButtonSeleccionarNivel.png");
         texturaTextPausa= new Texture("PausaTextTittle.png");
 
     }
