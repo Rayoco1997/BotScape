@@ -68,7 +68,7 @@ public class PantallaPausa extends Pantalla {
         buttonSeleecionarNivel.setPosition(ANCHO/2-buttonSeleecionarNivel.getWidth()/2+100,1*ALTO/3-40);
         buttonMenuPrincipal.setPosition(ANCHO-buttonMenuPrincipal.getWidth()-20,20);
 
-        imgTextPausa.setPosition(ANCHO/2-imgTextPausa.getWidth()/2,5*ALTO/6);
+        imgTextPausa.setPosition(ANCHO/2-imgTextPausa.getWidth()/2+100,5*ALTO/6);
         imgFondo.setPosition(0,0);
 
         //AGREGANDO A LA ESCENA
