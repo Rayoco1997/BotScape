@@ -68,14 +68,15 @@ public class PantallaPausa extends Pantalla {
         buttonSeleecionarNivel.setPosition(ANCHO/2-buttonSeleecionarNivel.getWidth()/2,1*ALTO/3);
         buttonMenuPrincipal.setPosition(ANCHO/2-buttonMenuPrincipal.getWidth()/2,ALTO/6);
 
-        imgTextPausa.setPosition(ANCHO/2-imgFondo.getWidth()/2,5*ALTO/6);
+        imgTextPausa.setPosition(ANCHO/2-imgTextPausa.getWidth()/2,5*ALTO/6);
         imgFondo.setPosition(0,0);
 
         //AGREGANDO A LA ESCENA
+        escenaPantallaPausa.addActor(imgFondo);
         escenaPantallaPausa.addActor(buttonReanudar);
         escenaPantallaPausa.addActor(buttonMenuPrincipal);
         escenaPantallaPausa.addActor(buttonSeleecionarNivel);
-        escenaPantallaPausa.addActor(imgFondo);
+
         escenaPantallaPausa.addActor(imgTextPausa);
 
         buttonReanudar.addListener(new ClickListener(){
