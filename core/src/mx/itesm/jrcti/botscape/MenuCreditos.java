@@ -55,7 +55,15 @@ public class MenuCreditos extends Pantalla {
         ImageButton btnBack = new ImageButton(trdBtnBack);
         btnBack.setPosition(0,0);
         Image fotoRay = new Image(textureRay);
-        fotoRay.setPosition(0,0);
+        fotoRay.setPosition(ALTO,ANCHO);
+        Image fotoTommy = new Image(textureTommy);
+        fotoTommy.setPosition(0,0);
+        Image fotoJulio = new Image(textureJulio);
+        fotoJulio.setPosition(0,0);
+        Image fotoZuren = new Image(textureZuren);
+        fotoZuren.setPosition(0,0);
+        Image fotoCinth = new Image(textureCinth);
+        fotoCinth.setPosition(0,0);
         escenaMenuCreditos.addActor(btnBack);
         escenaMenuCreditos.addActor(fotoRay);
 
