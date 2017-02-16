@@ -27,6 +27,11 @@ public class MenuCreditos extends Pantalla {
     private Texture textureJulio;
     private Texture textureZuren;
     private Texture textureCinth;
+    private Texture textCinth;
+    private Texture textTommy;
+    private Texture textRay;
+    private Texture textJulio;
+    private Texture textZuren;
 
 
     //SpriteBatch
@@ -54,6 +59,7 @@ public class MenuCreditos extends Pantalla {
         TextureRegionDrawable trdBtnBack = new TextureRegionDrawable(new TextureRegion(texturabtnBack));
         ImageButton btnBack = new ImageButton(trdBtnBack);
         btnBack.setPosition(0,0);
+        //Posición fotos
         Image fotoRay = new Image(textureRay);
         fotoRay.setPosition(465,150);
         Image fotoTommy = new Image(textureTommy);
@@ -65,6 +71,17 @@ public class MenuCreditos extends Pantalla {
         Image fotoCinth = new Image(textureCinth);
         //Primero de arriba
         fotoCinth.setPosition(145,620);
+        //Posición de los datos
+        Image textoCinth = new Image (textCinth);
+        textoCinth.setPosition(fotoCinth.getX(),fotoCinth.getY()-160);
+        Image textoTommy = new Image (textTommy);
+        textoTommy.setPosition(fotoTommy.getX(),fotoTommy.getY()-160);
+        Image textoRay = new Image (textRay);
+        textoRay.setPosition(fotoRay.getX(),fotoRay.getY()-160);
+        Image textoJulio = new Image (textJulio);
+        textoJulio.setPosition(fotoJulio.getX(),fotoJulio.getY()-160);
+        Image textoZuren = new Image (textZuren);
+        textoZuren.setPosition(fotoZuren.getX(),fotoZuren.getY()-160);
 
 
         //Dibujando los actores en pantalla
@@ -74,6 +91,12 @@ public class MenuCreditos extends Pantalla {
         escenaMenuCreditos.addActor(fotoTommy);
         escenaMenuCreditos.addActor(fotoZuren);
         escenaMenuCreditos.addActor(fotoCinth);
+        //Dibujando datos en pantalla
+        escenaMenuCreditos.addActor(textoCinth);
+        escenaMenuCreditos.addActor(textoTommy);
+        escenaMenuCreditos.addActor(textoRay);
+        escenaMenuCreditos.addActor(textoJulio);
+        escenaMenuCreditos.addActor(textoZuren);
 
 
         btnBack.addListener( new ClickListener(){
@@ -91,11 +114,19 @@ public class MenuCreditos extends Pantalla {
     private void cargarTexturas(){
         fondoCreditos= new Texture("PausaFondo.jpg");
         texturabtnBack=new Texture("SeleccionNivelBtnBack.png");
+        //Añadiendo textura de fotografías
         textureRay= new Texture("FotoRay.jpg");
         textureTommy= new Texture("FotoTommy.jpg");
         textureJulio =new Texture("FotoJulio.jpg");
         textureZuren = new Texture("FotoZuren.jpg");
         textureCinth = new Texture("FotoCinth.jpg");
+        //Añadiendo Texturas de los datos
+        textCinth = new Texture("TextoCinthya.png");
+        textTommy= new Texture("TextoTommy.png");
+        textJulio = new Texture("TextoJulio.png");
+        textRay = new Texture("TextoRay.png");
+        textZuren = new Texture("TextoZuren.png");
+
     }
 
     @Override
