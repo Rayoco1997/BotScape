@@ -23,6 +23,10 @@ public class MenuCreditos extends Pantalla {
     private Texture fondoCreditos;
     private Texture texturabtnBack;
     private Texture textureRay;
+    private Texture textureTommy;
+    private Texture textureJulio;
+    private Texture textureZuren;
+    private Texture textureCinth;
 
 
     //SpriteBatch
@@ -72,6 +76,10 @@ public class MenuCreditos extends Pantalla {
         fondoCreditos= new Texture("PausaFondo.jpg");
         texturabtnBack=new Texture("SeleccionNivelBtnBack.png");
         textureRay= new Texture("FotoRay.jpg");
+        textureTommy= new Texture("FotoTommy.jpg");
+        textureJulio =new Texture("FotoJulio.jpg");
+        textureZuren = new Texture("FotoZuren.jpg");
+        textureCinth = new Texture("FotoCinth.jpg");
     }
 
     @Override
