@@ -22,6 +22,12 @@ public class MenuCreditos extends Pantalla {
     //Texturas
     private Texture fondoCreditos;
     private Texture texturabtnBack;
+    private Texture textureRay;
+    private Texture textureTommy;
+    private Texture textureJulio;
+    private Texture textureZuren;
+    private Texture textureCinth;
+
 
     //SpriteBatch
     private SpriteBatch batch;
@@ -48,7 +54,27 @@ public class MenuCreditos extends Pantalla {
         TextureRegionDrawable trdBtnBack = new TextureRegionDrawable(new TextureRegion(texturabtnBack));
         ImageButton btnBack = new ImageButton(trdBtnBack);
         btnBack.setPosition(0,0);
+        Image fotoRay = new Image(textureRay);
+        fotoRay.setPosition(465,150);
+        Image fotoTommy = new Image(textureTommy);
+        fotoTommy.setPosition(1425,620);
+        Image fotoJulio = new Image(textureJulio);
+        fotoJulio.setPosition(1100,150);
+        Image fotoZuren = new Image(textureZuren);
+        fotoZuren.setPosition(785,620);
+        Image fotoCinth = new Image(textureCinth);
+        //Primero de arriba
+        fotoCinth.setPosition(145,620);
+
+
+        //Dibujando los actores en pantalla
         escenaMenuCreditos.addActor(btnBack);
+        escenaMenuCreditos.addActor(fotoRay);
+        escenaMenuCreditos.addActor(fotoJulio);
+        escenaMenuCreditos.addActor(fotoTommy);
+        escenaMenuCreditos.addActor(fotoZuren);
+        escenaMenuCreditos.addActor(fotoCinth);
+
 
         btnBack.addListener( new ClickListener(){
             @Override
@@ -63,8 +89,13 @@ public class MenuCreditos extends Pantalla {
     }
 
     private void cargarTexturas(){
-        fondoCreditos= new Texture("CreditosFondo.jpg");
+        fondoCreditos= new Texture("PausaFondo.jpg");
         texturabtnBack=new Texture("SeleccionNivelBtnBack.png");
+        textureRay= new Texture("FotoRay.jpg");
+        textureTommy= new Texture("FotoTommy.jpg");
+        textureJulio =new Texture("FotoJulio.jpg");
+        textureZuren = new Texture("FotoZuren.jpg");
+        textureCinth = new Texture("FotoCinth.jpg");
     }
 
     @Override
