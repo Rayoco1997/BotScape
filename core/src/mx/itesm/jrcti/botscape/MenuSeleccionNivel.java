@@ -68,7 +68,7 @@ public class MenuSeleccionNivel extends Pantalla {
 
         TextureRegionDrawable trdBtnBack = new TextureRegionDrawable(new TextureRegion(texturaBtnRegresar));
         ImageButton btnBack = new ImageButton(trdBtnBack);
-        btnBack.setPosition(ANCHO/8-btnBack.getWidth()/2, ALTO/4-btnBack.getWidth()/2);
+        btnBack.setPosition(0, 0);
 
         escenaSeleccionNivel.addActor(btnNivel1);
         escenaSeleccionNivel.addActor(btnNivel2);
