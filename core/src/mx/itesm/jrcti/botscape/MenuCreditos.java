@@ -63,6 +63,7 @@ public class MenuCreditos extends Pantalla {
         Image fotoZuren = new Image(textureZuren);
         fotoZuren.setPosition(785,620);
         Image fotoCinth = new Image(textureCinth);
+        //Primero de arriba
         fotoCinth.setPosition(145,620);
 
 
