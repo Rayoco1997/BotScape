@@ -16,7 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * Created by Cinthya on 15/02/2017.
  */
 
-public class NivelTutorial extends Pantalla{//Texturas
+public class NivelTutorial extends Pantalla{
+    //Texturas
     private Texture fondoTutorial;
     private Texture texturabtnPausa;
 

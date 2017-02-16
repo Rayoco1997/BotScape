@@ -22,6 +22,8 @@ public class MenuCreditos extends Pantalla {
     //Texturas
     private Texture fondoCreditos;
     private Texture texturabtnBack;
+    private Texture textureRay;
+
 
     //SpriteBatch
     private SpriteBatch batch;
@@ -48,7 +50,11 @@ public class MenuCreditos extends Pantalla {
         TextureRegionDrawable trdBtnBack = new TextureRegionDrawable(new TextureRegion(texturabtnBack));
         ImageButton btnBack = new ImageButton(trdBtnBack);
         btnBack.setPosition(0,0);
+        Image fotoRay = new Image(textureRay);
+        fotoRay.setPosition(0,0);
         escenaMenuCreditos.addActor(btnBack);
+        escenaMenuCreditos.addActor(fotoRay);
+
 
         btnBack.addListener( new ClickListener(){
             @Override
@@ -63,8 +69,9 @@ public class MenuCreditos extends Pantalla {
     }
 
     private void cargarTexturas(){
-        fondoCreditos= new Texture("CreditosFondo.jpg");
+        fondoCreditos= new Texture("PausaFondo.jpg");
         texturabtnBack=new Texture("SeleccionNivelBtnBack.png");
+        textureRay= new Texture("FotoRay.jpg");
     }
 
     @Override
