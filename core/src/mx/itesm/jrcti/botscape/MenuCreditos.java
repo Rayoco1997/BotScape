@@ -55,15 +55,20 @@ public class MenuCreditos extends Pantalla {
         ImageButton btnBack = new ImageButton(trdBtnBack);
         btnBack.setPosition(0,0);
         Image fotoRay = new Image(textureRay);
-        fotoRay.setPosition(ALTO,ANCHO);
+        //Primero de abajo
+        fotoRay.setPosition(465,80);
         Image fotoTommy = new Image(textureTommy);
-        fotoTommy.setPosition(0,0);
+        //Tercero de arriba
+        fotoTommy.setPosition(1425,620);
         Image fotoJulio = new Image(textureJulio);
-        fotoJulio.setPosition(0,0);
+        //Segundo de abajo
+        fotoJulio.setPosition(1100,80);
         Image fotoZuren = new Image(textureZuren);
-        fotoZuren.setPosition(0,0);
+        //Segundo de arriba
+        fotoZuren.setPosition(785,620);
         Image fotoCinth = new Image(textureCinth);
-        fotoCinth.setPosition(0,0);
+        //Primero de arriba
+        fotoCinth.setPosition(145,620);
         escenaMenuCreditos.addActor(btnBack);
         escenaMenuCreditos.addActor(fotoRay);
         escenaMenuCreditos.addActor(fotoJulio);
