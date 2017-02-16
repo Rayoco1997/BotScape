@@ -24,6 +24,7 @@ public class PantallaPausa extends Pantalla {
     private Texture texturaButtonReanudar;
     private Texture texturaButtonSelecNivel;
     private Texture texturaButtonMenuPrincipal;
+    private Texture texturaTextPausa;
 
     //SpriteBatch
     private SpriteBatch batch;
@@ -50,6 +51,7 @@ public class PantallaPausa extends Pantalla {
         Image imgButtonReanudar = new Image(texturaButtonReanudar);
         Image imgButtonSeleecionarNivel= new Image(texturaButtonSelecNivel);
         Image imgButtonMenuPrin= new Image(texturaButtonMenuPrincipal);
+        Image imgTextPausa = new Image(texturaTextPausa);
 
         //Para los botones
         TextureRegionDrawable trdButtonReanudar= new TextureRegionDrawable(new TextureRegion(texturaButtonReanudar));
@@ -66,13 +68,15 @@ public class PantallaPausa extends Pantalla {
         buttonSeleecionarNivel.setPosition(ANCHO/2-buttonSeleecionarNivel.getWidth()/2,1*ALTO/3);
         buttonMenuPrincipal.setPosition(ANCHO/2-buttonMenuPrincipal.getWidth()/2,ALTO/6);
 
-        imgFondo.setPosition(ANCHO/2-imgFondo.getWidth()/2,5*ALTO/6);
+        imgTextPausa.setPosition(ANCHO/2-imgFondo.getWidth()/2,5*ALTO/6);
+        imgFondo.setPosition(0,0);
 
         //AGREGANDO A LA ESCENA
         escenaPantallaPausa.addActor(buttonReanudar);
         escenaPantallaPausa.addActor(buttonMenuPrincipal);
         escenaPantallaPausa.addActor(buttonSeleecionarNivel);
         escenaPantallaPausa.addActor(imgFondo);
+        escenaPantallaPausa.addActor(imgTextPausa);
 
         buttonReanudar.addListener(new ClickListener(){
            public void clicked(InputEvent event, float x, float y){
@@ -103,10 +107,11 @@ public class PantallaPausa extends Pantalla {
 
     //cargar las texturas
     private void cargarTexturas() {
-        texturaFondo= new Texture("PausaFondo.png");
-        texturaButtonReanudar= new Texture("PausaButtonReanudar.png");
-        texturaButtonMenuPrincipal= new Texture("PausaButtonMenuPrin.png");
-        texturaButtonSelecNivel= new Texture("PausaButtonSeleccionarNivel.png");
+        texturaFondo= new Texture("PausaFondoBlanco.png");
+        texturaButtonReanudar= new Texture("PrincipalBtnPlay.png");
+        texturaButtonMenuPrincipal= new Texture("PrincipalBtnPlay.png");
+        texturaButtonSelecNivel= new Texture("PrincipalBtnPlay.png");
+        texturaTextPausa= new Texture("PausaTextTittle.png");
 
     }
 
