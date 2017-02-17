@@ -18,18 +18,19 @@ import com.badlogic.gdx.utils.Array;
  */
 
 public class NivelTutorial extends Pantalla{
-    //Comentario
+
     //Texturas
     private Texture texturaVIU;
     private Texture texturaEnemigo;
     private Texture texturaPlataforma;
-    private Texture texturaPalanca;
+    private Texture texturaBoton;
     private Texture texturaIman;
     private Texture texturaMiniVI;
     private Texture texturaVida;
     private Texture texturaMiniVIRecolectados;
     private Texture texturaPiso;
     private Texture texturaEscalon;
+    private Texture texturaPisoVerde;
     private Texture texturaSalida;
     private Texture texturaFondoTutorial;
     private Texture texturaBtnPausa;
@@ -37,6 +38,7 @@ public class NivelTutorial extends Pantalla{
     private Texture texturaBtnDerecha;
     private Texture texturaBtnSaltar;
     private Texture texturaBtnUsar;
+
 
     //SpriteBatch
     private SpriteBatch batch;
@@ -46,6 +48,10 @@ public class NivelTutorial extends Pantalla{
 
     private final int NUM_PISO = 7;
     private Array<Image> arrPiso;
+
+    private final int NUM_PLAT = 4;
+    private Array<Image> arrPlat;
+
 
     public NivelTutorial(Juego j){
         this.juego=j;
@@ -74,29 +80,39 @@ public class NivelTutorial extends Pantalla{
             escenaNivelTutorial.addActor(imgPiso);
         }
 
+        arrPiso = new Array<Image>(NUM_PISO);
+        for(int x=0; x<=NUM_PISO; x++){
+            float posX = x * ANCHO/7-texturaPiso.getWidth()/2;
+            Image imgPiso = new Image(texturaPiso);
+            imgPiso.setPosition(posX,10);
+            escenaNivelTutorial.addActor(imgPiso);
+        }
 
-        Image imgPlataforma = new Image(texturaPlataforma);
-        imgPlataforma.setPosition(ANCHO/3, ALTO/4);
-        escenaNivelTutorial.addActor(imgPlataforma);
+        arrPiso = new Array<Image>(NUM_PLAT);
+        for(int x = 0; x<=NUM_PLAT; x++) {
+            Image imgPlataforma = new Image(texturaPlataforma);
+            imgPlataforma.setPosition(((x+2)*ANCHO / 5), ALTO / 3);
+            escenaNivelTutorial.addActor(imgPlataforma);
+        }
 
 
         Image imgEscalon = new Image(texturaEscalon);
-        //imgPiso.setPosition();
+        imgEscalon.setPosition(ANCHO/3,10);
         escenaNivelTutorial.addActor(imgEscalon);
 
 
         Image imgSalida = new Image(texturaSalida);
-        imgSalida.setPosition(5*ANCHO/6,ALTO/3);
+        imgSalida.setPosition(5*ANCHO/6,2*ALTO/3);
         escenaNivelTutorial.addActor(imgSalida);
 
 
         Image imgMiniVI = new Image(texturaMiniVI);
-        //imgPiso.setPosition();
+        imgMiniVI.setPosition(ANCHO/5,70);
         escenaNivelTutorial.addActor(imgMiniVI);
 
 
         Image imgIman = new Image(texturaIman);
-        //imgPiso.setPosition();
+        imgIman.setPosition(2*ANCHO/3, 5*ALTO/6);
         escenaNivelTutorial.addActor(imgIman);
 
 
@@ -106,7 +122,6 @@ public class NivelTutorial extends Pantalla{
 
 
         Image imgVIU = new Image(texturaVIU);
-        //imgPiso.setPosition();
         escenaNivelTutorial.addActor(imgVIU);
 
 
@@ -202,13 +217,13 @@ public class NivelTutorial extends Pantalla{
         texturaVIU = new Texture("NivelVIU.png");
         texturaEnemigo = new Texture("NivelEnemigo.png");
         texturaPlataforma = new Texture("NivelPlataforma.png");
-        texturaPalanca = new Texture("NivelPalanca.png");
+        texturaBoton = new Texture("NivelBoton.png");
         texturaIman = new Texture("NivelIman.png");
         texturaMiniVI = new Texture("NivelMiniVI.png");
         texturaVida = new Texture("NivelVida.png");
         texturaMiniVIRecolectados = new Texture("NivelContador.png");
         texturaPiso = new Texture("NivelPiso.png");
-        texturaEscalon = new Texture("NivelPiso.png");
+        texturaEscalon = new Texture("NivelEscalon.png");
         texturaSalida = new Texture("NivelSalida.png");
         texturaFondoTutorial = new Texture("PausaFondo.jpg");
         texturaBtnPausa = new Texture("NivelPausa.png");
@@ -216,6 +231,7 @@ public class NivelTutorial extends Pantalla{
         texturaBtnDerecha = new Texture("NivelDerecha.png");
         texturaBtnSaltar = new Texture("NivelSaltar.png");
         texturaBtnUsar = new Texture("NivelUsar.png");
+        texturaPisoVerde = new Texture ("NivelPiso2.png");
     }
 
     @Override
