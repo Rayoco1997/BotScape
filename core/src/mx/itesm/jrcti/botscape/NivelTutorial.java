@@ -29,6 +29,7 @@ public class NivelTutorial extends Pantalla{
     private Texture texturaVida;
     private Texture texturaMiniVIRecolectados;
     private Texture texturaPiso;
+    private Texture texturaTutorial;
     private Texture texturaEscalon;
     private Texture texturaPisoVerde;
     private Texture texturaSalida;
@@ -38,6 +39,7 @@ public class NivelTutorial extends Pantalla{
     private Texture texturaBtnDerecha;
     private Texture texturaBtnSaltar;
     private Texture texturaBtnUsar;
+
 
 
     //SpriteBatch
@@ -127,6 +129,9 @@ public class NivelTutorial extends Pantalla{
         imgEnemigo.setPosition((3*ANCHO/8)+400,ALTO/3+130);
         escenaNivelTutorial.addActor(imgEnemigo);
 
+        Image imgTutorial = new Image(texturaTutorial);
+        imgTutorial.setPosition(ANCHO/8,ALTO-200);
+        escenaNivelTutorial.addActor(imgTutorial);
 
         Image imgVIU = new Image(texturaVIU);
         escenaNivelTutorial.addActor(imgVIU);
@@ -173,6 +178,7 @@ public class NivelTutorial extends Pantalla{
         texturaBtnSaltar = new Texture("NivelSaltar.png");
         texturaBtnUsar = new Texture("NivelUsar.png");
         texturaPisoVerde = new Texture ("NivelPiso2.png");
+        texturaTutorial = new Texture("Tutorial2.png");
     }
 
     @Override
