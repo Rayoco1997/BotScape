@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Cinthya on 15/02/2017.
@@ -43,6 +44,9 @@ public class NivelTutorial extends Pantalla{
     //Escenas
     private Stage escenaNivelTutorial;
 
+    private final int NUM_PISO = 7;
+    private Array<Image> arrPiso;
+
     public NivelTutorial(Juego j){
         this.juego=j;
     }
@@ -61,38 +65,44 @@ public class NivelTutorial extends Pantalla{
         Image imgFondo = new Image(texturaFondoTutorial);
         escenaNivelTutorial.addActor(imgFondo);
 
-        Image imgPiso = new Image(texturaPiso);
-        //imgPiso.setPosition();
-        escenaNivelTutorial.addActor(imgPiso);
+
+        arrPiso = new Array<Image>(NUM_PISO);
+        for(int x=0; x<=NUM_PISO; x++){
+            float posX = x * ANCHO/7-texturaPiso.getWidth()/2;
+            Image imgPiso = new Image(texturaPiso);
+            imgPiso.setPosition(posX,10);
+            escenaNivelTutorial.addActor(imgPiso);
+        }
+
 
         Image imgPlataforma = new Image(texturaPlataforma);
-        //imgPiso.setPosition();
-        escenaNivelTutorial.addActor(imgFondo);
+        imgPlataforma.setPosition(ANCHO/3, ALTO/4);
+        escenaNivelTutorial.addActor(imgPlataforma);
 
 
         Image imgEscalon = new Image(texturaEscalon);
         //imgPiso.setPosition();
-        escenaNivelTutorial.addActor(imgFondo);
+        escenaNivelTutorial.addActor(imgEscalon);
 
 
         Image imgSalida = new Image(texturaSalida);
-        //imgPiso.setPosition();
-        escenaNivelTutorial.addActor(imgFondo);
+        imgSalida.setPosition(5*ANCHO/6,ALTO/3);
+        escenaNivelTutorial.addActor(imgSalida);
 
 
         Image imgMiniVI = new Image(texturaMiniVI);
         //imgPiso.setPosition();
-        escenaNivelTutorial.addActor(imgFondo);
+        escenaNivelTutorial.addActor(imgMiniVI);
 
 
         Image imgIman = new Image(texturaIman);
         //imgPiso.setPosition();
-        escenaNivelTutorial.addActor(imgFondo);
+        escenaNivelTutorial.addActor(imgIman);
 
 
         Image imgEnemigo = new Image(texturaEnemigo);
         // imgPiso.setPosition();
-        escenaNivelTutorial.addActor(imgFondo);
+        escenaNivelTutorial.addActor(imgEnemigo);
 
 
         Image imgVIU = new Image(texturaVIU);
