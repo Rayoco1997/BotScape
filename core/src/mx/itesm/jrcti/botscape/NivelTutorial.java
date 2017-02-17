@@ -99,7 +99,7 @@ public class NivelTutorial extends Pantalla{
         }
 
         Image imgBoton = new Image(texturaBoton);
-        imgBoton.setPosition((6*ANCHO/8),ALTO/3+130);
+        imgBoton.setPosition((6*ANCHO/8)+200,ALTO/3+130);
         escenaNivelTutorial.addActor(imgBoton);
 
 
