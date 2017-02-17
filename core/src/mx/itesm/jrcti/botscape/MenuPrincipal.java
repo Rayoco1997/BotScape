@@ -21,6 +21,7 @@ public class MenuPrincipal extends Pantalla {
     private Texture texturaFondo;
     private Texture texturaBtnCreditos;
     private Texture texturaBtnJugar;
+    private Texture texturaTitulo;
 
     //Dibujar
     private SpriteBatch batch;
@@ -48,6 +49,10 @@ public class MenuPrincipal extends Pantalla {
         escenaMenu=new Stage(vista,batch);
         Image imgFondo=new Image(texturaFondo);
         escenaMenu.addActor(imgFondo);
+
+        Image imgTitulo = new Image(texturaTitulo);
+        imgTitulo.setPosition(3*ANCHO/5,3*ALTO/4);
+        escenaMenu.addActor(imgTitulo);
 
         //Botón
         TextureRegionDrawable trdBtnJugar = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
@@ -85,6 +90,7 @@ public class MenuPrincipal extends Pantalla {
         texturaFondo = new Texture("PrincipalFondo.jpg");
         texturaBtnJugar = new Texture("PrincipalBtnPlay.png");
         texturaBtnCreditos = new Texture("PrincipalBtnCredits.png");
+        texturaTitulo = new Texture("PrincipalTitle.png");
     }
 
     @Override
