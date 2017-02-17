@@ -49,6 +49,9 @@ public class NivelTutorial extends Pantalla{
     private final int NUM_PISO = 7;
     private Array<Image> arrPiso;
 
+    private final int NUM_PISO_VERDE = 2;
+    private Array<Image> arrPisoVerde;
+
     private final int NUM_PLAT = 4;
     private Array<Image> arrPlat;
 
@@ -81,19 +84,23 @@ public class NivelTutorial extends Pantalla{
         }
 
         arrPiso = new Array<Image>(NUM_PISO);
-        for(int x=0; x<=NUM_PISO; x++){
+        for(int x=0; x<NUM_PISO_VERDE; x++){
             float posX = x * ANCHO/7-texturaPiso.getWidth()/2;
-            Image imgPiso = new Image(texturaPiso);
-            imgPiso.setPosition(posX,10);
-            escenaNivelTutorial.addActor(imgPiso);
+            Image imgPisoVerde = new Image(texturaPisoVerde);
+            imgPisoVerde.setPosition(posX+1700,700);
+            escenaNivelTutorial.addActor(imgPisoVerde);
         }
 
-        arrPiso = new Array<Image>(NUM_PLAT);
-        for(int x = 0; x<=NUM_PLAT; x++) {
+        arrPlat = new Array<Image>(NUM_PLAT);
+        for(int x = 0; x<NUM_PLAT; x++) {
             Image imgPlataforma = new Image(texturaPlataforma);
-            imgPlataforma.setPosition(((x+2)*ANCHO / 5), ALTO / 3);
+            imgPlataforma.setPosition(((x+2)*ANCHO / 8)+400, ALTO / 3);
             escenaNivelTutorial.addActor(imgPlataforma);
         }
+
+        Image imgBoton = new Image(texturaBoton);
+        imgBoton.setPosition((6*ANCHO/8),ALTO/3+130);
+        escenaNivelTutorial.addActor(imgBoton);
 
 
         Image imgEscalon = new Image(texturaEscalon);
@@ -117,7 +124,7 @@ public class NivelTutorial extends Pantalla{
 
 
         Image imgEnemigo = new Image(texturaEnemigo);
-        // imgPiso.setPosition();
+        imgEnemigo.setPosition((3*ANCHO/8)+400,ALTO/3+130);
         escenaNivelTutorial.addActor(imgEnemigo);
 
 
@@ -139,72 +146,6 @@ public class NivelTutorial extends Pantalla{
                 juego.setScreen(new PantallaPausa(juego));
             }
         });
-
-
-        //Botón para moverse a la izquierda
-        TextureRegionDrawable trdBtnIzquierda = new TextureRegionDrawable(new TextureRegion(texturaBtnIzquierda));
-        ImageButton btnIzquierda = new ImageButton(trdBtnIzquierda);
-        btnIzquierda.setPosition(10,ALTO-btnIzquierda.getHeight());
-        escenaNivelTutorial.addActor(btnIzquierda);
-
-        /*btnIzquierda.addListener( new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("clicked", "me hicieron CLICK");
-                juego.setScreen(new PantallaPausa(juego));
-            }
-        });*/
-
-
-
-        //Botón para moverse a la derecha
-        TextureRegionDrawable trdBtnDerecha = new TextureRegionDrawable(new TextureRegion(texturaBtnDerecha));
-        ImageButton btnDerecha = new ImageButton(trdBtnDerecha);
-        btnDerecha.setPosition(10,ALTO-btnDerecha.getHeight());
-        escenaNivelTutorial.addActor(btnDerecha);
-
-        /*btnPausa.addListener( new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("clicked", "me hicieron CLICK");
-                juego.setScreen(new PantallaPausa(juego));
-            }
-        });*/
-
-
-
-
-        //Botón para saltar
-        TextureRegionDrawable trdBtnSaltar = new TextureRegionDrawable(new TextureRegion(texturaBtnSaltar));
-        ImageButton btnSaltar = new ImageButton(trdBtnSaltar);
-        btnSaltar.setPosition(10,ALTO-btnSaltar.getHeight());
-        escenaNivelTutorial.addActor(btnSaltar);
-
-        /*btnPausa.addListener( new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("clicked", "me hicieron CLICK");
-                juego.setScreen(new PantallaPausa(juego));
-            }
-        });*/
-
-
-
-        //Botón para usar
-        TextureRegionDrawable trdBtnUsar = new TextureRegionDrawable(new TextureRegion(texturaBtnUsar));
-        ImageButton btnUsar = new ImageButton(trdBtnUsar);
-        btnUsar.setPosition(10,ALTO-btnUsar.getHeight());
-        escenaNivelTutorial.addActor(btnUsar);
-
-        /*btnPausa.addListener( new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("clicked", "me hicieron CLICK");
-                juego.setScreen(new PantallaPausa(juego));
-            }
-        });*/
-
-
 
 
 
