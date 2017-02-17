@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 
 public class MenuPrincipal extends Pantalla {
-    //Comentario prueba
+    //Comentario prueb
     //Imagenes a usar
     private Texture texturaFondo;
     private Texture texturaBtnCreditos;
