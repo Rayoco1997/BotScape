@@ -116,8 +116,8 @@ public class MenuSeleccionNivel extends Pantalla {
 
         texturaFondo = new Texture("SeleccionNivelFondo.jpg");
         texturaBtnNivel1 = new Texture("SeleccionNivelBtnNivel1.png");
-        texturaBtnNivel2 = new Texture("SeleccionNivelBtnNivel2.png");
-        texturaBtnNivel3 = new Texture("SeleccionNivelBtnNivel3.png");
+        texturaBtnNivel2 = new Texture("SeleccionNivelBtnLocked.png");
+        texturaBtnNivel3 = new Texture("SeleccionNivelBtnLocked.png");
         texturaBtnRegresar = new Texture("SeleccionNivelBtnBack.png");
 
     }
