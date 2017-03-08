@@ -61,7 +61,7 @@ public class MenuPrincipal extends Pantalla {
 
         TextureRegionDrawable trdBtnCreditos = new TextureRegionDrawable(new TextureRegion(texturaBtnCreditos));
         ImageButton btnCreditos =new ImageButton(trdBtnCreditos);
-        btnCreditos.setPosition(btnJugar.getX(), 50);
+        btnCreditos.setPosition(btnJugar.getX(), ALTO/2-btnJugar.getHeight()*2);
 
         escenaMenu.addActor(btnJugar);
         escenaMenu.addActor(btnCreditos);
