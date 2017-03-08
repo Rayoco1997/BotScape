@@ -61,16 +61,16 @@ public class MenuCreditos extends Pantalla {
         btnBack.setPosition(10,10);
         //Posición fotos
         Image fotoRay = new Image(textureRay);
-        fotoRay.setPosition(465,150);
+        fotoRay.setPosition(btnBack.getX()+btnBack.getWidth()+1*(ANCHO-btnBack.getWidth())/2-(ANCHO-btnBack.getWidth())/4-fotoRay.getWidth()/2,ALTO/2-3*ALTO/8);
         Image fotoTommy = new Image(textureTommy);
-        fotoTommy.setPosition(1425,620);
+        fotoTommy.setPosition(3*ANCHO/3-ANCHO/6-fotoTommy.getWidth()/2,ALTO-3*ALTO/8);
         Image fotoJulio = new Image(textureJulio);
-        fotoJulio.setPosition(1100,150);
+        fotoJulio.setPosition(btnBack.getX()+btnBack.getWidth()+2*(ANCHO-btnBack.getWidth())/2-(ANCHO-btnBack.getWidth())/4-fotoJulio.getWidth()/2,ALTO/2-3*ALTO/8);
         Image fotoZuren = new Image(textureZuren);
-        fotoZuren.setPosition(785,620);
+        fotoZuren.setPosition(2*ANCHO/3-ANCHO/6-fotoZuren.getWidth()/2,ALTO-3*ALTO/8);
         Image fotoCinth = new Image(textureCinth);
         //Primero de arriba
-        fotoCinth.setPosition(145,620);
+        fotoCinth.setPosition(1*ANCHO/3-ANCHO/6-fotoCinth.getWidth()/2,ALTO-3*ALTO/8);
         //Posición de los datos
         Image textoCinth = new Image (textCinth);
         textoCinth.setPosition(fotoCinth.getX(),fotoCinth.getY()-160);
