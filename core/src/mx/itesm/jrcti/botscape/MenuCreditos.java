@@ -61,16 +61,16 @@ public class MenuCreditos extends Pantalla {
         btnBack.setPosition(10,10);
         //Posición fotos
         Image fotoRay = new Image(textureRay);
-        fotoRay.setPosition(465,150);
+        fotoRay.setPosition(btnBack.getX()+btnBack.getWidth()+1*(ANCHO-btnBack.getWidth())/2-(ANCHO-btnBack.getWidth())/4-fotoRay.getWidth()/2,ALTO/2-3*ALTO/8);
         Image fotoTommy = new Image(textureTommy);
-        fotoTommy.setPosition(1425,620);
+        fotoTommy.setPosition(3*ANCHO/3-ANCHO/6-fotoTommy.getWidth()/2,ALTO-3*ALTO/8);
         Image fotoJulio = new Image(textureJulio);
-        fotoJulio.setPosition(1100,150);
+        fotoJulio.setPosition(btnBack.getX()+btnBack.getWidth()+2*(ANCHO-btnBack.getWidth())/2-(ANCHO-btnBack.getWidth())/4-fotoJulio.getWidth()/2,ALTO/2-3*ALTO/8);
         Image fotoZuren = new Image(textureZuren);
-        fotoZuren.setPosition(785,620);
+        fotoZuren.setPosition(2*ANCHO/3-ANCHO/6-fotoZuren.getWidth()/2,ALTO-3*ALTO/8);
         Image fotoCinth = new Image(textureCinth);
         //Primero de arriba
-        fotoCinth.setPosition(145,620);
+        fotoCinth.setPosition(1*ANCHO/3-ANCHO/6-fotoCinth.getWidth()/2,ALTO-3*ALTO/8);
         //Posición de los datos
         Image textoCinth = new Image (textCinth);
         textoCinth.setPosition(fotoCinth.getX(),fotoCinth.getY()-160);
@@ -112,20 +112,20 @@ public class MenuCreditos extends Pantalla {
     }
 
     private void cargarTexturas(){
-        fondoCreditos= new Texture("PausaFondo.jpg");
-        texturabtnBack=new Texture("SeleccionNivelBtnBack.png");
+        fondoCreditos= new Texture("Fondos/PausaFondo.jpg");
+        texturabtnBack=new Texture("Botones/SeleccionNivelBtnBack.png");
         //Añadiendo textura de fotografías
-        textureRay= new Texture("FotoRay.jpg");
-        textureTommy= new Texture("FotoTommy.jpg");
-        textureJulio =new Texture("FotoJulio.jpg");
-        textureZuren = new Texture("FotoZuren.jpg");
-        textureCinth = new Texture("FotoCinth.jpg");
+        textureRay= new Texture("Creditos/FotoRay.jpg");
+        textureTommy= new Texture("Creditos/FotoTommy.jpg");
+        textureJulio =new Texture("Creditos/FotoJulio.jpg");
+        textureZuren = new Texture("Creditos/FotoZuren.jpg");
+        textureCinth = new Texture("Creditos/FotoCinth.jpg");
         //Añadiendo Texturas de los datos
-        textCinth = new Texture("TextoCinthya.png");
-        textTommy= new Texture("TextoTommy.png");
-        textJulio = new Texture("TextoJulio.png");
-        textRay = new Texture("TextoRay.png");
-        textZuren = new Texture("TextoZuren.png");
+        textCinth = new Texture("Creditos/TextoCinthya.png");
+        textTommy= new Texture("Creditos/TextoTommy.png");
+        textJulio = new Texture("Creditos/TextoJulio.png");
+        textRay = new Texture("Creditos/TextoRay.png");
+        textZuren = new Texture("Creditos/TextoZuren.png");
 
     }
 
