@@ -58,7 +58,7 @@ public class MenuCreditos extends Pantalla {
         //Botón para regresar al menú principal
         TextureRegionDrawable trdBtnBack = new TextureRegionDrawable(new TextureRegion(texturabtnBack));
         ImageButton btnBack = new ImageButton(trdBtnBack);
-        btnBack.setPosition(0,0);
+        btnBack.setPosition(10,10);
         //Posición fotos
         Image fotoRay = new Image(textureRay);
         fotoRay.setPosition(465,150);
