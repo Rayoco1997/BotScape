@@ -112,20 +112,20 @@ public class MenuCreditos extends Pantalla {
     }
 
     private void cargarTexturas(){
-        fondoCreditos= new Texture("PausaFondo.jpg");
-        texturabtnBack=new Texture("SeleccionNivelBtnBack.png");
+        fondoCreditos= new Texture("Fondos/PausaFondo.jpg");
+        texturabtnBack=new Texture("Botones/SeleccionNivelBtnBack.png");
         //Añadiendo textura de fotografías
-        textureRay= new Texture("FotoRay.jpg");
-        textureTommy= new Texture("FotoTommy.jpg");
-        textureJulio =new Texture("FotoJulio.jpg");
-        textureZuren = new Texture("FotoZuren.jpg");
-        textureCinth = new Texture("FotoCinth.jpg");
+        textureRay= new Texture("Creditos/FotoRay.jpg");
+        textureTommy= new Texture("Creditos/FotoTommy.jpg");
+        textureJulio =new Texture("Creditos/FotoJulio.jpg");
+        textureZuren = new Texture("Creditos/FotoZuren.jpg");
+        textureCinth = new Texture("Creditos/FotoCinth.jpg");
         //Añadiendo Texturas de los datos
-        textCinth = new Texture("TextoCinthya.png");
-        textTommy= new Texture("TextoTommy.png");
-        textJulio = new Texture("TextoJulio.png");
-        textRay = new Texture("TextoRay.png");
-        textZuren = new Texture("TextoZuren.png");
+        textCinth = new Texture("Creditos/TextoCinthya.png");
+        textTommy= new Texture("Creditos/TextoTommy.png");
+        textJulio = new Texture("Creditos/TextoJulio.png");
+        textRay = new Texture("Creditos/TextoRay.png");
+        textZuren = new Texture("Creditos/TextoZuren.png");
 
     }
 
