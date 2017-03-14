@@ -171,7 +171,7 @@ public class NivelTutorial extends Pantalla{
         texturaPiso = new Texture("NivelPiso.png");
         texturaEscalon = new Texture("NivelEscalon.png");
         texturaSalida = new Texture("NivelSalida.png");
-        texturaFondoTutorial = new Texture("PausaFondo.jpg");
+        texturaFondoTutorial = new Texture("Fondos/PausaFondo.jpg");
         texturaBtnPausa = new Texture("NivelPausa.png");
         texturaBtnIzquierda = new Texture("NivelIzquierda.png");
         texturaBtnDerecha = new Texture("NivelDerecha.png");
