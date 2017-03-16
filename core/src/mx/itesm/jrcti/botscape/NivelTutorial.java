@@ -39,6 +39,7 @@ public class NivelTutorial extends Pantalla{
     private Texture texturaBtnDerecha;
     private Texture texturaBtnSaltar;
     private Texture texturaBtnUsar;
+    private Plataforma plat1;
 
 
 
@@ -93,48 +94,9 @@ public class NivelTutorial extends Pantalla{
             escenaNivelTutorial.addActor(imgPisoVerde);
         }
 
-        arrPlat = new Array<Image>(NUM_PLAT);
-        for(int x = 0; x<NUM_PLAT; x++) {
-            Image imgPlataforma = new Image(texturaPlataforma);
-            imgPlataforma.setPosition(((x+2)*ANCHO / 8)+400, ALTO / 3);
-            escenaNivelTutorial.addActor(imgPlataforma);
-        }
-
-        Image imgBoton = new Image(texturaBoton);
-        imgBoton.setPosition((6*ANCHO/8)+200,ALTO/3+130);
-        escenaNivelTutorial.addActor(imgBoton);
+        plat1 = new Plataforma(texturaPlataforma, 3, 3, 30, 30, Plataforma.EstadoMovimiento.MOV_DERECHA);
 
 
-        Image imgEscalon = new Image(texturaEscalon);
-        imgEscalon.setPosition(ANCHO/3,10);
-        escenaNivelTutorial.addActor(imgEscalon);
-
-
-        Image imgSalida = new Image(texturaSalida);
-        imgSalida.setPosition(5*ANCHO/6,2*ALTO/3);
-        escenaNivelTutorial.addActor(imgSalida);
-
-
-        Image imgMiniVI = new Image(texturaMiniVI);
-        imgMiniVI.setPosition(ANCHO/5,70);
-        escenaNivelTutorial.addActor(imgMiniVI);
-
-
-        Image imgIman = new Image(texturaIman);
-        imgIman.setPosition(2*ANCHO/3, 5*ALTO/6);
-        escenaNivelTutorial.addActor(imgIman);
-
-
-        Image imgEnemigo = new Image(texturaEnemigo);
-        imgEnemigo.setPosition((3*ANCHO/8)+400,ALTO/3+130);
-        escenaNivelTutorial.addActor(imgEnemigo);
-
-        Image imgTutorial = new Image(texturaTutorial);
-        imgTutorial.setPosition(ANCHO/8,ALTO-200);
-        escenaNivelTutorial.addActor(imgTutorial);
-
-        Image imgVIU = new Image(texturaVIU);
-        escenaNivelTutorial.addActor(imgVIU);
 
 
 
@@ -184,11 +146,19 @@ public class NivelTutorial extends Pantalla{
     @Override
     public void render(float delta) {
         borrarPantalla();
+
+
         escenaNivelTutorial.draw();
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
             juego.setScreen(new PantallaPausa(juego));
         }
+
+        batch.begin();
+        plat1.dibujar(batch);
+        plat1.mover(30,500,30,30);
+        batch.end();
+
     }
 
     @Override

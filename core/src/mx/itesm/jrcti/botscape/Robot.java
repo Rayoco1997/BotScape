@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
+
 /**
  * Created by rayoc on 08/03/2017.
  */
@@ -20,9 +21,11 @@ public class Robot extends Objeto{
         private float timerAnimacion;                           // Tiempo para cambiar frames de la animación
 
         private EstadoMovimiento estadoMovimiento = EstadoMovimiento.QUIETO;
+        private EstadoSalto estadoSalto;
 
         // Recibe una imagen con varios frames (ver marioSprite.png)
         public Robot(Texture textura, float x, float y) {
+            super(textura,x,y);
             // Lee la textura como región
             TextureRegion texturaCompleta = new TextureRegion(textura);
             // La divide en 4 frames de 32x64 (ver marioSprite.png)
@@ -75,10 +78,20 @@ public class Robot extends Objeto{
                     moverHorizontal(mapa);
                     break;
             }
+            switch (estadoSalto) {
+                case SUBIENDO:
+                case BAJANDO:
+                    moverVertical(mapa);
+                    break;
+            }
         }
 
+    private void moverVertical(TiledMap mapa) {
 
-        // Mueve el personaje a la derecha/izquierda, prueba choques con paredes
+    }
+
+
+    // Mueve el personaje a la derecha/izquierda, prueba choques con paredes
         private void moverHorizontal(TiledMap mapa) {
             // Obtiene la primer capa del mapa (en este caso es la única)
             TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(0);
@@ -127,23 +140,7 @@ public class Robot extends Objeto{
             }
         }
 
-        // Revisa si toca una moneda
-        public boolean recolectarMonedas(TiledMap mapa) {
-            // Revisar si toca una moneda (pies)
-            TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(0);
-            int x = (int)(sprite.getX()/32);
-            int y = (int)(sprite.getY()/32);
-            TiledMapTileLayer.Cell celda = capa.getCell(x,y);
-            if (celda!=null ) {
-                Object tipo = celda.getTile().getProperties().get("tipo");
-                if ( "moneda".equals(tipo) ) {
-                    capa.setCell(x,y,null);    // Borra la moneda del mapa
-                    capa.setCell(x,y,capa.getCell(0,4)); // Cuadro azul en lugar de la moneda
-                    return true;
-                }
-            }
-            return false;
-        }
+
 
         // Accesor de estadoMovimiento
         public EstadoMovimiento getEstadoMovimiento() {
@@ -159,12 +156,16 @@ public class Robot extends Objeto{
             INICIANDO,
             QUIETO,
             MOV_IZQUIERDA,
-            MOV_DERECHA
+            MOV_DERECHA,
         }
 
         public enum Habilidad{
-            NINGUNA,
+            CORRER,
             JETPACK,
             ARMA
+        }
+        public enum EstadoSalto {
+            SUBIENDO,
+            BAJANDO
         }
 }
