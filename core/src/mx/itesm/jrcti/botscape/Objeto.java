@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Objeto
 {
     protected Sprite sprite;    // Imagen
+    protected float centroX=sprite.getX()+sprite.getWidth()/2;
+    protected float centroY=sprite.getY()+sprite.getHeight()/2;
 
     public Objeto() {
 
@@ -20,6 +22,22 @@ public class Objeto
     public Objeto(Texture textura, float x, float y) {
         sprite = new Sprite(textura);
         sprite.setPosition(x, y);
+    }
+
+    public void setCentroX(float x){
+        sprite.setPosition(x-sprite.getWidth()/2,sprite.getY());
+    }
+
+    public void setCentroY(float y){
+        sprite.setPosition(sprite.getX(),y-sprite.getHeight()/2);
+    }
+
+    public float getCentroY(){
+        return centroY;
+    }
+
+    public float getCentroX(){
+        return centroX;
     }
 
     public void dibujar(SpriteBatch batch) {
