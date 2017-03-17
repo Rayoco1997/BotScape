@@ -146,8 +146,6 @@ public class NivelTutorial extends Pantalla{
     @Override
     public void render(float delta) {
         borrarPantalla();
-
-
         escenaNivelTutorial.draw();
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
@@ -156,7 +154,7 @@ public class NivelTutorial extends Pantalla{
 
         batch.begin();
         plat1.dibujar(batch);
-        plat1.mover(30,500,30,30);
+        plat1.mover(30,500,30,600);
         batch.end();
 
     }

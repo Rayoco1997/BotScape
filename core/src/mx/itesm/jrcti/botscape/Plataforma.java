@@ -63,6 +63,10 @@ public class Plataforma extends Objeto implements MovimientoAutomatico {
 
     }
 
+    @Override
+    public void mover(float xMin, float xMax) {
+        return;
+    }
 
 
     public enum EstadoMovimiento{

@@ -6,4 +6,5 @@ package mx.itesm.jrcti.botscape;
 
 public interface MovimientoAutomatico {
     public void mover(float xMin, float xMax, float yMin, float yMax);
+    public void mover(float xMin, float xMax);
 }
