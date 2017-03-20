@@ -41,10 +41,10 @@ public class MenuPrincipal extends Pantalla {
     private AssetManager manager;
 
 
-    public MenuPrincipal (Juego juego){
+    public MenuPrincipal (Juego juego, Music musicaFondo){
         super();
         this.juego=juego;
-        manager= juego.getAssetManager();
+
     }
 
     @Override

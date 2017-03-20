@@ -1,6 +1,8 @@
 package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,6 +25,8 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
  */
 
 public class PantallaSplashTec extends Pantalla {
+    private AssetManager manager;
+    private Music musicaFondo;
 
     private final int TIEMPO_DE_ESPERA = 3000;
     private SpriteBatch batch;
@@ -41,12 +45,20 @@ public class PantallaSplashTec extends Pantalla {
         super();
         this.juego = juego;
         tiempoDeEspera = TimeUtils.millis();
+        manager= juego.getAssetManager();
     }
 
     @Override
     public void show() {
         cargarTexturas();
         crearObjetos();
+        cargarMusica();
+    }
+
+    private void cargarMusica() {
+        musicaFondo = manager.get("audio.mpe");
+        musicaFondo.setLooping(true);
+
     }
 
     private void crearObjetos() {
@@ -69,7 +81,7 @@ public class PantallaSplashTec extends Pantalla {
         cambioDeFondo.draw(batch);
         cambioDeFondo.setAlpha(alpha);
         if((TimeUtils.millis() - tiempoDeEspera)> TIEMPO_DE_ESPERA){
-            juego.setScreen(new MenuPrincipal(juego));
+            juego.setScreen(new MenuPrincipal(juego,musicaFondo));
         }
         alpha -= cambioAlpha;
         batch.end();
