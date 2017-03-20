@@ -1,6 +1,8 @@
 package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -32,16 +34,30 @@ public class MenuPrincipal extends Pantalla {
     //Menu
     //private final Juego juego;
 
+    //MUSICA Y SONIDOS
+    private Music musicaFondo;
+
+    //MANAGER
+    private AssetManager manager;
+
 
     public MenuPrincipal (Juego juego){
         super();
         this.juego=juego;
+        manager= juego.getAssetManager();
     }
 
     @Override
     public void show() {
         cargarTexturas();
         crearObjetos();
+        cargarMusica();
+    }
+
+    private void cargarMusica() {
+        musicaFondo = manager.get("audio.mpe");
+        musicaFondo.setLooping(true);
+        musicaFondo.play();
     }
 
     private void crearObjetos() {

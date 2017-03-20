@@ -2,6 +2,7 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 
 public abstract class Pantalla implements Screen {
+    private Music musicaFondo;
 
     public static final float ANCHO = 1280;
     public static final float ALTO =  720;
