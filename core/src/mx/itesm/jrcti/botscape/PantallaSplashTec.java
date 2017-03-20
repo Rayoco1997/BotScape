@@ -25,7 +25,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
  */
 
 public class PantallaSplashTec extends Pantalla {
-    private AssetManager manager;
+
     private Music musicaFondo;
 
     private final int TIEMPO_DE_ESPERA = 3000;
@@ -40,6 +40,7 @@ public class PantallaSplashTec extends Pantalla {
     private float cambioAlpha = (float)1/180;
     private float alpha = (float) 1;
     private int cuenta = 0;
+    private AssetManager manager;
 
     public PantallaSplashTec(Juego juego){
         super();
@@ -56,7 +57,8 @@ public class PantallaSplashTec extends Pantalla {
     }
 
     private void cargarMusica() {
-        musicaFondo = manager.get("Sonidos/Avoiding Danger.mp3");
+
+        musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/Avoiding Danger1.mp3"));
 
         musicaFondo.setLooping(true);
 
