@@ -35,16 +35,17 @@ public class MenuPrincipal extends Pantalla {
     //private final Juego juego;
 
     //MUSICA Y SONIDOS
+    //hjhiu
     private Music musicaFondo;
 
     //MANAGER
     private AssetManager manager;
 
 
-    public MenuPrincipal (Juego juego){
+    public MenuPrincipal (Juego juego, Music musicaFondo){
         super();
         this.juego=juego;
-        manager= juego.getAssetManager();
+
     }
 
     @Override
