@@ -36,8 +36,8 @@ public class MenuPrincipal extends Pantalla {
 
     //MUSICA Y SONIDOS
     //hjhiu
-    private Music musicaFondo;
 
+    private Music musica;
     //MANAGER
     private AssetManager manager;
 
@@ -45,6 +45,8 @@ public class MenuPrincipal extends Pantalla {
     public MenuPrincipal (Juego juego, Music musicaFondo){
         super();
         this.juego=juego;
+        musica= musicaFondo;
+
 
     }
 
@@ -52,14 +54,11 @@ public class MenuPrincipal extends Pantalla {
     public void show() {
         cargarTexturas();
         crearObjetos();
-        cargarMusica();
+        musica.play();
+
     }
 
-    private void cargarMusica() {
-        musicaFondo = manager.get("audio.mpe");
-        musicaFondo.setLooping(true);
-        musicaFondo.play();
-    }
+
 
     private void crearObjetos() {
         batch=new SpriteBatch();
@@ -95,7 +94,8 @@ public class MenuPrincipal extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click CREDITOS");
-                juego.setScreen(new MenuCreditos(juego));
+                musica.pause();
+                juego.setScreen(new MenuCreditos(juego,musica));
             }
         });
 
