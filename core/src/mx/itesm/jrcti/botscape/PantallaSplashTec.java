@@ -53,16 +53,8 @@ public class PantallaSplashTec extends Pantalla {
     public void show() {
         cargarTexturas();
         crearObjetos();
-        cargarMusica();
     }
 
-    private void cargarMusica() {
-
-        musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/Avoiding Danger1.mp3"));
-
-        musicaFondo.setLooping(true);
-
-    }
 
     private void crearObjetos() {
         batch = new SpriteBatch();
@@ -84,7 +76,7 @@ public class PantallaSplashTec extends Pantalla {
         cambioDeFondo.draw(batch);
         cambioDeFondo.setAlpha(alpha);
         if((TimeUtils.millis() - tiempoDeEspera)> TIEMPO_DE_ESPERA){
-            juego.setScreen(new MenuPrincipal(juego,musicaFondo));
+            juego.setScreen(new PantallaCarga(juego,Pantallas.MENU));
         }
         alpha -= cambioAlpha;
         batch.end();

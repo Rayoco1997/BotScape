@@ -72,6 +72,7 @@ public class NivelTutorial extends Pantalla{
 
 
     public NivelTutorial(Juego j){
+        super();
         this.juego=j;
         manager = j.getAssetManager();
     }
@@ -84,10 +85,11 @@ public class NivelTutorial extends Pantalla{
     }
 
     private void cargarMapa() {
-        mapa = manager.get("Mapas/tutorial.tmx");
-        musicaFondo = manager.get("Sonidos/Bring the foxhound to me.mp3");
+        mapa = manager.get("Mapas/tutorialv2.tmx");
+        musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/Bring the foxhound to me.mp3"));
         musicaFondo.setLooping(true);
         musicaFondo.play();
+
         batch = new SpriteBatch();
         renderarMapa = new OrthogonalTiledMapRenderer(mapa, batch);
         renderarMapa.setView(camara);
