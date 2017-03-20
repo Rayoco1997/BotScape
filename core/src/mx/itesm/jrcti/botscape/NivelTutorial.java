@@ -7,6 +7,8 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -21,6 +23,10 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 
 public class NivelTutorial extends Pantalla{
+
+    private OrthogonalTiledMapRenderer renderarMapa;
+    private SpriteBatch batch;
+    private TiledMap mapa;
 
     //Texturas
     private Texture texturaVIU;
@@ -42,14 +48,10 @@ public class NivelTutorial extends Pantalla{
     private Texture texturaBtnDerecha;
     private Texture texturaBtnSaltar;
     private Texture texturaBtnUsar;
+
     private Plataforma plat1;
 
 
-
-    //Comentario random
-
-    //SpriteBatch
-    private SpriteBatch batch;
     //Escenas
     private Stage escenaNivelTutorial;
 
@@ -76,15 +78,25 @@ public class NivelTutorial extends Pantalla{
 
     @Override
     public void show() {
+        cargarMapa();
         cargarTexturas();
         crearObjetos();
     }
 
+    private void cargarMapa() {
+        mapa = manager.get("Mapas/tutorial.tmx");
+        musicaFondo = manager.get("Sonidos/Bring the foxhound to me.mp3");
+        musicaFondo.setLooping(true);
+        musicaFondo.play();
+        batch = new SpriteBatch();
+        renderarMapa = new OrthogonalTiledMapRenderer(mapa, batch);
+        renderarMapa.setView(camara);
+    }
+
     private void crearObjetos(){
-        batch= new SpriteBatch();
+
         escenaNivelTutorial = new Stage(vista,batch);
-
-
+        /*
         Image imgFondo = new Image(texturaFondoTutorial);
         escenaNivelTutorial.addActor(imgFondo);
 
@@ -104,12 +116,8 @@ public class NivelTutorial extends Pantalla{
             imgPisoVerde.setPosition(posX+1700,700);
             escenaNivelTutorial.addActor(imgPisoVerde);
         }
-
+*/
         plat1 = new Plataforma(texturaPlataforma, 3, 3, 30, 30, Plataforma.EstadoMovimiento.MOV_DERECHA);
-
-
-
-
 
         //Botón para ir al menu de pausa
         TextureRegionDrawable trdBtnPausa = new TextureRegionDrawable(new TextureRegion(texturaBtnPausa));
@@ -126,32 +134,30 @@ public class NivelTutorial extends Pantalla{
         });
 
 
-
-
         Gdx.input.setInputProcessor(escenaNivelTutorial);
         Gdx.input.setCatchBackKey(true);
     }
 
     private void cargarTexturas(){
-        texturaVIU = new Texture("NivelVIU.png");
-        texturaEnemigo = new Texture("NivelEnemigo.png");
-        texturaPlataforma = new Texture("NivelPlataforma.png");
-        texturaBoton = new Texture("NivelBoton.png");
-        texturaIman = new Texture("NivelIman.png");
-        texturaMiniVI = new Texture("NivelMiniVI.png");
-        texturaVida = new Texture("NivelVida.png");
-        texturaMiniVIRecolectados = new Texture("NivelContador.png");
-        texturaPiso = new Texture("NivelPiso.png");
-        texturaEscalon = new Texture("NivelEscalon.png");
-        texturaSalida = new Texture("NivelSalida.png");
-        texturaFondoTutorial = new Texture("Fondos/PausaFondo.jpg");
-        texturaBtnPausa = new Texture("NivelPausa.png");
-        texturaBtnIzquierda = new Texture("NivelIzquierda.png");
-        texturaBtnDerecha = new Texture("NivelDerecha.png");
-        texturaBtnSaltar = new Texture("NivelSaltar.png");
-        texturaBtnUsar = new Texture("NivelUsar.png");
-        texturaPisoVerde = new Texture ("NivelPiso2.png");
-        texturaTutorial = new Texture("Tutorial2.png");
+        texturaVIU = manager.get("NivelVIU.png");
+        texturaEnemigo = manager.get("NivelEnemigo.png");
+        texturaPlataforma = manager.get("NivelPlataforma.png");
+        texturaBoton = manager.get("NivelBoton.png");
+        texturaIman = manager.get("NivelIman.png");
+        texturaMiniVI = manager.get("NivelMiniVI.png");
+        texturaVida = manager.get("NivelVida.png");
+        texturaMiniVIRecolectados = manager.get("NivelContador.png");
+        texturaPiso = manager.get("NivelPiso.png");
+        texturaEscalon = manager.get("NivelEscalon.png");
+        texturaSalida = manager.get("NivelSalida.png");
+        texturaFondoTutorial = manager.get("Fondos/PausaFondo.jpg");
+        texturaBtnPausa = manager.get("NivelPausa.png");
+        texturaBtnIzquierda = manager.get("NivelIzquierda.png");
+        texturaBtnDerecha = manager.get("NivelDerecha.png");
+        texturaBtnSaltar = manager.get("NivelSaltar.png");
+        texturaBtnUsar = manager.get("NivelUsar.png");
+        texturaPisoVerde = manager.get ("NivelPiso2.png");
+        texturaTutorial = manager.get("Tutorial2.png");
     }
 
     @Override
@@ -166,7 +172,6 @@ public class NivelTutorial extends Pantalla{
         batch.begin();
         plat1.dibujar(batch);
         plat1.mover(30,500,30,600);
-
         batch.end();
 
     }
