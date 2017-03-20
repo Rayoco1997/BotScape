@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Juego extends Game {
 	SpriteBatch batch;
-	Texture img;
 	private final AssetManager assetManager;
 
 	public Juego(){

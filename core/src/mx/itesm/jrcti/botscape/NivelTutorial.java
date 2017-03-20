@@ -47,7 +47,6 @@ public class NivelTutorial extends Pantalla{
 
     //SpriteBatch
     private SpriteBatch batch;
-
     //Escenas
     private Stage escenaNivelTutorial;
 
@@ -60,7 +59,8 @@ public class NivelTutorial extends Pantalla{
     private final int NUM_PLAT = 4;
     private Array<Image> arrPlat;
 
-    private Music musicaFondo;  // Sonidos largos
+    // Sonidos largos
+    private Music musicaFondo;
 
     //Asset Manager
     private AssetManager manager;
@@ -163,6 +163,7 @@ public class NivelTutorial extends Pantalla{
         batch.begin();
         plat1.dibujar(batch);
         plat1.mover(30,500,30,600);
+
         batch.end();
 
     }
