@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "mx.itesm.jrcti.botscape"
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 25
     }
 }
