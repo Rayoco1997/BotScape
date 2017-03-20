@@ -56,7 +56,8 @@ public class PantallaSplashTec extends Pantalla {
     }
 
     private void cargarMusica() {
-        musicaFondo = manager.get("audio.mpe");
+        musicaFondo = manager.get("Sonidos/Avoiding Danger.mp3");
+
         musicaFondo.setLooping(true);
 
     }

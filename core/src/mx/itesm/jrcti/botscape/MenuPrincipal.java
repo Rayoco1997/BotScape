@@ -86,7 +86,8 @@ public class MenuPrincipal extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click");
-                juego.setScreen(new MenuSeleccionNivel(juego));
+                musica.pause();
+                juego.setScreen(new MenuSeleccionNivel(juego,musica));
             }
         });
 

@@ -2,6 +2,7 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -36,15 +37,19 @@ public class MenuSeleccionNivel extends Pantalla {
     //Escenas
     private Stage escenaSeleccionNivel;
 
-    public MenuSeleccionNivel(Juego juego){
+    private Music musica;
+
+    public MenuSeleccionNivel(Juego juego,Music musicaFondo){
         super();
         this.juego=juego;
+        musica= musicaFondo;
     }
 
     @Override
     public void show() {
         cargarTexturas();
         crearObjetos();
+        musica.play();
     }
 
     private void crearObjetos() {
@@ -103,7 +108,8 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click back");
-                juego.setScreen(new MenuPrincipal(juego));
+                musica.pause();
+                juego.setScreen(new MenuPrincipal(juego,musica));
             }
         });
 
@@ -129,7 +135,8 @@ public class MenuSeleccionNivel extends Pantalla {
 
         //Teclado
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            juego.setScreen(new MenuPrincipal(juego));
+            musica.pause();
+            juego.setScreen(new MenuPrincipal(juego,musica));
         }
     }
 

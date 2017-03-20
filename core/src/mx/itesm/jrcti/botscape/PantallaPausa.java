@@ -2,6 +2,7 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -31,6 +32,8 @@ public class PantallaPausa extends Pantalla {
 
     //escena
     private Stage escenaPantallaPausa;
+
+    private Music musica;
 
     public PantallaPausa(Juego juego){
         this.juego= juego;
@@ -89,14 +92,14 @@ public class PantallaPausa extends Pantalla {
         buttonMenuPrincipal.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
-                juego.setScreen(new MenuPrincipal(juego));
+                juego.setScreen(new MenuPrincipal(juego,musica));
             }
         });
 
         buttonSeleecionarNivel.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 Gdx.app.log("Aviso", "POS ME VOY A LA SELECCION DE NIVEL");
-                juego.setScreen(new MenuSeleccionNivel(juego));
+                juego.setScreen(new MenuSeleccionNivel(juego,musica));
             }
         });
 

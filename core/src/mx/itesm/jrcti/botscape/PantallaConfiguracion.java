@@ -2,6 +2,7 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -27,6 +28,8 @@ public class PantallaConfiguracion extends Pantalla {
     private SpriteBatch batch;
 
     private Stage escenaPantallaConfig;
+
+    private Music musica;
 
     public PantallaConfiguracion(Juego juego){
         this.juego= juego;
@@ -73,7 +76,7 @@ public class PantallaConfiguracion extends Pantalla {
         buttonRegresar.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
-                juego.setScreen(new MenuPrincipal(juego));
+                juego.setScreen(new MenuPrincipal(juego,musica));
             }
         });
 
@@ -112,7 +115,7 @@ public class PantallaConfiguracion extends Pantalla {
         escenaPantallaConfig.draw();
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            juego.setScreen(new MenuPrincipal(juego));
+            juego.setScreen(new MenuPrincipal(juego,musica));
         }
 
 
