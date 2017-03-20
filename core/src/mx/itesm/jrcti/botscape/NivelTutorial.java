@@ -85,7 +85,7 @@ public class NivelTutorial extends Pantalla{
     }
 
     private void cargarMapa() {
-        mapa = manager.get("Mapas/tutorial.tmx");
+        mapa = manager.get("Mapas/tutorialv2.tmx");
         musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/Bring the foxhound to me.mp3"));
         musicaFondo.setLooping(true);
         musicaFondo.play();

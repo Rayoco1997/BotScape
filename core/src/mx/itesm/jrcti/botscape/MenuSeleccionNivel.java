@@ -2,6 +2,7 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -39,10 +40,13 @@ public class MenuSeleccionNivel extends Pantalla {
 
     private Music musica;
 
+    private AssetManager manager;
+
     public MenuSeleccionNivel(Juego juego,Music musicaFondo){
         super();
         this.juego=juego;
         musica= musicaFondo;
+        manager = juego.getAssetManager();
     }
 
     @Override
@@ -50,6 +54,7 @@ public class MenuSeleccionNivel extends Pantalla {
         cargarTexturas();
         crearObjetos();
         musica.play();
+
     }
 
     private void crearObjetos() {
@@ -84,7 +89,7 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click lvl1");
-                juego.setScreen(new NivelTutorial(juego));
+                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL));
             }
         });
 
@@ -92,7 +97,7 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click lvl2");
-                juego.setScreen(new NivelTutorial(juego));
+                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL));
             }
         });
 
@@ -100,7 +105,7 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click lvl3");
-                juego.setScreen(new NivelTutorial(juego));
+                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL));
             }
         });
 
@@ -109,7 +114,7 @@ public class MenuSeleccionNivel extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click back");
                 musica.pause();
-                juego.setScreen(new MenuPrincipal(juego,musica));
+                juego.setScreen(new PantallaCarga(juego, Pantallas.MENU));
             }
         });
 
@@ -120,11 +125,11 @@ public class MenuSeleccionNivel extends Pantalla {
 
     private void cargarTexturas() {
 
-        texturaFondo = new Texture("Fondos/SeleccionNivelFondo.jpg");
-        texturaBtnNivel1 = new Texture("Botones/SeleccionNivelBtnNivel1.png");
-        texturaBtnNivel2 = new Texture("Botones/SeleccionNivelBtnLocked.png");
-        texturaBtnNivel3 = new Texture("Botones/SeleccionNivelBtnLocked.png");
-        texturaBtnRegresar = new Texture("Botones/SeleccionNivelBtnBack.png");
+        texturaFondo = manager.get("Fondos/SeleccionNivelFondo.jpg");
+        texturaBtnNivel1 = manager.get("Botones/SeleccionNivelBtnNivel1.png");
+        texturaBtnNivel2 = manager.get("Botones/SeleccionNivelBtnLocked.png");
+        texturaBtnNivel3 = manager.get("Botones/SeleccionNivelBtnLocked.png");
+        texturaBtnRegresar = manager.get("Botones/SeleccionNivelBtnBack.png");
 
     }
 
@@ -136,7 +141,7 @@ public class MenuSeleccionNivel extends Pantalla {
         //Teclado
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
             musica.pause();
-            juego.setScreen(new MenuPrincipal(juego,musica));
+            juego.setScreen(new PantallaCarga(juego,Pantallas.MENU));
         }
     }
 

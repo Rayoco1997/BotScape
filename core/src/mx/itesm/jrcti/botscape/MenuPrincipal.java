@@ -46,7 +46,7 @@ public class MenuPrincipal extends Pantalla {
         super();
         this.juego=juego;
         musica= musicaFondo;
-
+        manager = juego.getAssetManager();
 
     }
 
@@ -87,7 +87,7 @@ public class MenuPrincipal extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click");
                 musica.pause();
-                juego.setScreen(new MenuSeleccionNivel(juego,musica));
+                juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL));
             }
         });
 
@@ -105,10 +105,10 @@ public class MenuPrincipal extends Pantalla {
     }
 
     private void cargarTexturas() {
-        texturaFondo = new Texture("Fondos/PrincipalFondo.jpg");
-        texturaBtnJugar = new Texture("Botones/PrincipalBtnPlay.png");
-        texturaBtnCreditos = new Texture("Botones/PrincipalBtnCredits.png");
-        texturaTitulo = new Texture("Textos/PrincipalTitle.png");
+        texturaFondo = manager.get("Fondos/PrincipalFondo.jpg");
+        texturaBtnJugar = manager.get("Botones/PrincipalBtnPlay.png");
+        texturaBtnCreditos = manager.get("Botones/PrincipalBtnCredits.png");
+        texturaTitulo = manager.get("Textos/PrincipalTitle.png");
     }
 
     @Override
