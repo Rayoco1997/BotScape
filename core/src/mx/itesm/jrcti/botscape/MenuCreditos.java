@@ -110,7 +110,7 @@ public class MenuCreditos extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "me hicieron CLICK");
-                musica.pause();
+                //musica.pause();
                 juego.setScreen(new MenuPrincipal(juego,musica));
             }
         });
@@ -143,7 +143,7 @@ public class MenuCreditos extends Pantalla {
         escenaMenuCreditos.draw();
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            musica.pause();
+            //musica.pause();
             juego.setScreen(new MenuPrincipal(juego,musica));
         }
     }

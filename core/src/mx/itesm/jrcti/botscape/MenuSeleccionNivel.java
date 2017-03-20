@@ -108,7 +108,7 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click back");
-                musica.pause();
+                //musica.pause();
                 juego.setScreen(new MenuPrincipal(juego,musica));
             }
         });
@@ -135,7 +135,7 @@ public class MenuSeleccionNivel extends Pantalla {
 
         //Teclado
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            musica.pause();
+            //musica.pause();
             juego.setScreen(new MenuPrincipal(juego,musica));
         }
     }
