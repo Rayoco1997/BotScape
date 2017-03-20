@@ -3,6 +3,7 @@ package mx.itesm.jrcti.botscape;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -37,17 +38,23 @@ public class MenuCreditos extends Pantalla {
     //SpriteBatch
     private SpriteBatch batch;
 
+    private Music musica;
+
     //Escenas
     private Stage escenaMenuCreditos;
 
-    public MenuCreditos(Juego j){
+    public MenuCreditos(Juego j,Music musicaFondo){
+
         this.juego=j;
+        musica= musicaFondo;
+
     }
 
     @Override
     public void show() {
         cargarTexturas();
         crearObjetos();
+        musica.play();
     }
 
     private void crearObjetos(){
@@ -103,7 +110,7 @@ public class MenuCreditos extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "me hicieron CLICK");
-                juego.setScreen(new MenuPrincipal(juego));
+                juego.setScreen(new MenuPrincipal(juego,musica));
             }
         });
 
@@ -135,7 +142,7 @@ public class MenuCreditos extends Pantalla {
         escenaMenuCreditos.draw();
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            juego.setScreen(new MenuPrincipal(juego));
+            juego.setScreen(new MenuPrincipal(juego,musica));
         }
     }
 
