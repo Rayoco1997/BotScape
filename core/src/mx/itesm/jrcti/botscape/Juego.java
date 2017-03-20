@@ -3,6 +3,7 @@ package mx.itesm.jrcti.botscape;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,16 +11,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Juego extends Game {
 	SpriteBatch batch;
 	Texture img;
+	private final AssetManager assetManager;
 
+	public Juego(){
+		assetManager = new AssetManager();
+	}
+
+	public AssetManager getAssetManager() {
+		return assetManager;
+	}
 
 	@Override
 	public void create () {
 		setScreen(new PantallaSplashTec(this));
 	}
-	//comentario
-	//COMENTARIO TOMMY
-	//Comentario Julio
-	//Cinthya was here
 
 	/*@Override
 	public void render () {
@@ -28,11 +33,11 @@ public class Juego extends Game {
 		batch.begin();
 		batch.draw(img, 0, 0);
 		batch.end();
-	}
+	}*/
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
-	}*/
+		super.dispose();
+		assetManager.clear();
+	}
 }

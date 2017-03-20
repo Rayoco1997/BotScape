@@ -2,6 +2,8 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -58,9 +60,15 @@ public class NivelTutorial extends Pantalla{
     private final int NUM_PLAT = 4;
     private Array<Image> arrPlat;
 
+    private Music musicaFondo;  // Sonidos largos
+
+    //Asset Manager
+    private AssetManager manager;
+
 
     public NivelTutorial(Juego j){
         this.juego=j;
+        manager = j.getAssetManager();
     }
 
     @Override
