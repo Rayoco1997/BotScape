@@ -79,7 +79,7 @@ public class PantallaSplashTec extends Pantalla {
             alpha -= cambioAlpha;
             cuenta++;
             if(cuenta>=30)
-                juego.setScreen(new PantallaCarga(juego,Pantallas.MENU));
+                juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musicaFondo,EstadoMusica.DENIDO));
         }
 
         batch.end();

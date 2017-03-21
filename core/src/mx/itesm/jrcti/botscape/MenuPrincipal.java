@@ -86,7 +86,7 @@ public class MenuPrincipal extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click");
-                musica.pause();
+                //musica.pause();
 
 
                 juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musica,EstadoMusica.REPRODUCCION));
@@ -97,7 +97,7 @@ public class MenuPrincipal extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click CREDITOS");
-                musica.pause();
+                //musica.pause();
                 juego.setScreen(new MenuCreditos(juego,musica));
             }
         });

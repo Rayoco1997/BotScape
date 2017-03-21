@@ -236,6 +236,7 @@ public class NivelTutorial extends Pantalla{
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     // Regresa al menú
+                    musicaFondo.stop();
                     juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musicaFondo, EstadoMusica.DENIDO));
                 }
             });
