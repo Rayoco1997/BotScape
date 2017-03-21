@@ -87,7 +87,9 @@ public class MenuPrincipal extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click");
                 musica.pause();
-                juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL));
+
+
+                juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musica,EstadoMusica.REPRODUCCION));
             }
         });
 

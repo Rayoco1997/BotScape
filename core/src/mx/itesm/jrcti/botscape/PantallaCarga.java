@@ -31,10 +31,13 @@ public class PantallaCarga extends Pantalla{
     private Texture texturaCargando;
 
     private SpriteBatch batch;
+    private EstadoMusica estadoMusica;
 
-    public PantallaCarga(Juego juego, Pantallas siguientePantalla){
+    public PantallaCarga(Juego juego, Pantallas siguientePantalla, Music musica, EstadoMusica estadoMusica){
         this.juego = juego;
         this.siguientePantalla = siguientePantalla;
+        musicaFondo= musica;
+        this.estadoMusica= estadoMusica;
         batch=new SpriteBatch();
     }
     @Override
@@ -66,7 +69,11 @@ public class PantallaCarga extends Pantalla{
 
     private void cargarMusica() {
 
-        musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/Avoiding Danger1.mp3"));
+        if(siguientePantalla.equals(Pantallas.NIVEL)){
+            musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/BringTheFoxhoundToMe.mp3"));
+        } else if (estadoMusica != EstadoMusica.REPRODUCCION){
+            musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/Avoiding Danger1.mp3"));
+        }
 
         musicaFondo.setLooping(true);
 
