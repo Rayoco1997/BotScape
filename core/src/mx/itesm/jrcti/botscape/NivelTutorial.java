@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Created by Cinthya on 15/02/2017.
@@ -70,6 +72,9 @@ public class NivelTutorial extends Pantalla{
     //Asset Manager
     private AssetManager manager;
 
+    private EstadoJuego estado = EstadoJuego.JUGANDO;
+    private EscenaPausa escenaPausa;
+
 
     public NivelTutorial(Juego j){
         super();
@@ -86,7 +91,7 @@ public class NivelTutorial extends Pantalla{
 
     private void cargarMapa() {
         mapa = manager.get("Mapas/tutorialv2.tmx");
-        musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/Bring the foxhound to me.mp3"));
+        musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/BringTheFoxhoundToMe.mp3"));
         musicaFondo.setLooping(true);
         musicaFondo.play();
 
@@ -131,7 +136,14 @@ public class NivelTutorial extends Pantalla{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "me hicieron CLICK");
-                juego.setScreen(new PantallaPausa(juego));
+                estado = estado==EstadoJuego.PAUSADO?EstadoJuego.JUGANDO:EstadoJuego.PAUSADO;
+                if (estado==EstadoJuego.PAUSADO) {
+                    // Activar escenaPausa y pasarle el control
+                    if (escenaPausa==null) {
+                        escenaPausa = new EscenaPausa(vista, batch);
+                    }
+                    Gdx.input.setInputProcessor(escenaPausa);
+                }
             }
         });
 
@@ -191,5 +203,55 @@ public class NivelTutorial extends Pantalla{
     @Override
     public void dispose() {
 
+    }
+
+    // La escena que se muestra cuando el juego se pausa
+    private class EscenaPausa extends Stage
+    {
+        public EscenaPausa(Viewport vista, SpriteBatch batch) {
+            super(vista, batch);
+            // Crear triángulo transparente
+            Pixmap pixmap = new Pixmap((int)(ANCHO), (int)(ALTO), Pixmap.Format.RGBA8888 );
+            pixmap.setColor( 0.2f, 0, 0.3f, 0.65f );
+            //pixmap.fillTriangle(0,pixmap.getHeight(),pixmap.getWidth(),pixmap.getHeight(),pixmap.getWidth()/2,0);
+            pixmap.fillRectangle(0,0,(int)ANCHO,(int)ALTO);
+            Texture texturaRectangulo = new Texture( pixmap );
+            pixmap.dispose();
+            Image imgRectangulo = new Image(texturaRectangulo);
+            //imgRectangulo.setPosition(0.15f*ANCHO, 0.1f*ALTO);
+            this.addActor(imgRectangulo);
+
+            // Salir
+            Texture texturaBtnSalir = manager.get("Botones/PausaButtonMenuPrin.png");
+            TextureRegionDrawable trdSalir = new TextureRegionDrawable(
+                    new TextureRegion(texturaBtnSalir));
+            ImageButton btnSalir = new ImageButton(trdSalir);
+            btnSalir.setPosition(ANCHO/2-btnSalir.getWidth()/2, ALTO*0.2f);
+            btnSalir.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // Regresa al menú
+                    juego.setScreen(new PantallaCarga(juego,Pantallas.MENU));
+                }
+            });
+            this.addActor(btnSalir);
+
+            // Continuar
+            Texture texturabtnReanudar = manager.get("Botones/PausaButtonReanudar.png");
+            TextureRegionDrawable trdReintentar = new TextureRegionDrawable(
+                    new TextureRegion(texturabtnReanudar));
+            ImageButton btnReanudar = new ImageButton(trdReintentar);
+            btnReanudar.setPosition(ANCHO/2-btnReanudar.getWidth()/2, ALTO*0.5f);
+            btnReanudar.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // Continuar el juego
+                    estado = EstadoJuego.JUGANDO;
+                    // Regresa el control a la pantalla
+                    Gdx.input.setInputProcessor(escenaNivelTutorial);
+                }
+            });
+            this.addActor(btnReanudar);
+        }
     }
 }

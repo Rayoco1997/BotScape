@@ -101,6 +101,9 @@ public class PantallaCarga extends Pantalla{
         manager.load("NivelUsar.png", Texture.class);
         manager.load("NivelPiso2.png", Texture.class);
         manager.load("Tutorial2.png", Texture.class);
+        manager.load("Botones/PausaButtonMenuPrin.png", Texture.class);
+        manager.load("Botones/PausaButtonReanudar.png", Texture.class);
+
     }
 
     private void cargarRecursosSelNivel(){
