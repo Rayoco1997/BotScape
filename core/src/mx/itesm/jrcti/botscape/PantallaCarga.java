@@ -80,6 +80,7 @@ public class PantallaCarga extends Pantalla{
     }
 
     private void cargarRecursosNivelTutorial(){
+        manager.load("Mapas/Tilesv2.png", Texture.class);
         manager.load("Mapas/tutorialv2.tmx", TiledMap.class);
         manager.load("NivelVIU.png", Texture.class);
         manager.load("NivelEnemigo.png", Texture.class);
