@@ -190,6 +190,9 @@ public class NivelTutorial extends Pantalla{
         plat1.mover(30,500,30,600);
         batch.end();
 
+        if (estado==EstadoJuego.PAUSADO) {
+            escenaPausa.draw();
+        }
     }
 
     @Override
@@ -212,13 +215,13 @@ public class NivelTutorial extends Pantalla{
     {
         public EscenaPausa(Viewport vista, SpriteBatch batch) {
             super(vista, batch);
-            // Crear triángulo transparente
+            /*// Crear triángulo transparente
             Pixmap pixmap = new Pixmap((int)(ANCHO), (int)(ALTO), Pixmap.Format.RGBA8888 );
             pixmap.setColor( 0.2f, 0, 0.3f, 0.65f );
             //pixmap.fillTriangle(0,pixmap.getHeight(),pixmap.getWidth(),pixmap.getHeight(),pixmap.getWidth()/2,0);
-            pixmap.fillRectangle(0,0,(int)ANCHO,(int)ALTO);
-            Texture texturaRectangulo = new Texture( pixmap );
-            pixmap.dispose();
+            pixmap.fillRectangle(0,0,(int)ANCHO,(int)ALTO);*/
+            Texture texturaRectangulo = manager.get("Fondos/PausaFondo.jpg");
+            //pixmap.dispose();
             Image imgRectangulo = new Image(texturaRectangulo);
             //imgRectangulo.setPosition(0.15f*ANCHO, 0.1f*ALTO);
             this.addActor(imgRectangulo);
