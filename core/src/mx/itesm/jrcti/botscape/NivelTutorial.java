@@ -74,6 +74,7 @@ public class NivelTutorial extends Pantalla{
 
     private EstadoJuego estado = EstadoJuego.JUGANDO;
     private EscenaPausa escenaPausa;
+    private EstadoJuego estadoJuego;
 
 
     public NivelTutorial(Juego j){
@@ -176,6 +177,7 @@ public class NivelTutorial extends Pantalla{
 
     @Override
     public void render(float delta) {
+
         borrarPantalla();
 
 
@@ -183,15 +185,23 @@ public class NivelTutorial extends Pantalla{
             juego.setScreen(new PantallaPausa(juego));
         }
 
-        renderarMapa.render();
+        /*renderarMapa.render();
         escenaNivelTutorial.draw();
         batch.begin();
         plat1.dibujar(batch);
         plat1.mover(30,500,30,600);
-        batch.end();
+        batch.end();*/
 
         if (estado==EstadoJuego.PAUSADO) {
+
             escenaPausa.draw();
+        }else{
+            renderarMapa.render();
+            escenaNivelTutorial.draw();
+            batch.begin();
+            plat1.dibujar(batch);
+            plat1.mover(30,500,30,600);
+            batch.end();
         }
     }
 
