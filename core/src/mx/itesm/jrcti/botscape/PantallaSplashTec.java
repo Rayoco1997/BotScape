@@ -28,7 +28,7 @@ public class PantallaSplashTec extends Pantalla {
 
     private Music musicaFondo;
 
-    private final int TIEMPO_DE_ESPERA = 3000;
+    private final int TIEMPO_DE_ESPERA = 2000;
     private SpriteBatch batch;
     private Stage escenaTec;
     private long tiempoDeEspera;
@@ -37,7 +37,7 @@ public class PantallaSplashTec extends Pantalla {
 
     private Sprite cambioDeFondo;
 
-    private float cambioAlpha = (float)1/180;
+    private float cambioAlpha = (float)1/30;
     private float alpha = (float) 1;
     private int cuenta = 0;
     private AssetManager manager;
@@ -76,9 +76,12 @@ public class PantallaSplashTec extends Pantalla {
         cambioDeFondo.draw(batch);
         cambioDeFondo.setAlpha(alpha);
         if((TimeUtils.millis() - tiempoDeEspera)> TIEMPO_DE_ESPERA){
-            juego.setScreen(new PantallaCarga(juego,Pantallas.MENU));
+            alpha -= cambioAlpha;
+            cuenta++;
+            if(cuenta>=30)
+                juego.setScreen(new PantallaCarga(juego,Pantallas.MENU));
         }
-        alpha -= cambioAlpha;
+
         batch.end();
     }
 
