@@ -12,8 +12,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Texto {
     private BitmapFont font;
 
-    public Texto(String archivo) {
-        font = new BitmapFont(Gdx.files.internal(archivo));
+    public Texto() {
+        font = new BitmapFont(Gdx.files.internal("Textos/fuenteCuadro.fnt"));
     }
 
     public void mostrarMensaje(SpriteBatch batch, String mensaje, float x, float y) {
