@@ -112,6 +112,7 @@ public class PantallaCarga extends Pantalla{
         manager.load("Botones/PausaButtonReanudar.png", Texture.class);
         manager.load("Botones/PausaButtonSeleccionarNivel.png", Texture.class);
         manager.load("Textos/PausaTextTittle.png",Texture.class);
+        manager.load("Personaje/Mini Vi.png",Texture.class);
 
     }
 

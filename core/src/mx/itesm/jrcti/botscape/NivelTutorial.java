@@ -76,6 +76,9 @@ public class NivelTutorial extends Pantalla{
     private EscenaPausa escenaPausa;
     private EstadoJuego estadoJuego;
 
+    private int contadorMiniVis=1;
+    private Texto texto= new Texto();
+
 
     public NivelTutorial(Juego j){
         super();
@@ -126,6 +129,12 @@ public class NivelTutorial extends Pantalla{
         }
 */
         plat1 = new Plataforma(texturaPlataforma, 3, 3, 30, 30, Plataforma.EstadoMovimiento.MOV_DERECHA);
+
+        //CREANDO ICONO DE MINIVI
+
+        Image iconoMiniVi= new Image(texturaMiniVI);
+        iconoMiniVi.setPosition(ANCHO-2*iconoMiniVi.getWidth()-20,ALTO-iconoMiniVi.getHeight()-20);
+        escenaNivelTutorial.addActor(iconoMiniVi);
 
         //Botón para ir al menu de pausa
         TextureRegionDrawable trdBtnPausa = new TextureRegionDrawable(new TextureRegion(texturaBtnPausa));
@@ -215,6 +224,7 @@ public class NivelTutorial extends Pantalla{
             batch.begin();
             plat1.dibujar(batch);
             plat1.mover(30,500,30,600);
+            texto.mostrarMensaje(batch,Integer.toString(contadorMiniVis),ANCHO-50,ALTO-50);
             batch.end();
         }
     }
@@ -287,6 +297,7 @@ public class NivelTutorial extends Pantalla{
                     new TextureRegion(texturabtnReanudar));
             ImageButton btnReanudar = new ImageButton(trdReintentar);
             btnReanudar.setPosition(ANCHO/2-btnReanudar.getWidth()/2+66/*100*/,ALTO/2-50/*50*/);
+            contadorMiniVis++;
             btnReanudar.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
