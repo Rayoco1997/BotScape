@@ -110,6 +110,8 @@ public class PantallaCarga extends Pantalla{
         manager.load("Tutorial2.png", Texture.class);
         manager.load("Botones/PausaButtonMenuPrin.png", Texture.class);
         manager.load("Botones/PausaButtonReanudar.png", Texture.class);
+        manager.load("Botones/PausaButtonSeleccionarNivel.png", Texture.class);
+        manager.load("Textos/PausaTextTittle.png",Texture.class);
 
     }
 

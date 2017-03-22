@@ -182,7 +182,21 @@ public class NivelTutorial extends Pantalla{
 
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            juego.setScreen(new PantallaPausa(juego));
+            estado = estado==EstadoJuego.PAUSADO?EstadoJuego.JUGANDO:EstadoJuego.PAUSADO;
+            if (estado==EstadoJuego.PAUSADO) {
+                // Activar escenaPausa y pasarle el control
+                if (escenaPausa==null) {
+                    escenaPausa = new EscenaPausa(vista, batch);
+                }
+                Gdx.input.setInputProcessor(escenaPausa);
+            }else{
+                // Continuar el juego
+                estado = EstadoJuego.JUGANDO;
+                // Regresa el control a la pantalla
+                Gdx.input.setInputProcessor(escenaNivelTutorial);
+            }
+            //Gdx.input.setInputProcessor(escenaNivelTutorial);
+
         }
 
         /*renderarMapa.render();
@@ -236,12 +250,27 @@ public class NivelTutorial extends Pantalla{
             //imgRectangulo.setPosition(0.15f*ANCHO, 0.1f*ALTO);
             this.addActor(imgRectangulo);
 
+            //SELECCION DE NIVEL
+            Texture texturaBtnSelecNivel= manager.get("Botones/PausaButtonSeleccionarNivel.png");
+            TextureRegionDrawable trdSeleccion= new TextureRegionDrawable(new TextureRegion(texturaBtnSelecNivel));
+            ImageButton btnSeleccionar= new ImageButton(trdSeleccion);
+            btnSeleccionar.setPosition(ANCHO/2-btnSeleccionar.getWidth()/2+66/*100*/,1*ALTO/3-80/*40*/);
+            btnSeleccionar.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // Regresa a la seleccion de nivel
+                    musicaFondo.stop();
+                    juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musicaFondo, EstadoMusica.DENIDO));
+                }
+            });
+            this.addActor(btnSeleccionar);
+
             // Salir
             Texture texturaBtnSalir = manager.get("Botones/PausaButtonMenuPrin.png");
             TextureRegionDrawable trdSalir = new TextureRegionDrawable(
                     new TextureRegion(texturaBtnSalir));
             ImageButton btnSalir = new ImageButton(trdSalir);
-            btnSalir.setPosition(ANCHO/2-btnSalir.getWidth()/2, ALTO*0.2f);
+            btnSalir.setPosition(ANCHO-btnSalir.getWidth()-10/*20*/,10/*20*/);
             btnSalir.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -257,7 +286,7 @@ public class NivelTutorial extends Pantalla{
             TextureRegionDrawable trdReintentar = new TextureRegionDrawable(
                     new TextureRegion(texturabtnReanudar));
             ImageButton btnReanudar = new ImageButton(trdReintentar);
-            btnReanudar.setPosition(ANCHO/2-btnReanudar.getWidth()/2, ALTO*0.5f);
+            btnReanudar.setPosition(ANCHO/2-btnReanudar.getWidth()/2+66/*100*/,ALTO/2-50/*50*/);
             btnReanudar.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -268,6 +297,12 @@ public class NivelTutorial extends Pantalla{
                 }
             });
             this.addActor(btnReanudar);
+
+            //TEXTO DE PAUSA
+            Texture texturaTxtPausa = manager.get("Textos/PausaTextTittle.png");
+            Image imgTxtPausa= new Image(texturaTxtPausa);
+            imgTxtPausa.setPosition(ANCHO/2-imgTxtPausa.getWidth()/2+66/*100*/,5*ALTO/6);
+            this.addActor(imgTxtPausa);
         }
     }
 }
