@@ -31,14 +31,20 @@ public class PantallaConfiguracion extends Pantalla {
 
     private Music musica;
 
-    public PantallaConfiguracion(Juego juego){
+    public PantallaConfiguracion(Juego juego, Music musica, EstadoMusica estadoMusicaGeneral){
+
         this.juego= juego;
+        this.musica= musica;
+        this.estadoMusicaGeneral= estadoMusicaGeneral;
     }
 
     @Override
     public void show() {
         cargarTexturas();
         crearObjetos();
+        if(estadoMusicaGeneral!= EstadoMusica.APAGADO) {
+            musica.play();
+        }
 
     }
 
@@ -76,13 +82,24 @@ public class PantallaConfiguracion extends Pantalla {
         buttonRegresar.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
-                juego.setScreen(new MenuPrincipal(juego,musica));
+                juego.setScreen(new MenuPrincipal(juego,musica, estadoMusicaGeneral));
             }
         });
 
         buttonMusica.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
+                if(estadoMusicaGeneral==EstadoMusica.APAGADO){
+                    estadoMusicaGeneral= EstadoMusica.REPRODUCCION;
+                    Gdx.app.log("Aviso", estadoMusicaGeneral.toString());
+                    musica=Gdx.audio.newMusic(Gdx.files.internal("Sonidos/Avoiding Danger1.mp3"));
+
+                    musica.play();
+                }else{
+                    estadoMusicaGeneral= EstadoMusica.APAGADO;
+                    Gdx.app.log("Aviso", estadoMusicaGeneral.toString());
+                    musica.stop();
+                }
                 //AQUI VA EL CODIO PARA DESCATIVAR LA MUSICA
             }
         });
@@ -115,7 +132,7 @@ public class PantallaConfiguracion extends Pantalla {
         escenaPantallaConfig.draw();
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            juego.setScreen(new MenuPrincipal(juego,musica));
+            juego.setScreen(new MenuPrincipal(juego,musica,estadoMusicaGeneral));
         }
 
 

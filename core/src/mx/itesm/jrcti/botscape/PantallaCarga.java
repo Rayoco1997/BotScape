@@ -33,9 +33,10 @@ public class PantallaCarga extends Pantalla{
     private SpriteBatch batch;
     private EstadoMusica estadoMusica;
 
-    public PantallaCarga(Juego juego, Pantallas siguientePantalla, Music musica, EstadoMusica estadoMusica){
+    public PantallaCarga(Juego juego, Pantallas siguientePantalla, Music musica, EstadoMusica estadoMusica, EstadoMusica estadoMusicaGeneral){
         this.juego = juego;
         this.siguientePantalla = siguientePantalla;
+        this.estadoMusicaGeneral= estadoMusicaGeneral;
         musicaFondo= musica;
         this.estadoMusica= estadoMusica;
         batch=new SpriteBatch();
@@ -46,7 +47,9 @@ public class PantallaCarga extends Pantalla{
         spriteCargando = new Sprite(texturaCargando);
         spriteCargando.setPosition(ANCHO/2-spriteCargando.getWidth()/2,ALTO/2-spriteCargando.getHeight()/2);
         cargarRecursosSigPantalla();
-        cargarMusica();
+        if(!estadoMusicaGeneral.equals(EstadoMusica.APAGADO)) {
+            cargarMusica();
+        }
         //texto = new Texto("fuentes/fuente.fnt");
     }
 
@@ -84,6 +87,7 @@ public class PantallaCarga extends Pantalla{
         manager.load("Botones/PrincipalBtnPlay.png",Texture.class);
         manager.load("Botones/PrincipalBtnCredits.png",Texture.class);
         manager.load("Textos/PrincipalTitle.png",Texture.class);
+        manager.load("NivelPausa.png", Texture.class);
     }
 
     private void cargarRecursosNivelTutorial(){
@@ -122,6 +126,8 @@ public class PantallaCarga extends Pantalla{
         manager.load("Botones/SeleccionNivelBtnLocked.png",Texture.class);
         manager.load("Botones/SeleccionNivelBtnLocked.png",Texture.class);
         manager.load("Botones/SeleccionNivelBtnBack.png",Texture.class);
+        manager.load("Botones/PerdisteBtnReintentar.png", Texture.class);
+        manager.load("Textos/Perdiste.png",Texture.class);
     }
 
     @Override
@@ -146,13 +152,13 @@ public class PantallaCarga extends Pantalla{
         if (manager.update()) { // Terminó?
             switch (siguientePantalla) {
                 case MENU:
-                    juego.setScreen(new MenuPrincipal(juego, musicaFondo));   // 100% de carga
+                    juego.setScreen(new MenuPrincipal(juego, musicaFondo,estadoMusicaGeneral));   // 100% de carga
                     break;
                 case NIVEL:
-                    juego.setScreen(new NivelTutorial(juego));   // 100% de carga
+                    juego.setScreen(new NivelTutorial(juego,estadoMusicaGeneral));   // 100% de carga
                     break;
                 case SELECCION_NIVEL:
-                    juego.setScreen(new MenuSeleccionNivel(juego, musicaFondo));
+                    juego.setScreen(new MenuSeleccionNivel(juego, musicaFondo,estadoMusicaGeneral));
                     break;
             }
         }

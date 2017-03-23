@@ -6,4 +6,5 @@ package mx.itesm.jrcti.botscape;
 public enum EstadoMusica {
     REPRODUCCION,
     DENIDO,
+    APAGADO,
 }

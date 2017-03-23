@@ -18,6 +18,7 @@ public abstract class Pantalla implements Screen {
     public static final float ANCHO = 1280;
     public static final float ALTO =  720;
     protected Juego juego;
+    public EstadoMusica estadoMusicaGeneral= EstadoMusica.REPRODUCCION;
 
     protected OrthographicCamera camara;
     protected Viewport vista;
