@@ -77,6 +77,7 @@ public class NivelTutorial extends Pantalla{
     private EstadoJuego estado = EstadoJuego.JUGANDO;
     private EscenaPausa escenaPausa;
     private EscenaPerdiste escenaPerdiste;
+    private EscenaGanaste escenaGanaste;
     private EstadoJuego estadoJuego;
 
     private int contadorMiniVis=1;
@@ -229,6 +230,17 @@ public class NivelTutorial extends Pantalla{
     public void render(float delta) {
         borrarPantalla();
 
+        if (vidasVIU==4){
+            estado= EstadoJuego.GANADO;
+            if(escenaGanaste==null){
+                escenaGanaste= new EscenaGanaste(vista, batch);
+            }
+            Gdx.input.setInputProcessor(escenaGanaste);
+        }
+        if(estado== EstadoJuego.GANADO){
+            escenaGanaste.draw();
+        }
+
         if(vidasVIU==0){
             estado= EstadoJuego.PIERDE;
             if(escenaPerdiste==null) {
@@ -245,14 +257,22 @@ public class NivelTutorial extends Pantalla{
 
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
-            estado = estado == EstadoJuego.PAUSADO ? EstadoJuego.JUGANDO : EstadoJuego.PAUSADO;
+            //estado = estado == EstadoJuego.JUGANDO ? EstadoJuego.PAUSADO: EstadoJuego.JUGANDO;
+            if(estado== EstadoJuego.JUGANDO){
+                estado= EstadoJuego.PAUSADO;
+            }
             if (estado == EstadoJuego.PAUSADO) {
                 // Activar escenaPausa y pasarle el control
                 if (escenaPausa == null) {
                     escenaPausa = new EscenaPausa(vista, batch);
                 }
                 Gdx.input.setInputProcessor(escenaPausa);
-            } else {
+            } else if(estado== EstadoJuego.PIERDE||estado== EstadoJuego.GANADO){
+                //ESTADO CUANDO EL JUGADOR HA PERDIDO O GANANDO
+                musicaFondo.stop();
+                juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral));
+
+            }else {
                 // Continuar el juego
                 estado = EstadoJuego.JUGANDO;
                 // Regresa el control a la pantalla
@@ -386,15 +406,8 @@ public class NivelTutorial extends Pantalla{
     private class EscenaPerdiste extends Stage {
         public EscenaPerdiste(Viewport vista, SpriteBatch batch) {
             super(vista, batch);
-            /*// Crear triángulo transparente
-            Pixmap pixmap = new Pixmap((int)(ANCHO), (int)(ALTO), Pixmap.Format.RGBA8888 );
-            pixmap.setColor( 0.2f, 0, 0.3f, 0.65f );
-            //pixmap.fillTriangle(0,pixmap.getHeight(),pixmap.getWidth(),pixmap.getHeight(),pixmap.getWidth()/2,0);
-            pixmap.fillRectangle(0,0,(int)ANCHO,(int)ALTO);*/
             Texture texturaRectangulo = manager.get("Fondos/PausaFondo.jpg");
-            //pixmap.dispose();
             Image imgRectangulo = new Image(texturaRectangulo);
-            //imgRectangulo.setPosition(0.15f*ANCHO, 0.1f*ALTO);
             this.addActor(imgRectangulo);
 
             //SELECCION DE NIVEL
@@ -451,12 +464,64 @@ public class NivelTutorial extends Pantalla{
             });
             this.addActor(btnReanudar);
 
-            //TEXTO DE PAUSA
+            //TEXTO DE QUE PERDIO
             Texture texturaTxtPausa = manager.get("Textos/Perdiste.png");
             Image imgTxtPausa = new Image(texturaTxtPausa);
             imgTxtPausa.setPosition(ANCHO / 2 - imgTxtPausa.getWidth() / 2 + 66/*100*/, 5 * ALTO / 6-100);
             this.addActor(imgTxtPausa);
 
         }
+    }
+
+    private class EscenaGanaste extends Stage{
+        public EscenaGanaste(Viewport vista, SpriteBatch batch){
+            super(vista, batch);
+            Texture texturaRectangulo = manager.get("Fondos/PausaFondo.jpg");
+            Image imgRectangulo = new Image(texturaRectangulo);
+            this.addActor(imgRectangulo);
+
+            //SELECCION DE NIVEL
+            Texture texturaBtnSelecNivel = manager.get("Botones/PausaButtonSeleccionarNivel.png");
+            TextureRegionDrawable trdSeleccion = new TextureRegionDrawable(new TextureRegion(texturaBtnSelecNivel));
+            ImageButton btnSeleccionar = new ImageButton(trdSeleccion);
+            btnSeleccionar.setPosition(ANCHO / 2 - btnSeleccionar.getWidth() / 2 + 66/*100*/, ALTO/2);
+            btnSeleccionar.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.app.log("clicked", "CLICK SELECCION NIVEL PERDISTE");
+                    // Regresa a la seleccion de nivel
+                    musicaFondo.stop();
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                }
+            });
+            this.addActor(btnSeleccionar);
+
+            // Salir
+            Texture texturaBtnSalir = manager.get("Botones/PausaButtonMenuPrin.png");
+            TextureRegionDrawable trdSalir = new TextureRegionDrawable(
+                    new TextureRegion(texturaBtnSalir));
+            ImageButton btnSalir = new ImageButton(trdSalir);
+            btnSalir.setPosition(ANCHO - btnSalir.getWidth() - 10/*20*/, 10/*20*/);
+            btnSalir.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.app.log("clicked", "CLICK SALIR PERDISTE");
+                    // Regresa al menú
+                    musicaFondo.stop();
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                }
+            });
+            this.addActor(btnSalir);
+
+            //TEXTO DE QUE GANO
+            Texture texturaTxtPausa = manager.get("Textos/Perdiste.png");
+            Image imgTxtPausa = new Image(texturaTxtPausa);
+            imgTxtPausa.setPosition(ANCHO / 2 - imgTxtPausa.getWidth() / 2 + 66/*100*/, 5 * ALTO / 6-100);
+            this.addActor(imgTxtPausa);
+
+
+
+        }
+
     }
 }
