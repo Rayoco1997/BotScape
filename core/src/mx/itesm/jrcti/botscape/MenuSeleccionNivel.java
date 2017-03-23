@@ -43,9 +43,10 @@ public class MenuSeleccionNivel extends Pantalla {
 
     private AssetManager manager;
 
-    public MenuSeleccionNivel(Juego juego,Music musicaFondo){
+    public MenuSeleccionNivel(Juego juego,Music musicaFondo, EstadoMusica estadoMusicaGeneral){
         super();
         this.juego=juego;
+        this.estadoMusicaGeneral= estadoMusicaGeneral;
         musica= musicaFondo;
         manager = juego.getAssetManager();
     }
@@ -54,7 +55,9 @@ public class MenuSeleccionNivel extends Pantalla {
     public void show() {
         cargarTexturas();
         crearObjetos();
-        musica.play();
+        if(estadoMusicaGeneral!= EstadoMusica.APAGADO) {
+            musica.play();
+        }
 
     }
 
@@ -92,7 +95,7 @@ public class MenuSeleccionNivel extends Pantalla {
                 Gdx.app.log("clicked","Me hicieron click lvl1");
                 musica.stop();
                 //musica = Gdx.audio.newMusic(Gdx.files.internal(musicalvl1));
-                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musica, EstadoMusica.REPRODUCCION));
+                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musica, EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
             }
         });
 
@@ -100,7 +103,7 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click lvl2");
-                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musica, EstadoMusica.REPRODUCCION));
+                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musica, EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
             }
         });
 
@@ -108,7 +111,7 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click lvl3");
-                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musica, EstadoMusica.REPRODUCCION));
+                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musica, EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
             }
         });
 
@@ -117,7 +120,7 @@ public class MenuSeleccionNivel extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click back");
                 musica.pause();
-                juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musica, EstadoMusica.REPRODUCCION));
+                juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musica, EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
             }
         });
 
@@ -144,7 +147,7 @@ public class MenuSeleccionNivel extends Pantalla {
         //Teclado
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
             musica.pause();
-            juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musica,EstadoMusica.DENIDO));
+            juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musica,EstadoMusica.DENIDO,estadoMusicaGeneral));
         }
     }
 

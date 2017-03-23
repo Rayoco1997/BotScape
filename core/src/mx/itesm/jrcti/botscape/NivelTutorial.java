@@ -80,9 +80,10 @@ public class NivelTutorial extends Pantalla{
     private Texto texto= new Texto();
 
 
-    public NivelTutorial(Juego j){
+    public NivelTutorial(Juego j,EstadoMusica estadoMusicaGeneral){
         super();
         this.juego=j;
+        this.estadoMusicaGeneral= estadoMusicaGeneral;
         manager = j.getAssetManager();
     }
 
@@ -97,7 +98,10 @@ public class NivelTutorial extends Pantalla{
         mapa = manager.get("Mapas/tutorialv2.tmx");
         musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/BringTheFoxhoundToMe.mp3"));
         musicaFondo.setLooping(true);
-        musicaFondo.play();
+        if(estadoMusicaGeneral!= EstadoMusica.APAGADO) {
+            musicaFondo.play();
+        }
+        //musicaFondo.play();
 
         batch = new SpriteBatch();
         renderarMapa = new OrthogonalTiledMapRenderer(mapa, batch);
@@ -270,7 +274,7 @@ public class NivelTutorial extends Pantalla{
                 public void clicked(InputEvent event, float x, float y) {
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
-                    juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musicaFondo, EstadoMusica.DENIDO));
+                    juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral));
                 }
             });
             this.addActor(btnSeleccionar);
@@ -286,7 +290,7 @@ public class NivelTutorial extends Pantalla{
                 public void clicked(InputEvent event, float x, float y) {
                     // Regresa al menú
                     musicaFondo.stop();
-                    juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musicaFondo, EstadoMusica.DENIDO));
+                    juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral));
                 }
             });
             this.addActor(btnSalir);
