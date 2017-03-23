@@ -79,6 +79,8 @@ public class NivelTutorial extends Pantalla{
     private int contadorMiniVis=1;
     private Texto texto= new Texto();
 
+    private int vidasVIU=3;
+
 
     public NivelTutorial(Juego j,EstadoMusica estadoMusicaGeneral){
         super();
@@ -228,9 +230,15 @@ public class NivelTutorial extends Pantalla{
             batch.begin();
             plat1.dibujar(batch);
             plat1.mover(30,500,30,600);
+            //para mostrar el puntaje de mini vis
             texto.mostrarMensaje(batch,Integer.toString(contadorMiniVis),ANCHO-50,ALTO-50);
+            //mostrar vidas restantes
+            mostrarVidas();
             batch.end();
         }
+    }
+
+    private void mostrarVidas() {
     }
 
     @Override

@@ -92,6 +92,7 @@ public class PantallaConfiguracion extends Pantalla {
                 if(estadoMusicaGeneral==EstadoMusica.APAGADO){
                     estadoMusicaGeneral= EstadoMusica.REPRODUCCION;
                     Gdx.app.log("Aviso", estadoMusicaGeneral.toString());
+                    musica=Gdx.audio.newMusic(Gdx.files.internal("Sonidos/Avoiding Danger1.mp3"));
 
                     musica.play();
                 }else{
