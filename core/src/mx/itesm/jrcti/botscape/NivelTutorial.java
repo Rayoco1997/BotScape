@@ -79,10 +79,13 @@ public class NivelTutorial extends Pantalla{
     private int contadorMiniVis=1;
     private Texto texto= new Texto();
 
+    private int vidasVIU=3;
 
-    public NivelTutorial(Juego j){
+
+    public NivelTutorial(Juego j,EstadoMusica estadoMusicaGeneral){
         super();
         this.juego=j;
+        this.estadoMusicaGeneral= estadoMusicaGeneral;
         manager = j.getAssetManager();
     }
 
@@ -97,7 +100,10 @@ public class NivelTutorial extends Pantalla{
         mapa = manager.get("Mapas/tutorialv2.tmx");
         musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/BringTheFoxhoundToMe.mp3"));
         musicaFondo.setLooping(true);
-        musicaFondo.play();
+        if(estadoMusicaGeneral!= EstadoMusica.APAGADO) {
+            musicaFondo.play();
+        }
+        //musicaFondo.play();
 
         batch = new SpriteBatch();
         renderarMapa = new OrthogonalTiledMapRenderer(mapa, batch);
@@ -224,9 +230,15 @@ public class NivelTutorial extends Pantalla{
             batch.begin();
             plat1.dibujar(batch);
             plat1.mover(30,500,30,600);
+            //para mostrar el puntaje de mini vis
             texto.mostrarMensaje(batch,Integer.toString(contadorMiniVis),ANCHO-50,ALTO-50);
+            //mostrar vidas restantes
+            mostrarVidas();
             batch.end();
         }
+    }
+
+    private void mostrarVidas() {
     }
 
     @Override
@@ -270,7 +282,7 @@ public class NivelTutorial extends Pantalla{
                 public void clicked(InputEvent event, float x, float y) {
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
-                    juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musicaFondo, EstadoMusica.DENIDO));
+                    juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral));
                 }
             });
             this.addActor(btnSeleccionar);
@@ -286,7 +298,7 @@ public class NivelTutorial extends Pantalla{
                 public void clicked(InputEvent event, float x, float y) {
                     // Regresa al menú
                     musicaFondo.stop();
-                    juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musicaFondo, EstadoMusica.DENIDO));
+                    juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral));
                 }
             });
             this.addActor(btnSalir);
