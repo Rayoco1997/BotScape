@@ -126,6 +126,8 @@ public class PantallaCarga extends Pantalla{
         manager.load("Botones/SeleccionNivelBtnLocked.png",Texture.class);
         manager.load("Botones/SeleccionNivelBtnLocked.png",Texture.class);
         manager.load("Botones/SeleccionNivelBtnBack.png",Texture.class);
+        manager.load("Botones/PerdisteBtnReintentar.png", Texture.class);
+        manager.load("Textos/Perdiste.png",Texture.class);
     }
 
     @Override
