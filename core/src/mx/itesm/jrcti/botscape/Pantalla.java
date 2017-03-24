@@ -17,6 +17,7 @@ public abstract class Pantalla implements Screen {
 
     public static final float ANCHO = 1280;
     public static final float ALTO =  720;
+
     protected Juego juego;
     public EstadoMusica estadoMusicaGeneral= EstadoMusica.REPRODUCCION;
 
@@ -24,7 +25,7 @@ public abstract class Pantalla implements Screen {
     protected Viewport vista;
 
     public Pantalla(){
-        camara = new OrthographicCamera(ANCHO, ALTO);
+        camara = new OrthographicCamera(ANCHO/100f, ALTO/100f);
         camara.position.set(ANCHO/2, ALTO/2,0);
         camara.update();
         vista = new StretchViewport(ANCHO, ALTO, camara);

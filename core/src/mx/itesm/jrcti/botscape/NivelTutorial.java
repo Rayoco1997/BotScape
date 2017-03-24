@@ -445,6 +445,8 @@ public class NivelTutorial extends Pantalla {
     @Override
     public void render(float delta) {
         borrarPantalla();
+        actualizarCamara();
+
         batch.setProjectionMatrix(camara.combined);
 
 
@@ -501,16 +503,18 @@ public class NivelTutorial extends Pantalla {
             escenaPausa.draw();
         } else if (estado== EstadoJuego.JUGANDO){
 
-            world.step(delta,6,2);
+
             robot.actualizar(mapa);
 
-            actualizarCamara();
+
 
             renderarMapa.setView(camara);
             renderarMapa.render();
             //mostrar vidas restantes
             mostrarVidas(vidasVIU);
             escenaVidasVIU.draw();
+
+
 
             System.out.println(robot.getHabilidad());
             if(robot.getHabilidad()==Robot.Habilidad.INVULNERABLE){
@@ -534,8 +538,8 @@ public class NivelTutorial extends Pantalla {
 
 
             batch.begin();
-            enemigo.dibujar(batch);
-            enemigo.mover(600,900);
+            //enemigo.dibujar(batch);
+            //enemigo.mover(600,900);
             plat1.dibujar(batch);
             plat1.mover(30, 900, 30, 600);
 
@@ -554,7 +558,7 @@ public class NivelTutorial extends Pantalla {
 
             //Debugging
             debugRenderer.render(world, debugMatrix);
-
+            world.step(delta,6,2);
         }
 
     }
