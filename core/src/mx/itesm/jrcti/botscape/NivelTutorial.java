@@ -151,7 +151,7 @@ public class NivelTutorial extends Pantalla {
                 if (estado==EstadoJuego.PAUSADO) {
                     // Activar escenaPausa y pasarle el control
                     if (escenaPausa==null) {
-                        escenaPausa = new EscenaPausa(vista, batch);
+                        escenaPausa = new EscenaPausa(vistaHUD, batch);
                     }
                     Gdx.input.setInputProcessor(escenaPausa);
                 }
@@ -375,7 +375,7 @@ public class NivelTutorial extends Pantalla {
         if (vidasVIU==4){
             estado= EstadoJuego.GANADO;
             if(escenaGanaste==null){
-                escenaGanaste= new EscenaGanaste(vista, batch);
+                escenaGanaste= new EscenaGanaste(vistaHUD, batch);
             }
             Gdx.input.setInputProcessor(escenaGanaste);
         }
@@ -386,7 +386,7 @@ public class NivelTutorial extends Pantalla {
         if(vidasVIU==0){
             estado= EstadoJuego.PIERDE;
             if(escenaPerdiste==null) {
-                escenaPerdiste = new EscenaPerdiste(vista, batch);
+                escenaPerdiste = new EscenaPerdiste(vistaHUD, batch);
             }
             Gdx.input.setInputProcessor(escenaPerdiste);
 
@@ -403,7 +403,7 @@ public class NivelTutorial extends Pantalla {
             if (estado == EstadoJuego.PAUSADO) {
                 // Activar escenaPausa y pasarle el control
                 if (escenaPausa == null) {
-                    escenaPausa = new EscenaPausa(vista, batch);
+                    escenaPausa = new EscenaPausa(vistaHUD, batch);
                 }
                 Gdx.input.setInputProcessor(escenaPausa);
             } else if(estado== EstadoJuego.PIERDE||estado== EstadoJuego.GANADO){
