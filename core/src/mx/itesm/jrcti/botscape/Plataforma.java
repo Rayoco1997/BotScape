@@ -32,9 +32,7 @@ public class Plataforma extends Objeto implements MovimientoAutomatico {
             case MOV_DERECHA:
                 if (sprite.getX()+sprite.getWidth() >= xMax) {
                     estadoMovimiento = EstadoMovimiento.MOV_ARRIBA;
-                    System.out.println(this.getCentroX());
                 } else {
-                    System.out.println(sprite.getX());
                     sprite.setPosition(sprite.getX() + velX, sprite.getY());
                 }
                 break;

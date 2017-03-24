@@ -87,13 +87,13 @@ public class PantallaCarga extends Pantalla{
         manager.load("Botones/PrincipalBtnPlay.png",Texture.class);
         manager.load("Botones/PrincipalBtnCredits.png",Texture.class);
         manager.load("Textos/PrincipalTitle.png",Texture.class);
-        manager.load("NivelPausa.png", Texture.class);
+        manager.load("Botones/OptionsButtonMenuPrin.png", Texture.class);
     }
 
     private void cargarRecursosNivelTutorial(){
         manager.load("Mapas/Tilesv2.png", Texture.class);
         manager.load("Mapas/tutorialv2.tmx", TiledMap.class);
-        manager.load("NivelVIU.png", Texture.class);
+        manager.load("Personaje/VIUWalk_Cycle.png", Texture.class);
         manager.load("NivelEnemigo.png", Texture.class);
         manager.load("NivelPlataforma.png", Texture.class);
         manager.load("NivelBoton.png", Texture.class);

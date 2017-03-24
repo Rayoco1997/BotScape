@@ -9,6 +9,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -26,12 +36,14 @@ import java.util.ArrayList;
 
 public class NivelTutorial extends Pantalla{
 
+    private World world;
     private OrthogonalTiledMapRenderer renderarMapa;
     private SpriteBatch batch;
     private TiledMap mapa;
+    public static final float PIXELS_TO_METERS=100f;
 
     //Texturas
-    private Texture texturaVIU;
+    private Texture VIUWalk_Cycle;
     private Texture texturaEnemigo;
     private Texture texturaPlataforma;
     private Texture texturaBoton;
@@ -87,6 +99,13 @@ public class NivelTutorial extends Pantalla{
     private ArrayList<Image> listaVidasVIU = new ArrayList<Image>();
     int altoVidasVIU;
 
+    BodyDef bodyDefPiso;
+    Body bodyEdge;
+    FixtureDef fixPiso;
+    EdgeShape edgeShape;
+
+    FixtureDef fix;
+    Robot robot;
 
     public NivelTutorial(Juego j,EstadoMusica estadoMusicaGeneral){
         super();
@@ -100,6 +119,40 @@ public class NivelTutorial extends Pantalla{
         cargarMapa();
         cargarTexturas();
         crearObjetos();
+        crearCuerpos();
+    }
+
+    private void crearCuerpos() {
+        crearRobot();
+        crearPiso();
+    }
+
+    private void crearPiso() {
+        bodyDefPiso = new BodyDef();
+        bodyDefPiso.type = BodyDef.BodyType.StaticBody;
+        float x1= -100f/PIXELS_TO_METERS;
+        float y1=128f/PIXELS_TO_METERS;
+        float x2= 4000/PIXELS_TO_METERS;
+        float y2=128f/PIXELS_TO_METERS;
+        bodyDefPiso.position.set(0,0);
+        fixPiso = new FixtureDef();
+        edgeShape = new EdgeShape();
+        edgeShape.set(x1,y1,x2,y2);
+        fixPiso.shape=edgeShape;
+        fixPiso.friction=.7f;
+        bodyEdge= world.createBody(bodyDefPiso);
+        bodyEdge.createFixture(fixPiso);
+        bodyEdge.setUserData(plat1);
+        edgeShape.dispose();
+
+    }
+
+    private void crearRobot() {
+        fix = new FixtureDef();
+        fix.density=.1f;
+        fix.restitution=0.1f;
+        fix.friction=.3f;
+        robot = new Robot(VIUWalk_Cycle,100,400,world, BodyDef.BodyType.DynamicBody,fix);
     }
 
     private void cargarMapa() {
@@ -117,30 +170,11 @@ public class NivelTutorial extends Pantalla{
     }
 
     private void crearObjetos(){
-
+        world=new World(new Vector2(0,-5),true);
+        createCollisionListener();
         escenaNivelTutorial = new Stage(vista,batch);
         escenaVidasVIU= new Stage(vista,batch);
-        /*
-        Image imgFondo = new Image(texturaFondoTutorial);
-        escenaNivelTutorial.addActor(imgFondo);
 
-
-        arrPiso = new Array<Image>(NUM_PISO);
-        for(int x=0; x<=NUM_PISO; x++){
-            float posX = x * ANCHO/7-texturaPiso.getWidth()/2;
-            Image imgPiso = new Image(texturaPiso);
-            imgPiso.setPosition(posX,10);
-            escenaNivelTutorial.addActor(imgPiso);
-        }
-
-        arrPiso = new Array<Image>(NUM_PISO);
-        for(int x=0; x<NUM_PISO_VERDE; x++){
-            float posX = x * ANCHO/7-texturaPiso.getWidth()/2;
-            Image imgPisoVerde = new Image(texturaPisoVerde);
-            imgPisoVerde.setPosition(posX+1700,700);
-            escenaNivelTutorial.addActor(imgPisoVerde);
-        }
-*/
         plat1 = new Plataforma(texturaPlataforma, 3, 3, 30, 30, Plataforma.EstadoMovimiento.MOV_DERECHA);
 
         //CREANDO ICONO DE MINIVI
@@ -202,8 +236,37 @@ public class NivelTutorial extends Pantalla{
         Gdx.input.setCatchBackKey(true);
     }
 
+    private void createCollisionListener() {
+        ContactListener conList = new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+                    contact.getFixtureB().getBody().getUserData() instanceof Plataforma)||
+                        (contact.getFixtureA().getBody().getUserData() instanceof Plataforma &&
+                        contact.getFixtureB().getBody().getUserData() instanceof Robot)){
+                    System.out.println("robot.setEstadoSalto(Robot.EstadoSalto.EN_PISO);");
+                }
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
+            }
+        };
+    }
+
     private void cargarTexturas(){
-        texturaVIU = manager.get("NivelVIU.png");
+        VIUWalk_Cycle = manager.get("Personaje/VIUWalk_Cycle.png");
         texturaEnemigo = manager.get("NivelEnemigo.png");
         texturaPlataforma = manager.get("NivelPlataforma.png");
         texturaBoton = manager.get("NivelBoton.png");
@@ -229,8 +292,9 @@ public class NivelTutorial extends Pantalla{
     @Override
     public void render(float delta) {
         borrarPantalla();
-
-        if (vidasVIU==4){
+        world.step(delta,6,2);
+        robot.actualizar(mapa);
+        if (vidasVIU==2){
             estado= EstadoJuego.GANADO;
             if(escenaGanaste==null){
                 escenaGanaste= new EscenaGanaste(vista, batch);
@@ -252,9 +316,6 @@ public class NivelTutorial extends Pantalla{
         if(estado==EstadoJuego.PIERDE){
             escenaPerdiste.draw();
         }
-
-        //borrarPantalla();
-
 
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             //estado = estado == EstadoJuego.JUGANDO ? EstadoJuego.PAUSADO: EstadoJuego.JUGANDO;
@@ -278,16 +339,8 @@ public class NivelTutorial extends Pantalla{
                 // Regresa el control a la pantalla
                 Gdx.input.setInputProcessor(escenaNivelTutorial);
             }
-                //Gdx.input.setInputProcessor(escenaNivelTutorial);
 
         }
-
-        /*renderarMapa.render();
-        escenaNivelTutorial.draw();
-        batch.begin();
-        plat1.dibujar(batch);
-        plat1.mover(30,500,30,600);
-        batch.end();*/
 
         if (estado == EstadoJuego.PAUSADO) {
 
@@ -304,7 +357,7 @@ public class NivelTutorial extends Pantalla{
             plat1.mover(30, 500, 30, 600);
             //para mostrar el puntaje de mini vis
             texto.mostrarMensaje(batch, Integer.toString(contadorMiniVis), ANCHO - 50, ALTO - 50);
-
+            robot.dibujar(batch);
             batch.end();
         }
 
@@ -383,7 +436,7 @@ public class NivelTutorial extends Pantalla{
                     new TextureRegion(texturabtnReanudar));
             ImageButton btnReanudar = new ImageButton(trdReintentar);
             btnReanudar.setPosition(ANCHO/2-btnReanudar.getWidth()/2+66/*100*/,ALTO/2-50/*50*/);
-            vidasVIU--;
+
             btnReanudar.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -431,7 +484,7 @@ public class NivelTutorial extends Pantalla{
             TextureRegionDrawable trdSalir = new TextureRegionDrawable(
                     new TextureRegion(texturaBtnSalir));
             ImageButton btnSalir = new ImageButton(trdSalir);
-            btnSalir.setPosition(ANCHO - btnSalir.getWidth() - 10/*20*/, 10/*20*/);
+            btnSalir.setPosition(10, 10);
             btnSalir.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -501,7 +554,7 @@ public class NivelTutorial extends Pantalla{
             TextureRegionDrawable trdSalir = new TextureRegionDrawable(
                     new TextureRegion(texturaBtnSalir));
             ImageButton btnSalir = new ImageButton(trdSalir);
-            btnSalir.setPosition(ANCHO - btnSalir.getWidth() - 10/*20*/, 10/*20*/);
+            btnSalir.setPosition(10, 10);
             btnSalir.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {

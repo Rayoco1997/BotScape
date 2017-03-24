@@ -25,8 +25,9 @@ public class Robot extends Objeto {
     private Animation<TextureRegion> spriteAnimado;         // Animación caminando
     private float timerAnimacion;                           // Tiempo para cambiar frames de la animación
 
-    private EstadoMovimiento estadoMovimiento = EstadoMovimiento.MOV_DERECHA;
-    private EstadoSalto estadoSalto;
+    private EstadoMovimiento estadoMovimiento = EstadoMovimiento.QUIETO;
+    private EstadoMovimiento ultimoEstadoMov = EstadoMovimiento.QUIETO;
+    private EstadoSalto estadoSalto = EstadoSalto.EN_PISO;
 
     private Body body;
     private BodyDef bodydef;
@@ -62,16 +63,18 @@ public class Robot extends Objeto {
         shape = new PolygonShape();
         shape.setAsBox(sprite.getWidth() / 2 / 100f, sprite.getHeight() / 2 / 100f);
         fix.shape = shape;
-        body.setUserData(this.getClass());
         body = world.createBody(bodydef);
+        body.setUserData(this);
+        /*body.setUserData(this.getClass());
+        body = world.createBody(bodydef);*/
         body.createFixture(fix);
     }
 
     // Dibuja el personaje
     public void dibujar(SpriteBatch batch) {
         // Dibuja el personaje dependiendo del estadoMovimiento
-        sprite.setPosition((body.getPosition().x /* MyGdxGame.PIXELS_TO_METERS*/) - sprite.getWidth() / 2,
-                (body.getPosition().y /* MyGdxGame.PIXELS_TO_METERS*/) - sprite.getHeight() / 2);
+        sprite.setPosition((body.getPosition().x * NivelTutorial.PIXELS_TO_METERS) - sprite.getWidth() / 2,
+                (body.getPosition().y * NivelTutorial.PIXELS_TO_METERS) - sprite.getHeight()/ 2);
         switch (estadoMovimiento) {
             case MOV_DERECHA:
             case MOV_IZQUIERDA:
@@ -90,38 +93,68 @@ public class Robot extends Objeto {
                 batch.draw(region, sprite.getX(), sprite.getY());
                 break;
             case QUIETO:
-            case INICIANDO:
+                if(ultimoEstadoMov==EstadoMovimiento.MOV_DERECHA){
+                    if(sprite.isFlipX())
+                        sprite.flip(true,false);
+                } else if(ultimoEstadoMov==EstadoMovimiento.MOV_IZQUIERDA){
+                    if(!sprite.isFlipX()){
+                        sprite.flip(true,false);
+                    }
+                }
+
                 sprite.draw(batch); // Dibuja el sprite estático
                 break;
         }
     }
 
     // Actualiza el sprite, de acuerdo al estadoMovimiento y estadoSalto
-    public void actualizar(TiledMap mapa, World world) {
+    public void actualizar(TiledMap mapa) {
         switch (estadoMovimiento) {
             case MOV_DERECHA:
             case MOV_IZQUIERDA:
-                moverHorizontal(mapa, world);
+                moverHorizontal(mapa);
                 break;
         }
         switch (estadoSalto) {
             case SUBIENDO:
             case BAJANDO:
-                moverVertical(mapa, world);
+                moverVertical(mapa);
                 break;
         }
     }
 
-    private void moverVertical(TiledMap mapa, World world) {
-        if (estadoSalto == EstadoSalto.EN_PISO) {
-
-        }
+    private void moverVertical(TiledMap mapa) {
+        if(estadoSalto==EstadoSalto.SUBIENDO)
+            body.applyForceToCenter(0f,60f,true);
+        estadoSalto=EstadoSalto.BAJANDO;
     }
 
 
-    // Mueve el personaje a la derecha/izquierda, prueba choques con paredes
-    private void moverHorizontal(TiledMap mapa, World world) {
 
+    // Mueve el personaje a la derecha/izquierda, prueba choques con paredes
+    private void moverHorizontal(TiledMap mapa) {
+        if(estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
+            if(body.getLinearVelocity().x<5f)
+                body.applyForceToCenter(10f, 0f, true);
+            else
+                body.setLinearVelocity(5f,body.getLinearVelocity().y);
+        }
+        else
+        if(body.getLinearVelocity().x>-5f)
+            body.applyForceToCenter(-10f,0f,true);
+        else
+            body.setLinearVelocity(-5f,body.getLinearVelocity().y);
+    }
+
+    public void frenar(){
+        if(estadoMovimiento==EstadoMovimiento.MOV_DERECHA){
+            body.setLinearVelocity(body.getLinearVelocity().x/10,body.getLinearVelocity().y);
+
+        } else if(estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA){
+            body.setLinearVelocity(body.getLinearVelocity().x/10,body.getLinearVelocity().y);
+
+        }
+        estadoMovimiento = EstadoMovimiento.QUIETO;
     }
 
 
@@ -130,13 +163,20 @@ public class Robot extends Objeto {
         return estadoMovimiento;
     }
 
+    public EstadoSalto getEstadoSalto() {
+        return estadoSalto;
+    }
+
     // Modificador de estadoMovimiento
     public void setEstadoMovimiento(EstadoMovimiento estadoMovimiento) {
+        ultimoEstadoMov=this.getEstadoMovimiento();
         this.estadoMovimiento = estadoMovimiento;
+    }
+    public void setEstadoSalto(EstadoSalto estadoSalto) {
+        this.estadoSalto = estadoSalto;
     }
 
     public enum EstadoMovimiento {
-        INICIANDO,
         QUIETO,
         MOV_IZQUIERDA,
         MOV_DERECHA,

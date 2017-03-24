@@ -139,7 +139,7 @@ public class MenuPrincipal extends Pantalla {
         texturaBtnJugar = manager.get("Botones/PrincipalBtnPlay.png");
         texturaBtnCreditos = manager.get("Botones/PrincipalBtnCredits.png");
         texturaTitulo = manager.get("Textos/PrincipalTitle.png");
-        texturaConfiguracion= manager.get("NivelPausa.png");
+        texturaConfiguracion= manager.get("Botones/OptionsButtonMenuPrin.png");
     }
 
     @Override
