@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,13 +22,16 @@ import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
@@ -64,6 +69,8 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
     private Texture texturaBtnSaltar;
     private Texture texturaBtnUsar;
     private Texture texturaReintentar;
+    private Camera camaraHUD;
+    private StretchViewport vistaHUD;
 
     private Plataforma plat1;
 
@@ -122,6 +129,16 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
         crearObjetos();
         crearCuerpos();
         Gdx.input.setInputProcessor(this);
+    }
+
+    private void crearPad() {
+
+        camaraHUD = new OrthographicCamera(ANCHO, ALTO);
+        camaraHUD.position.set(ANCHO / 2, ALTO / 2, 0);
+        camaraHUD.update();
+        vistaHUD = new StretchViewport(ANCHO, ALTO, camaraHUD);
+
+
     }
 
     private void crearCuerpos() {
