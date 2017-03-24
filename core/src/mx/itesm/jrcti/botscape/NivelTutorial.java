@@ -24,6 +24,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -40,7 +41,7 @@ import java.util.ArrayList;
  * Created by Cinthya on 15/02/2017.
  */
 
-public class NivelTutorial extends Pantalla implements InputProcessor {
+public class NivelTutorial extends Pantalla {
 
     private World world;
     private OrthogonalTiledMapRenderer renderarMapa;
@@ -174,11 +175,16 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
         ImageButton btnMovIzq = new ImageButton(trdBtnMovIzquierda);
         btnMovIzq.setPosition(ANCHO/8,50);
         escenaHUD.addActor(btnMovIzq);
-        btnMovIzq.addListener( new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("clicked", "me muevo izq");
+        btnMovIzq.addListener(new InputListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                Gdx.app.log("Click","Mover izquierda");
                 robot.setEstadoMovimiento(Robot.EstadoMovimiento.MOV_IZQUIERDA);
+                return true;
+            }
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.log("UnClick", "Mover izquierda");
+                robot.frenar();
+
             }
         });
 
@@ -186,11 +192,16 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
         ImageButton btnMovDer = new ImageButton(trdBtnMovDerecha);
         btnMovDer.setPosition(ANCHO/4,50);
         escenaHUD.addActor(btnMovDer);
-        btnMovDer.addListener( new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("clicked", "me hicieron CLICK");
-                robot.setEstadoMovimiento((Robot.EstadoMovimiento.MOV_DERECHA));
+        btnMovDer.addListener( new InputListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                Gdx.app.log("Click","Mover derecha");
+                robot.setEstadoMovimiento(Robot.EstadoMovimiento.MOV_DERECHA);
+                return true;
+            }
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.log("UnClick", "Mover derecha");
+                robot.frenar();
+
             }
         });
 
@@ -198,13 +209,14 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
         ImageButton btnMovSalto = new ImageButton(trdBtnMovSalto);
         btnMovSalto.setPosition(6*ANCHO/8,50);
         escenaHUD.addActor(btnMovSalto);
-        btnMovSalto.addListener( new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("clicked", "me hicieron CLICK");
-                if(robot.getEstadoSalto()==Robot.EstadoSalto.EN_PISO){
+        btnMovSalto.addListener( new InputListener(){
+
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.log("click", "Salto");
+                if (robot.getEstadoSalto() == Robot.EstadoSalto.EN_PISO) {
                     robot.setEstadoSalto(Robot.EstadoSalto.SUBIENDO);
                 }
+                return true;
             }
         });
 
@@ -358,7 +370,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
         actualizarCamara();
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
-        world.step(delta,6,2);
+
         robot.actualizar(mapa);
         if (vidasVIU==4){
             estado= EstadoJuego.GANADO;
@@ -412,6 +424,9 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
 
             escenaPausa.draw();
         } else if (estado== EstadoJuego.JUGANDO){
+
+            world.step(delta,6,2);
+
             renderarMapa.setView(camara);
             renderarMapa.render();
             //mostrar vidas restantes
@@ -471,7 +486,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
 
     }
 
-    @Override
+    /*@Override
     public boolean keyDown(int keycode) {
         return false;
     }
@@ -523,7 +538,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
-    }
+    }*/
     //ESCENA QUE SE MUESTRA CUANDO NO TIENES VIDAS
 
     // La escena que se muestra cuando el juego se pausa
