@@ -79,15 +79,9 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
     //Escenas
     private Stage escenaNivelTutorial;
     private Stage escenaVidasVIU;
+    private Stage escenaHUD;
 
-    private final int NUM_PISO = 7;
-    private Array<Image> arrPiso;
 
-    private final int NUM_PISO_VERDE = 2;
-    private Array<Image> arrPisoVerde;
-
-    private final int NUM_PLAT = 4;
-    private Array<Image> arrPlat;
 
     // Sonidos largos
     private Music musicaFondo;
@@ -101,7 +95,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
     private EscenaGanaste escenaGanaste;
     private EstadoJuego estadoJuego;
 
-    private int contadorMiniVis=1;
+    private int contadorMiniVis=0;
     private Texto texto= new Texto();
 
     private int vidasVIU=3;
@@ -129,16 +123,100 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
         cargarTexturas();
         crearObjetos();
         crearCuerpos();
-        Gdx.input.setInputProcessor(this);
+        crearHUD();
+        //Gdx.input.setInputProcessor(this);
     }
 
-    private void crearPad() {
+    private void crearHUD() {
 
         camaraHUD = new OrthographicCamera(ANCHO, ALTO);
         camaraHUD.position.set(ANCHO / 2, ALTO / 2, 0);
         camaraHUD.update();
         vistaHUD = new StretchViewport(ANCHO, ALTO, camaraHUD);
+        escenaVidasVIU = new Stage(vistaHUD, batch);
+        escenaHUD = new Stage(vistaHUD);
 
+        //Botón para ir al menu de pausa
+        TextureRegionDrawable trdBtnPausa = new TextureRegionDrawable(new TextureRegion(texturaBtnPausa));
+        ImageButton btnPausa = new ImageButton(trdBtnPausa);
+        btnPausa.setPosition(10,ALTO-btnPausa.getHeight());
+        escenaHUD.addActor(btnPausa);
+
+        btnPausa.addListener( new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("clicked", "me hicieron CLICK");
+                estado = estado==EstadoJuego.PAUSADO?EstadoJuego.JUGANDO:EstadoJuego.PAUSADO;
+                if (estado==EstadoJuego.PAUSADO) {
+                    // Activar escenaPausa y pasarle el control
+                    if (escenaPausa==null) {
+                        escenaPausa = new EscenaPausa(vista, batch);
+                    }
+                    Gdx.input.setInputProcessor(escenaPausa);
+                }
+            }
+        });
+
+        //Boton de prueba para decrementar vidas
+        /*TextureRegionDrawable trdBtnReintentar = new TextureRegionDrawable(new TextureRegion(texturaReintentar));
+        ImageButton btnReintentar = new ImageButton(trdBtnReintentar);
+        btnReintentar.setPosition(ANCHO/2,0);
+        escenaHUD.addActor(btnReintentar);
+        btnReintentar.addListener( new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("clicked", "me hicieron CLICK");
+                vidasVIU--;
+            }
+        });*/
+
+        TextureRegionDrawable trdBtnMovIzquierda = new TextureRegionDrawable(new TextureRegion(texturaBtnIzquierda));
+        ImageButton btnMovIzq = new ImageButton(trdBtnMovIzquierda);
+        btnMovIzq.setPosition(ANCHO/8,50);
+        escenaHUD.addActor(btnMovIzq);
+        btnMovIzq.addListener( new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("clicked", "me muevo izq");
+                robot.setEstadoMovimiento(Robot.EstadoMovimiento.MOV_IZQUIERDA);
+            }
+        });
+
+        TextureRegionDrawable trdBtnMovDerecha = new TextureRegionDrawable(new TextureRegion(texturaBtnDerecha));
+        ImageButton btnMovDer = new ImageButton(trdBtnMovDerecha);
+        btnMovDer.setPosition(ANCHO/4,50);
+        escenaHUD.addActor(btnMovDer);
+        btnMovDer.addListener( new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("clicked", "me hicieron CLICK");
+                robot.setEstadoMovimiento((Robot.EstadoMovimiento.MOV_DERECHA));
+            }
+        });
+
+        TextureRegionDrawable trdBtnMovSalto= new TextureRegionDrawable(new TextureRegion(texturaBtnSaltar));
+        ImageButton btnMovSalto = new ImageButton(trdBtnMovSalto);
+        btnMovSalto.setPosition(6*ANCHO/8,50);
+        escenaHUD.addActor(btnMovSalto);
+        btnMovSalto.addListener( new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("clicked", "me hicieron CLICK");
+                if(robot.getEstadoSalto()==Robot.EstadoSalto.EN_PISO){
+                    robot.setEstadoSalto(Robot.EstadoSalto.SUBIENDO);
+                }
+            }
+        });
+
+
+
+        //CREANDO ICONO DE MINIVI Contador
+
+        Image iconoMiniVi= new Image(texturaMiniVI);
+        iconoMiniVi.setPosition(ANCHO-2*iconoMiniVi.getWidth()-35,ALTO-iconoMiniVi.getHeight()-20);
+        escenaHUD.addActor(iconoMiniVi);
+
+        Gdx.input.setInputProcessor(escenaHUD);
 
     }
 
@@ -192,50 +270,12 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
     private void crearObjetos(){
         world=new World(new Vector2(0,-5),true);
         createCollisionListener();
-        escenaNivelTutorial = new Stage(vista,batch);
-        escenaVidasVIU= new Stage(vista,batch);
+        //escenaNivelTutorial = new Stage(vista,batch);
+        //escenaVidasVIU= new Stage(vista,batch);
 
         plat1 = new Plataforma(texturaPlataforma, 3, 3, 30, 30, Plataforma.EstadoMovimiento.MOV_DERECHA);
 
-        //CREANDO ICONO DE MINIVI
 
-        Image iconoMiniVi= new Image(texturaMiniVI);
-        iconoMiniVi.setPosition(ANCHO-2*iconoMiniVi.getWidth()-20,ALTO-iconoMiniVi.getHeight()-20);
-        escenaNivelTutorial.addActor(iconoMiniVi);
-
-        //Boton de prueba para decrementar vidas
-        TextureRegionDrawable trdBtnReintentar = new TextureRegionDrawable(new TextureRegion(texturaReintentar));
-        ImageButton btnReintentar = new ImageButton(trdBtnReintentar);
-        btnReintentar.setPosition(ANCHO/2,0);
-        escenaNivelTutorial.addActor(btnReintentar);
-        btnReintentar.addListener( new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("clicked", "me hicieron CLICK");
-                vidasVIU--;
-            }
-        });
-
-        //Botón para ir al menu de pausa
-        TextureRegionDrawable trdBtnPausa = new TextureRegionDrawable(new TextureRegion(texturaBtnPausa));
-        ImageButton btnPausa = new ImageButton(trdBtnPausa);
-        btnPausa.setPosition(10,ALTO-btnPausa.getHeight());
-        escenaNivelTutorial.addActor(btnPausa);
-
-        btnPausa.addListener( new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("clicked", "me hicieron CLICK");
-                estado = estado==EstadoJuego.PAUSADO?EstadoJuego.JUGANDO:EstadoJuego.PAUSADO;
-                if (estado==EstadoJuego.PAUSADO) {
-                    // Activar escenaPausa y pasarle el control
-                    if (escenaPausa==null) {
-                        escenaPausa = new EscenaPausa(vista, batch);
-                    }
-                    Gdx.input.setInputProcessor(escenaPausa);
-                }
-            }
-        });
 
         //CREANDO AL ARRAY LIST PARA LAS VIDAS DE VIU
         Image vida1= new Image(texturaMiniVI);
@@ -252,7 +292,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
 
 
 
-        Gdx.input.setInputProcessor(escenaNivelTutorial);
+        //Gdx.input.setInputProcessor(escenaNivelTutorial);
         Gdx.input.setCatchBackKey(true);
     }
 
@@ -307,6 +347,9 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
         texturaPisoVerde = manager.get ("NivelPiso2.png");
         texturaTutorial = manager.get("Tutorial2.png");
         texturaReintentar= manager.get("Botones/PerdisteBtnReintentar.png");
+        texturaBtnIzquierda = manager.get("Botones/MovIzqButton.png");
+        texturaBtnDerecha =  manager.get("Botones/MovDerButton.png");
+        texturaBtnSaltar = manager.get("Botones/MovUpButton.png");
 
     }
 
@@ -317,7 +360,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
         batch.setProjectionMatrix(camara.combined);
         world.step(delta,6,2);
         robot.actualizar(mapa);
-        if (vidasVIU==2){
+        if (vidasVIU==4){
             estado= EstadoJuego.GANADO;
             if(escenaGanaste==null){
                 escenaGanaste= new EscenaGanaste(vista, batch);
@@ -360,7 +403,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
                 // Continuar el juego
                 estado = EstadoJuego.JUGANDO;
                 // Regresa el control a la pantalla
-                Gdx.input.setInputProcessor(escenaNivelTutorial);
+                Gdx.input.setInputProcessor(escenaHUD);
             }
 
         }
@@ -375,21 +418,25 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
             mostrarVidas(vidasVIU);
             escenaVidasVIU.draw();
 
-            escenaNivelTutorial.draw();
+            //escenaNivelTutorial.draw();
             batch.begin();
             plat1.dibujar(batch);
             plat1.mover(30, 500, 30, 600);
             //para mostrar el puntaje de mini vis
-            texto.mostrarMensaje(batch, Integer.toString(contadorMiniVis), ANCHO - 50, ALTO - 50);
+            texto.mostrarMensaje(batch, Integer.toString(contadorMiniVis), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);
             robot.dibujar(batch);
             batch.end();
+
+
+            batch.setProjectionMatrix(camaraHUD.combined);
+            escenaHUD.draw();
         }
 
     }
 
     private void mostrarVidas(int vidas) {
+        escenaVidasVIU.addActor(listaVidasVIU.get(0));
         escenaVidasVIU.dispose();
-
         for(int i=0; i<vidas;i++){
             escenaVidasVIU.addActor(listaVidasVIU.get(i));
         }
@@ -533,7 +580,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
                     // Continuar el juego
                     estado = EstadoJuego.JUGANDO;
                     // Regresa el control a la pantalla
-                    Gdx.input.setInputProcessor(escenaNivelTutorial);
+                    Gdx.input.setInputProcessor(escenaHUD);
                 }
             });
             this.addActor(btnReanudar);
