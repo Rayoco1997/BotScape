@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 public class Juego extends Game {
 	SpriteBatch batch;
 	private final AssetManager assetManager;
+	public static final float PIXELS_TO_METERS=100f;
 
 	public Juego(){
 		assetManager = new AssetManager();
