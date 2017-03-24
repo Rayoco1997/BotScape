@@ -34,7 +34,8 @@ public class Robot extends Objeto {
     private PolygonShape shape;
 
     // Recibe una imagen con varios frames (ver marioSprite.png)
-    public Robot(Texture textura, float x, float y, World world, BodyDef.BodyType type, FixtureDef fix) {
+    public Robot(Texture textura, float x, float y, World world, BodyDef.BodyType type,
+                 FixtureDef fix) {
         super(textura, x, y);
         // Lee la textura como región
         TextureRegion texturaCompleta = new TextureRegion(textura);
@@ -125,7 +126,7 @@ public class Robot extends Objeto {
 
     private void moverVertical(TiledMap mapa) {
         if(estadoSalto==EstadoSalto.SUBIENDO)
-            body.applyForceToCenter(0f,90f,true);
+            body.applyForceToCenter(0f,120f,true);
         estadoSalto=EstadoSalto.BAJANDO;
     }
 
@@ -165,9 +166,10 @@ public class Robot extends Objeto {
         TiledMapTileLayer.Cell celda = capa.getCell(x,y);
         if (celda!=null ) {
             Object tipo = celda.getTile().getProperties().get("tipo");
-            if ( "miniVi".equals(tipo) ) {
-                //capa.setCell(x,y,null);    // Borra la moneda del mapa
-                capa.setCell(x, y, capa.getCell(0, 4)); // Cuadro azul en lugar de la moneda
+            if ("miniVi".equals(tipo) ) {
+                Gdx.app.log("robot","true, atrapo miniVi");
+                capa.setCell(x,y,null);    // Borra la moneda del mapa
+                //capa.setCell(x, y, capa.getCell(0, 4)); // Cuadro azul en lugar de la moneda
                 return true;
             }
         }
