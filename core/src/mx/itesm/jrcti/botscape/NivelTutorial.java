@@ -42,6 +42,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
     private SpriteBatch batch;
     private TiledMap mapa;
     public static final float PIXELS_TO_METERS=100f;
+    public static final int ANCHO_MAPA=3840;
 
     //Texturas
     private Texture VIUWalk_Cycle;
@@ -294,6 +295,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
 
     @Override
     public void render(float delta) {
+        actualizarCamara();
         borrarPantalla();
         world.step(delta,6,2);
         robot.actualizar(mapa);
@@ -374,6 +376,18 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
         }
 
 
+    }
+
+    private void actualizarCamara(){
+        float posX = robot.sprite.getX();
+        if (posX>=ANCHO/2 && posX<=ANCHO_MAPA-ANCHO/2){
+            camara.position.set((int)posX, camara.position.y, 0);
+        }else if (posX>ANCHO_MAPA-ANCHO/2){
+            camara.position.set(ANCHO_MAPA-ANCHO/2,camara.position.y, 0);
+        }else if (posX<ANCHO/2){
+            camara.position.set(ANCHO/2,ALTO/2,0);
+        }
+        camara.update();
     }
 
     @Override
