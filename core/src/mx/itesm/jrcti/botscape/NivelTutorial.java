@@ -233,6 +233,23 @@ public class NivelTutorial extends Pantalla {
 
         Gdx.input.setInputProcessor(escenaHUD);
 
+        //LISTA DE VIDAS DE VIU
+        Image vida1= new Image(texturaVidasVIU);
+        altoVidasVIU= (int)ALTO-texturaMiniVI.getHeight()-10;
+        vida1.setPosition(ANCHO/2,altoVidasVIU);
+        Image vida2= new Image(texturaVidasVIU);
+        vida2.setPosition(vida1.getX()+vida2.getWidth()+10,altoVidasVIU);
+        Image vida3= new Image(texturaVidasVIU);
+        vida3.setPosition(vida2.getX()+ vida3.getWidth()+10,altoVidasVIU);
+
+        listaVidasVIU.add(vida1);
+        listaVidasVIU.add(vida2);
+        listaVidasVIU.add(vida3);
+
+        for(int i=0;i<vidasVIU;i++){
+            escenaHUD.addActor(listaVidasVIU.get(i));
+        }
+
     }
 
     private void crearCuerpos() {
@@ -353,7 +370,7 @@ public class NivelTutorial extends Pantalla {
 
 
         //CREANDO AL ARRAY LIST PARA LAS VIDAS DE VIU
-        Image vida1= new Image(texturaVidasVIU);
+        /*Image vida1= new Image(texturaVidasVIU);
         altoVidasVIU= (int)ALTO-texturaMiniVI.getHeight()-10;
         vida1.setPosition(ANCHO/2,altoVidasVIU);
         Image vida2= new Image(texturaVidasVIU);
@@ -363,7 +380,7 @@ public class NivelTutorial extends Pantalla {
 
         listaVidasVIU.add(vida1);
         listaVidasVIU.add(vida2);
-        listaVidasVIU.add(vida3);
+        listaVidasVIU.add(vida3);*/
 
 
 
@@ -388,6 +405,7 @@ public class NivelTutorial extends Pantalla {
                     //Gdx.app.log("DAño","Khe");
                     if(robot.getHabilidad()!=Robot.Habilidad.INVULNERABLE) {
                         vidasVIU--;
+                        escenaHUD.getActors().get(escenaHUD.getActors().size-1).remove();
                         robot.setHabilidad(Robot.Habilidad.INVULNERABLE);
 
                     }
@@ -448,8 +466,6 @@ public class NivelTutorial extends Pantalla {
         actualizarCamara();
 
         batch.setProjectionMatrix(camara.combined);
-
-
         if (vidasVIU==4){
             estado= EstadoJuego.GANADO;
             if(escenaGanaste==null){
@@ -510,13 +526,19 @@ public class NivelTutorial extends Pantalla {
 
             renderarMapa.setView(camara);
             renderarMapa.render();
+
+            debugMatrix=batch.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS,PIXELS_TO_METERS,0);
+            debugRenderer.render(world,debugMatrix);
             //mostrar vidas restantes
-            mostrarVidas(vidasVIU);
-            escenaVidasVIU.draw();
+            /*mostrarVidas(vidasVIU);
+            escenaVidasVIU.draw();*/
 
+            /*if(vidasVIU!= 3) {
 
+                escenaHUD.getActors().get(escenaHUD.getActors().size - 3-vi).remove();
+            }*/
 
-            System.out.println(robot.getHabilidad());
+            //System.out.println(robot.getHabilidad());
             if(robot.getHabilidad()==Robot.Habilidad.INVULNERABLE){
                 Gdx.app.log("Daño","Es invulnerable");
                 if(tiempoInvulnerable>=60){
@@ -529,8 +551,8 @@ public class NivelTutorial extends Pantalla {
             }
 
             //Debugging
-            debugMatrix = batch.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS,
-                    PIXELS_TO_METERS, 0);
+            //debugMatrix = batch.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS,
+                    //PIXELS_TO_METERS, 0);
 
 
             //escenaNivelTutorial.draw();
@@ -550,15 +572,14 @@ public class NivelTutorial extends Pantalla {
             robot.dibujar(batch);
             batch.end();
 
+            world.step(delta,6,2);
 
             batch.setProjectionMatrix(camaraHUD.combined);
             escenaHUD.draw();
 
 
 
-            //Debugging
-            debugRenderer.render(world, debugMatrix);
-            world.step(delta,6,2);
+
         }
 
     }
