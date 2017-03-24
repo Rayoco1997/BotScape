@@ -250,6 +250,7 @@ public class NivelTutorial extends Pantalla {
             escenaHUD.addActor(listaVidasVIU.get(i));
         }
 
+
     }
 
     private void crearCuerpos() {
@@ -281,7 +282,7 @@ public class NivelTutorial extends Pantalla {
         bodyPiso = world.createBody(bodyDefPiso);
         bodyPiso.createFixture(fixPiso);
         bodyPiso.setUserData(plat1);
-        x1 = 640/PIXELS_TO_METERS;
+        x1 = 576/PIXELS_TO_METERS;
         y1 = 192/PIXELS_TO_METERS;
         x2 = 896/PIXELS_TO_METERS;
         y2 = 192/PIXELS_TO_METERS;
@@ -293,7 +294,7 @@ public class NivelTutorial extends Pantalla {
         bodyPlat1.createFixture(fixPiso);
         bodyPlat1.setUserData(plat1);
 
-        x1 = 1280/PIXELS_TO_METERS;
+        x1 = 1216/PIXELS_TO_METERS;
         x2 = 1536/PIXELS_TO_METERS;
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
@@ -303,7 +304,7 @@ public class NivelTutorial extends Pantalla {
         bodyPlat1.createFixture(fixPiso);
         bodyPlat1.setUserData(plat1);
 
-        x1 = 2368/PIXELS_TO_METERS;
+        x1 = 2304/PIXELS_TO_METERS;
         x2 = 2624/PIXELS_TO_METERS;
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
@@ -313,7 +314,7 @@ public class NivelTutorial extends Pantalla {
         bodyPlat1.createFixture(fixPiso);
         bodyPlat1.setUserData(plat1);
 
-        x1 = 3648/PIXELS_TO_METERS;
+        x1 = 3584/PIXELS_TO_METERS;
         y1 =  320/PIXELS_TO_METERS;
         x2 = 3840/PIXELS_TO_METERS;
         y2 = 320/PIXELS_TO_METERS;
@@ -560,15 +561,15 @@ public class NivelTutorial extends Pantalla {
 
 
             batch.begin();
-            //enemigo.dibujar(batch);
-            //enemigo.mover(600,900);
-            plat1.dibujar(batch);
-            plat1.mover(30, 900, 30, 600);
+            enemigo.dibujar(batch);
+            enemigo.mover(600,900);
+            /*plat1.dibujar(batch);
+            plat1.mover(30, 900, 30, 600);*/
 
             buscarMiniVis();
 
             //para mostrar el puntaje de mini vis
-            texto.mostrarMensaje(batch, Integer.toString(contadorMiniVis), camaraHUD.position.x+ANCHO/2-50, camaraHUD.position.y+ALTO/2-40);
+            texto.mostrarMensaje(batch, Integer.toString(contadorMiniVis), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);
             robot.dibujar(batch);
             batch.end();
 

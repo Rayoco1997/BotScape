@@ -95,7 +95,6 @@ public class Robot extends Objeto {
                 batch.draw(region, sprite.getX(), sprite.getY());
                 break;
             case QUIETO:
-                Gdx.app.log("ULTIMO ESTADO MOV",ultimoEstadoMov.toString());
                 if(ultimoEstadoMov==EstadoMovimiento.MOV_DERECHA){
                     if(sprite.isFlipX())
                         sprite.flip(true,false);
@@ -128,7 +127,7 @@ public class Robot extends Objeto {
 
     private void moverVertical(TiledMap mapa) {
         if(estadoSalto==EstadoSalto.SUBIENDO)
-            body.applyForceToCenter(0f,120f,true);
+            body.applyForceToCenter(0f,80f,true);
         estadoSalto=EstadoSalto.BAJANDO;
     }
 
@@ -136,17 +135,53 @@ public class Robot extends Objeto {
 
     // Mueve el personaje a la derecha/izquierda, prueba choques con paredes
     private void moverHorizontal(TiledMap mapa) {
+        TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(1);
         if(estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
-            if(body.getLinearVelocity().x<5f)
-                body.applyForceToCenter(10f, 0f, true);
-            else
-                body.setLinearVelocity(5f,body.getLinearVelocity().y);
+            // Revisar si toca una moneda (pies)
+            int x = (int)((sprite.getX()/64)+64);
+            int y = (int)((sprite.getY()/64)+64);
+            TiledMapTileLayer.Cell celda = capa.getCell(x,y);
+            if (celda!=null ) {
+                Object tipo = celda.getTile().getProperties().get("tipo");
+                if (!"puerta".equals(tipo) ) {
+                    Gdx.app.log("moverHorizontal","No choco con puerta");
+                    if(body.getLinearVelocity().x<3f)
+                        body.applyForceToCenter(10f, 0f, true);
+                    else
+                        body.setLinearVelocity(3f,body.getLinearVelocity().y);
+                } else{
+                    Gdx.app.log("verga","verga");
+                    body.setLinearVelocity(0f,body.getLinearVelocity().y);
+                }
+            } else {
+                if (body.getLinearVelocity().x > 3f)
+                    body.applyForceToCenter(10f, 0f, true);
+                else
+                    body.setLinearVelocity(3f, body.getLinearVelocity().y);
+            }
         }
-        else
-        if(body.getLinearVelocity().x>-5f)
-            body.applyForceToCenter(-10f,0f,true);
-        else
-            body.setLinearVelocity(-5f,body.getLinearVelocity().y);
+        else if(estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
+            int x = (int)((sprite.getX()/64));
+            int y = (int)((sprite.getY()/64)+64);
+            TiledMapTileLayer.Cell celda = capa.getCell(x,y);
+            if (celda!=null ) {
+                Object tipo = celda.getTile().getProperties().get("tipo");
+                if (!"puerta".equals(tipo) ) {
+                    Gdx.app.log("moverHorizontal","Choco con puerta");
+                    if(body.getLinearVelocity().x<-3f)
+                        body.applyForceToCenter(-10f, 0f, true);
+                    else
+                        body.setLinearVelocity(-3f,body.getLinearVelocity().y);
+                } else{
+                    body.setLinearVelocity(0f,body.getLinearVelocity().y);
+                }
+            } else {
+                if (body.getLinearVelocity().x > -3f)
+                    body.applyForceToCenter(-10f, 0f, true);
+                else
+                    body.setLinearVelocity(-3f, body.getLinearVelocity().y);
+            }
+        }
     }
 
     public void frenar(){
@@ -164,7 +199,7 @@ public class Robot extends Objeto {
     public boolean recolectarMiniVi(TiledMap mapa) {
         // Revisar si toca una moneda (pies)
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
-        int x = (int)(sprite.getX()/64);
+        int x = (int)((sprite.getX()/64));
         int y = (int)(sprite.getY()/64);
         TiledMapTileLayer.Cell celda = capa.getCell(x,y);
         if (celda!=null ) {
