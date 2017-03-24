@@ -2,7 +2,6 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
@@ -24,16 +23,13 @@ import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -114,9 +110,13 @@ public class NivelTutorial extends Pantalla {
     int altoVidasVIU;
 
     private BodyDef bodyDefPiso;
-    private Body bodyEdge;
+    private Body bodyPiso;
     private FixtureDef fixPiso;
     private EdgeShape edgeShape;
+    private Body bodyPlat1;
+    private Body bodyPlat2;
+    private Body bodyPlat3;
+    private Body bodyPlat4;
 
     private FixtureDef fix;
     private Robot robot;
@@ -260,9 +260,53 @@ public class NivelTutorial extends Pantalla {
         edgeShape.set(x1,y1,x2,y2);
         fixPiso.shape=edgeShape;
         fixPiso.friction=.7f;
-        bodyEdge= world.createBody(bodyDefPiso);
-        bodyEdge.createFixture(fixPiso);
-        bodyEdge.setUserData(plat1);
+        bodyPiso = world.createBody(bodyDefPiso);
+        bodyPiso.createFixture(fixPiso);
+        bodyPiso.setUserData(plat1);
+        x1 = 640/PIXELS_TO_METERS;
+        y1 = 192/PIXELS_TO_METERS;
+        x2 = 896/PIXELS_TO_METERS;
+        y2 = 192/PIXELS_TO_METERS;
+        edgeShape = new EdgeShape();
+        edgeShape.set(x1,y1,x2,y2);
+        fixPiso.shape=edgeShape;
+        fixPiso.friction=.7f;
+        bodyPlat1 = world.createBody(bodyDefPiso);
+        bodyPlat1.createFixture(fixPiso);
+        bodyPlat1.setUserData(plat1);
+
+        x1 = 1280/PIXELS_TO_METERS;
+        x2 = 1536/PIXELS_TO_METERS;
+        edgeShape = new EdgeShape();
+        edgeShape.set(x1,y1,x2,y2);
+        fixPiso.shape=edgeShape;
+        fixPiso.friction=.7f;
+        bodyPlat1 = world.createBody(bodyDefPiso);
+        bodyPlat1.createFixture(fixPiso);
+        bodyPlat1.setUserData(plat1);
+
+        x1 = 2368/PIXELS_TO_METERS;
+        x2 = 2624/PIXELS_TO_METERS;
+        edgeShape = new EdgeShape();
+        edgeShape.set(x1,y1,x2,y2);
+        fixPiso.shape=edgeShape;
+        fixPiso.friction=.7f;
+        bodyPlat1 = world.createBody(bodyDefPiso);
+        bodyPlat1.createFixture(fixPiso);
+        bodyPlat1.setUserData(plat1);
+
+        x1 = 3648/PIXELS_TO_METERS;
+        y1 =  320/PIXELS_TO_METERS;
+        x2 = 3840/PIXELS_TO_METERS;
+        y2 = 320/PIXELS_TO_METERS;
+        edgeShape = new EdgeShape();
+        edgeShape.set(x1,y1,x2,y2);
+        fixPiso.shape=edgeShape;
+        fixPiso.friction=.7f;
+        bodyPlat1 = world.createBody(bodyDefPiso);
+        bodyPlat1.createFixture(fixPiso);
+        bodyPlat1.setUserData(plat1);
+
         edgeShape.dispose();
 
     }
