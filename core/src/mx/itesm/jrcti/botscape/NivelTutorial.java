@@ -158,7 +158,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
     }
 
     private void cargarMapa() {
-        mapa = manager.get("Mapas/tutorialv2.tmx");
+        mapa = manager.get("Mapas/Map_TutorialV2.tmx");
         musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/BringTheFoxhoundToMe.mp3"));
         musicaFondo.setLooping(true);
         if(estadoMusicaGeneral!= EstadoMusica.APAGADO) {
