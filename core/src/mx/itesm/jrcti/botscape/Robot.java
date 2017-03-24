@@ -28,6 +28,7 @@ public class Robot extends Objeto {
     private EstadoMovimiento estadoMovimiento = EstadoMovimiento.QUIETO;
     private EstadoMovimiento ultimoEstadoMov = EstadoMovimiento.QUIETO;
     private EstadoSalto estadoSalto = EstadoSalto.EN_PISO;
+    private Habilidad habilidad = Habilidad.NADA;
 
     private Body body;
     private BodyDef bodydef;
@@ -204,6 +205,10 @@ public class Robot extends Objeto {
         return estadoSalto;
     }
 
+    public Habilidad getHabilidad(){
+        return habilidad;
+    }
+
     // Modificador de estadoMovimiento
     public void setEstadoMovimiento(EstadoMovimiento estadoMovimiento) {
         ultimoEstadoMov=this.getEstadoMovimiento();
@@ -212,6 +217,12 @@ public class Robot extends Objeto {
     public void setEstadoSalto(EstadoSalto estadoSalto) {
         this.estadoSalto = estadoSalto;
     }
+
+    public void setHabilidad(Habilidad habilidad) {
+
+        this.habilidad = habilidad;
+    }
+
 
     public enum EstadoMovimiento {
         QUIETO,
@@ -222,7 +233,9 @@ public class Robot extends Objeto {
     public enum Habilidad {
         CORRER,
         JETPACK,
-        ARMA
+        ARMA,
+        INVULNERABLE,
+        NADA
     }
 
     public enum EstadoSalto {

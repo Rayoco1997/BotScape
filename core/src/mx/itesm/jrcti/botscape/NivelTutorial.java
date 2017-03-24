@@ -123,6 +123,9 @@ public class NivelTutorial extends Pantalla {
 
     private Enemigo enemigo;
 
+
+    private int tiempoInvulnerable;
+
     public NivelTutorial(Juego j,EstadoMusica estadoMusicaGeneral){
         super();
         this.juego=j;
@@ -289,6 +292,9 @@ public class NivelTutorial extends Pantalla {
     private void crearObjetos(){
         world=new World(new Vector2(0,-5),true);
         createCollisionListener();
+        tiempoInvulnerable=0;
+
+
         //escenaNivelTutorial = new Stage(vista,batch);
         //escenaVidasVIU= new Stage(vista,batch);
 
@@ -334,9 +340,12 @@ public class NivelTutorial extends Pantalla {
                         contact.getFixtureB().getBody().getUserData() instanceof Enemigo)||
                         (contact.getFixtureA().getBody().getUserData() instanceof Enemigo &&
                                 contact.getFixtureB().getBody().getUserData() instanceof Robot)){
-                    Gdx.app.log("DAño","Khe");
-                    vidasVIU--;
+                    //Gdx.app.log("DAño","Khe");
+                    if(robot.getHabilidad()!=Robot.Habilidad.INVULNERABLE) {
+                        vidasVIU--;
+                        robot.setHabilidad(Robot.Habilidad.INVULNERABLE);
 
+                    }
                 }
             }
 
@@ -457,6 +466,17 @@ public class NivelTutorial extends Pantalla {
             mostrarVidas(vidasVIU);
             escenaVidasVIU.draw();
 
+            System.out.println(robot.getHabilidad());
+            if(robot.getHabilidad()==Robot.Habilidad.INVULNERABLE){
+                Gdx.app.log("Daño","Es invulnerable");
+                if(tiempoInvulnerable>=60){
+                    robot.setHabilidad(Robot.Habilidad.NADA);
+                }
+                tiempoInvulnerable++;
+            }
+            else{
+                tiempoInvulnerable=0;
+            }
 
             //Debugging
             debugMatrix = batch.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS,
