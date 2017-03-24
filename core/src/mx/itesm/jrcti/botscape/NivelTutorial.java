@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -56,6 +57,7 @@ public class NivelTutorial extends Pantalla {
     public static final int ANCHO_MAPA=3840;
 
     //Texturas
+    Sprite texturaFondo;
     private Texture VIUWalk_Cycle;
     private Texture texturaEnemigo;
     private Texture texturaPlataforma;
@@ -367,6 +369,8 @@ public class NivelTutorial extends Pantalla {
     }
 
     private void crearObjetos(){
+        texturaFondo=new Sprite(texturaFondoTutorial);
+        texturaFondo.setPosition(0,0);
         world=new World(new Vector2(0,-5),true);
         createCollisionListener();
         tiempoInvulnerable=0;
@@ -457,7 +461,7 @@ public class NivelTutorial extends Pantalla {
         texturaPiso = manager.get("NivelPiso.png");
         texturaEscalon = manager.get("NivelEscalon.png");
         texturaSalida = manager.get("NivelSalida.png");
-        texturaFondoTutorial = manager.get("Fondos/PausaFondo.jpg");
+        texturaFondoTutorial = manager.get("Fondos/NivelTutorialFondo.jpg");
         texturaBtnPausa = manager.get("NivelPausa.png");
         texturaBtnIzquierda = manager.get("NivelIzquierda.png");
         texturaBtnDerecha = manager.get("NivelDerecha.png");
@@ -536,11 +540,15 @@ public class NivelTutorial extends Pantalla {
 
 
             robot.actualizar(mapa);
+            batch.begin();
+            texturaFondo.draw(batch);
+            batch.end();
 
 
 
             renderarMapa.setView(camara);
             renderarMapa.render();
+
 
             /*debugMatrix=batch.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS,PIXELS_TO_METERS,0);
             debugRenderer.render(world,debugMatrix);
