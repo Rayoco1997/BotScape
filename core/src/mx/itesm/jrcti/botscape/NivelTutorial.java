@@ -422,10 +422,11 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(screenX<=ANCHO/4&& screenY<ALTO/2){
+
+        if(screenX<=400 && screenY>ALTO/4){
             System.out.println("Click izquierdo");
             robot.setEstadoMovimiento(Robot.EstadoMovimiento.MOV_IZQUIERDA);
-        } else if(screenX>ANCHO/4 && screenY<ALTO/2){
+        } else if(screenX>400 && screenY>ALTO/4){
             System.out.println("Click derecho");
             robot.setEstadoMovimiento((Robot.EstadoMovimiento.MOV_DERECHA));
         } else{
