@@ -121,6 +121,8 @@ public class PantallaCarga extends Pantalla{
         manager.load("Botones/MovDerButton.png",Texture.class);
         manager.load("Botones/MovUpButton.png",Texture.class);
         manager.load("Personaje/LUG7 Walk_Cycle.png",Texture.class);
+        manager.load("VidasVIU.png", Texture.class);
+        manager.load("Textos/Ganaste.png",Texture.class);
     }
 
     private void cargarRecursosSelNivel(){

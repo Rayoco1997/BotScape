@@ -77,6 +77,7 @@ public class NivelTutorial extends Pantalla {
     private Texture texturaBtnUsar;
     private Texture texturaReintentar;
     private Texture LUGWalk_Cycle;
+    private Texture texturaVidasVIU;
 
     private Camera camaraHUD;
     private StretchViewport vistaHUD;
@@ -352,12 +353,12 @@ public class NivelTutorial extends Pantalla {
 
 
         //CREANDO AL ARRAY LIST PARA LAS VIDAS DE VIU
-        Image vida1= new Image(texturaMiniVI);
+        Image vida1= new Image(texturaVidasVIU);
         altoVidasVIU= (int)ALTO-texturaMiniVI.getHeight()-10;
         vida1.setPosition(ANCHO/2,altoVidasVIU);
-        Image vida2= new Image(texturaMiniVI);
+        Image vida2= new Image(texturaVidasVIU);
         vida2.setPosition(vida1.getX()+vida2.getWidth()+10,altoVidasVIU);
-        Image vida3= new Image(texturaMiniVI);
+        Image vida3= new Image(texturaVidasVIU);
         vida3.setPosition(vida2.getX()+ vida3.getWidth()+10,altoVidasVIU);
 
         listaVidasVIU.add(vida1);
@@ -436,6 +437,7 @@ public class NivelTutorial extends Pantalla {
         texturaBtnDerecha =  manager.get("Botones/MovDerButton.png");
         texturaBtnSaltar = manager.get("Botones/MovUpButton.png");
         LUGWalk_Cycle = manager.get("Personaje/LUG7 Walk_Cycle.png");
+        texturaVidasVIU= manager.get("VidasVIU.png");
 
 
     }
@@ -833,7 +835,7 @@ public class NivelTutorial extends Pantalla {
             this.addActor(btnSalir);
 
             //TEXTO DE QUE GANO
-            Texture texturaTxtPausa = manager.get("Textos/Perdiste.png");
+            Texture texturaTxtPausa = manager.get("Textos/Ganaste.png");
             Image imgTxtPausa = new Image(texturaTxtPausa);
             imgTxtPausa.setPosition(ANCHO / 2 - imgTxtPausa.getWidth() / 2 + 66/*100*/, 5 * ALTO / 6-100);
             this.addActor(imgTxtPausa);

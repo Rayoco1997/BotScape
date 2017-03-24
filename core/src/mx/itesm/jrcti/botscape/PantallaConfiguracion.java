@@ -83,7 +83,7 @@ public class PantallaConfiguracion extends Pantalla {
         buttonRegresar.setPosition(10,10);
         imgTextConfig.setPosition(ANCHO/2- imgTextConfig.getWidth()/2,4*ALTO/5-imgTextConfig.getHeight()/2);
         btnMusicaX= ANCHO/2- buttonMusica.getWidth()/2;
-        btnMusicaY= 3*ALTO/5-buttonMusica.getHeight()/2;
+        btnMusicaY= ALTO/2-buttonMusica.getHeight()/2;
         buttonMusica.setPosition(btnMusicaX,btnMusicaY);
         //buttonSonido.setPosition(ANCHO/2- buttonSonido.getWidth()/2,2*ALTO/5-buttonSonido.getHeight()/2);
 
@@ -156,8 +156,8 @@ public class PantallaConfiguracion extends Pantalla {
         texturaButtonRegresar= new Texture("Botones/ConfiguracionBtnBack.png");
         texturaButtonMusicaOff= new Texture("Botones/ConfiguracionBtnMusicOff.png");
         texturaButtonMusicaOn= new Texture("Botones/ConfiguracionBtnMusicOn.png");
-        texturaButtonSonido= new Texture("Botones/PausaButtonReanudar.png");
-        texturaTextConfig= new Texture("Textos/PausaTextTittle.png");
+        //texturaButtonSonido= new Texture("Botones/PausaButtonReanudar.png");
+        texturaTextConfig= new Texture("Textos/OptionsText.png");
     }
 
     @Override

@@ -95,6 +95,7 @@ public class Robot extends Objeto {
                 batch.draw(region, sprite.getX(), sprite.getY());
                 break;
             case QUIETO:
+                Gdx.app.log("ULTIMO ESTADO MOV",ultimoEstadoMov.toString());
                 if(ultimoEstadoMov==EstadoMovimiento.MOV_DERECHA){
                     if(sprite.isFlipX())
                         sprite.flip(true,false);
@@ -156,7 +157,8 @@ public class Robot extends Objeto {
             body.setLinearVelocity(body.getLinearVelocity().x/10,body.getLinearVelocity().y);
 
         }
-        estadoMovimiento = EstadoMovimiento.QUIETO;
+        setEstadoMovimiento(EstadoMovimiento.QUIETO);
+        //estadoMovimiento = EstadoMovimiento.QUIETO;
     }
 
     public boolean recolectarMiniVi(TiledMap mapa) {
@@ -211,7 +213,9 @@ public class Robot extends Objeto {
 
     // Modificador de estadoMovimiento
     public void setEstadoMovimiento(EstadoMovimiento estadoMovimiento) {
-        ultimoEstadoMov=this.getEstadoMovimiento();
+        if (this.estadoMovimiento!=EstadoMovimiento.QUIETO) {
+            ultimoEstadoMov = this.getEstadoMovimiento();
+        }
         this.estadoMovimiento = estadoMovimiento;
     }
     public void setEstadoSalto(EstadoSalto estadoSalto) {
