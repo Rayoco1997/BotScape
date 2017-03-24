@@ -314,6 +314,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
     public void render(float delta) {
         actualizarCamara();
         borrarPantalla();
+        batch.setProjectionMatrix(camara.combined);
         world.step(delta,6,2);
         robot.actualizar(mapa);
         if (vidasVIU==2){
@@ -368,6 +369,7 @@ public class NivelTutorial extends Pantalla implements InputProcessor {
 
             escenaPausa.draw();
         } else if (estado== EstadoJuego.JUGANDO){
+            renderarMapa.setView(camara);
             renderarMapa.render();
             //mostrar vidas restantes
             mostrarVidas(vidasVIU);
