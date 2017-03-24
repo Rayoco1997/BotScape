@@ -127,7 +127,7 @@ public class Robot extends Objeto {
 
     private void moverVertical(TiledMap mapa) {
         if(estadoSalto==EstadoSalto.SUBIENDO)
-            body.applyForceToCenter(0f,80f,true);
+            body.applyForceToCenter(0f,90f,true);
         estadoSalto=EstadoSalto.BAJANDO;
     }
 
@@ -138,8 +138,8 @@ public class Robot extends Objeto {
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(1);
         if(estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
             // Revisar si toca una moneda (pies)
-            int x = (int)((sprite.getX()/64)+64);
-            int y = (int)((sprite.getY()/64)+64);
+            int x = (int)((sprite.getX()/64));
+            int y = (int)((sprite.getY()/64));
             TiledMapTileLayer.Cell celda = capa.getCell(x,y);
             if (celda!=null ) {
                 Object tipo = celda.getTile().getProperties().get("tipo");
@@ -154,6 +154,7 @@ public class Robot extends Objeto {
                     body.setLinearVelocity(0f,body.getLinearVelocity().y);
                 }
             } else {
+                Gdx.app.log("moverHorizontal","No choco con nada");
                 if (body.getLinearVelocity().x > 3f)
                     body.applyForceToCenter(10f, 0f, true);
                 else

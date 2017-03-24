@@ -282,6 +282,20 @@ public class NivelTutorial extends Pantalla {
         bodyPiso = world.createBody(bodyDefPiso);
         bodyPiso.createFixture(fixPiso);
         bodyPiso.setUserData(plat1);
+
+        x1 = 128/PIXELS_TO_METERS;
+        y1 = 0/PIXELS_TO_METERS;
+        x2 = 128/PIXELS_TO_METERS;
+        y2 = ALTO/PIXELS_TO_METERS;
+        edgeShape = new EdgeShape();
+        edgeShape.set(x1,y1,x2,y2);
+        fixPiso.shape=edgeShape;
+        fixPiso.friction=.7f;
+        bodyPlat1 = world.createBody(bodyDefPiso);
+        bodyPlat1.createFixture(fixPiso);
+        bodyPlat1.setUserData(plat1);
+
+
         x1 = 576/PIXELS_TO_METERS;
         y1 = 192/PIXELS_TO_METERS;
         x2 = 896/PIXELS_TO_METERS;
@@ -467,7 +481,7 @@ public class NivelTutorial extends Pantalla {
         actualizarCamara();
 
         batch.setProjectionMatrix(camara.combined);
-        if (vidasVIU==4){
+        if ((robot.sprite.getX()+robot.sprite.getWidth()/2)>ANCHO_MAPA){
             estado= EstadoJuego.GANADO;
             if(escenaGanaste==null){
                 escenaGanaste= new EscenaGanaste(vistaHUD, batch);
@@ -528,7 +542,7 @@ public class NivelTutorial extends Pantalla {
             renderarMapa.setView(camara);
             renderarMapa.render();
 
-            debugMatrix=batch.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS,PIXELS_TO_METERS,0);
+            /*debugMatrix=batch.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS,PIXELS_TO_METERS,0);
             debugRenderer.render(world,debugMatrix);
             //mostrar vidas restantes
             /*mostrarVidas(vidasVIU);
@@ -562,7 +576,7 @@ public class NivelTutorial extends Pantalla {
 
             batch.begin();
             enemigo.dibujar(batch);
-            enemigo.mover(600,900);
+            enemigo.mover(1600,2300);
             /*plat1.dibujar(batch);
             plat1.mover(30, 900, 30, 600);*/
 
