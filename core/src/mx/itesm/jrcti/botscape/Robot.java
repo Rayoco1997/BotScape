@@ -63,7 +63,7 @@ public class Robot extends Objeto {
         bodydef.position.set((sprite.getX() + sprite.getWidth() / 2) / 100f,
                 (sprite.getY() + sprite.getHeight() / 2) / 100f);
         shape = new PolygonShape();
-        shape.setAsBox(sprite.getWidth() / 2 / 100f, sprite.getHeight() / 2 / 100f);
+        shape.setAsBox(sprite.getWidth() / 3 / 100f, sprite.getHeight() / 2 / 100f);
         fix.shape = shape;
         body = world.createBody(bodydef);
         body.setUserData(this);
