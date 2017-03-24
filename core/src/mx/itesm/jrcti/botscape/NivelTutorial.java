@@ -702,6 +702,7 @@ public class NivelTutorial extends Pantalla {
 
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
+                    manager.unload("Mapas/Map_TutorialV2.tmx");
                     juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral));
                 }
             });
@@ -718,6 +719,7 @@ public class NivelTutorial extends Pantalla {
                 public void clicked(InputEvent event, float x, float y) {
                     // Regresa al menú
                     musicaFondo.stop();
+                    manager.unload("Mapas/Map_TutorialV2.tmx");
                     juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral));
                 }
             });
@@ -767,6 +769,7 @@ public class NivelTutorial extends Pantalla {
                     Gdx.app.log("clicked", "CLICK SELECCION NIVEL PERDISTE");
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
+                    manager.unload("Mapas/Map_TutorialV2.tmx");
                     juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
                 }
             });
@@ -784,6 +787,7 @@ public class NivelTutorial extends Pantalla {
                     Gdx.app.log("clicked", "CLICK SALIR PERDISTE");
                     // Regresa al menú
                     musicaFondo.stop();
+                    manager.unload("Mapas/Map_TutorialV2.tmx");
                     juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
                 }
             });
@@ -803,6 +807,7 @@ public class NivelTutorial extends Pantalla {
                     // REINTENTAR NIVEL
                     estado = EstadoJuego.JUGANDO;
                     musicaFondo.stop();
+                    manager.unload("Mapas/Map_TutorialV2.tmx");
                     // Regresa el control a la pantalla
                     //Gdx.input.setInputProcessor(escenaNivelTutorial);
                     juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
@@ -837,6 +842,7 @@ public class NivelTutorial extends Pantalla {
                     Gdx.app.log("clicked", "CLICK SELECCION NIVEL PERDISTE");
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
+                    manager.unload("Mapas/Map_TutorialV2.tmx");
                     juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
                 }
             });
@@ -854,6 +860,7 @@ public class NivelTutorial extends Pantalla {
                     Gdx.app.log("clicked", "CLICK SALIR PERDISTE");
                     // Regresa al menú
                     musicaFondo.stop();
+                    manager.unload("Mapas/Map_TutorialV2.tmx");
                     juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
                 }
             });
