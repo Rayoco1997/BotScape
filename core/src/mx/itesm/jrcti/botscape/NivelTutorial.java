@@ -2,6 +2,7 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
  * Created by Cinthya on 15/02/2017.
  */
 
-public class NivelTutorial extends Pantalla{
+public class NivelTutorial extends Pantalla implements InputProcessor {
 
     private World world;
     private OrthogonalTiledMapRenderer renderarMapa;
@@ -120,6 +121,7 @@ public class NivelTutorial extends Pantalla{
         cargarTexturas();
         crearObjetos();
         crearCuerpos();
+        Gdx.input.setInputProcessor(this);
     }
 
     private void crearCuerpos() {
@@ -244,7 +246,7 @@ public class NivelTutorial extends Pantalla{
                     contact.getFixtureB().getBody().getUserData() instanceof Plataforma)||
                         (contact.getFixtureA().getBody().getUserData() instanceof Plataforma &&
                         contact.getFixtureB().getBody().getUserData() instanceof Robot)){
-                    System.out.println("robot.setEstadoSalto(Robot.EstadoSalto.EN_PISO);");
+                    robot.setEstadoSalto(Robot.EstadoSalto.EN_PISO);
                 }
             }
 
@@ -263,6 +265,7 @@ public class NivelTutorial extends Pantalla{
 
             }
         };
+        world.setContactListener(conList);
     }
 
     private void cargarTexturas(){
@@ -386,6 +389,59 @@ public class NivelTutorial extends Pantalla{
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if(screenX<=ANCHO/4&& screenY<ALTO/2){
+            System.out.println("Click izquierdo");
+            robot.setEstadoMovimiento(Robot.EstadoMovimiento.MOV_IZQUIERDA);
+        } else if(screenX>ANCHO/4 && screenY<ALTO/2){
+            System.out.println("Click derecho");
+            robot.setEstadoMovimiento((Robot.EstadoMovimiento.MOV_DERECHA));
+        } else{
+            System.out.println("Click salto");
+            if(robot.getEstadoSalto()==Robot.EstadoSalto.EN_PISO){
+                robot.setEstadoSalto(Robot.EstadoSalto.SUBIENDO);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        robot.frenar();
+        return true;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
     //ESCENA QUE SE MUESTRA CUANDO NO TIENES VIDAS
 
