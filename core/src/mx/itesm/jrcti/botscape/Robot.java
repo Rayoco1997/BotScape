@@ -8,11 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.WorldManifold;
 
 
 /**
@@ -22,7 +24,8 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Robot extends Objeto {
     private final float VELOCIDAD_X = 4;      // Velocidad horizontal
 
-    private Animation<TextureRegion> spriteAnimado;         // Animación caminando
+    private Animation<TextureRegion> spriteAnimadoMov;         // Animación caminando
+    private Animation<TextureRegion> spriteAnimadoSalto;         // Animación saltando
     private float timerAnimacion;                           // Tiempo para cambiar frames de la animación
 
     private EstadoMovimiento estadoMovimiento = EstadoMovimiento.QUIETO;
@@ -34,6 +37,10 @@ public class Robot extends Objeto {
     private BodyDef bodydef;
     private PolygonShape shape;
 
+    private int vidas = 3;
+    private final int TIEMPO_INV_INICIAL = 90;
+    private int tiempoInv = 90;
+
     // Recibe una imagen con varios frames (ver marioSprite.png)
     public Robot(Texture textura, float x, float y, World world, BodyDef.BodyType type,
                  FixtureDef fix) {
@@ -43,14 +50,19 @@ public class Robot extends Objeto {
 
         TextureRegion[][] texturaPersonaje = texturaCompleta.split(233, 195);
         // Crea la animación con tiempo de 0.10 segundos entre frames.
-
-        spriteAnimado = new Animation(0.10f, texturaPersonaje[0][1],
+        spriteAnimadoMov = new Animation(0.10f, texturaPersonaje[0][1],
                 texturaPersonaje[0][2], texturaPersonaje[0][3], texturaPersonaje[0][4],
                 texturaPersonaje[0][5], texturaPersonaje[0][6], texturaPersonaje[0][7],
                 texturaPersonaje[0][8], texturaPersonaje[0][9], texturaPersonaje[0][10],
                 texturaPersonaje[0][11], texturaPersonaje[0][12]);
+
+        spriteAnimadoSalto = new Animation(0.25f, texturaPersonaje[0][13],
+                texturaPersonaje[0][14], texturaPersonaje[0][15], texturaPersonaje[0][16],
+                texturaPersonaje[0][5], texturaPersonaje[0][6], texturaPersonaje[0][7],
+                texturaPersonaje[0][8], texturaPersonaje[0][9], texturaPersonaje[0][10],
+                texturaPersonaje[0][11], texturaPersonaje[0][12]);
         // Animación infinita
-        spriteAnimado.setPlayMode(Animation.PlayMode.LOOP);
+        spriteAnimadoMov.setPlayMode(Animation.PlayMode.LOOP);
         // Inicia el timer que contará tiempo para saber qué frame se dibuja
         timerAnimacion = 0;
         // Crea el sprite con el personaje quieto (idle)
@@ -82,7 +94,7 @@ public class Robot extends Objeto {
             case MOV_IZQUIERDA:
                 timerAnimacion += Gdx.graphics.getDeltaTime();
                 // Frame que se dibujará
-                TextureRegion region = spriteAnimado.getKeyFrame(timerAnimacion);
+                TextureRegion region = spriteAnimadoMov.getKeyFrame(timerAnimacion);
                 if (estadoMovimiento == EstadoMovimiento.MOV_IZQUIERDA) {
                     if (!region.isFlipX()) {
                         region.flip(true, false);
@@ -123,11 +135,25 @@ public class Robot extends Objeto {
                 moverVertical(mapa);
                 break;
         }
+        recuperar();
+
+    }
+
+    private void recuperar() {
+        if(this.getHabilidad()==Habilidad.INVULNERABLE){
+            if(tiempoInv==0){
+                this.setHabilidad(Habilidad.NADA);
+                tiempoInv=TIEMPO_INV_INICIAL;
+            }
+            else{
+                tiempoInv--;
+            }
+        }
     }
 
     private void moverVertical(TiledMap mapa) {
         if(estadoSalto==EstadoSalto.SUBIENDO)
-            body.applyForceToCenter(0f,90f,true);
+            body.applyForceToCenter(0f,80f,true);
         estadoSalto=EstadoSalto.BAJANDO;
     }
 
@@ -135,49 +161,28 @@ public class Robot extends Objeto {
 
     // Mueve el personaje a la derecha/izquierda, prueba choques con paredes
     private void moverHorizontal(TiledMap mapa) {
-        TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(1);
         if(estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
-            // Revisar si toca una moneda (pies)
-            int x = (int)((sprite.getX()/64));
-            int y = (int)((sprite.getY()/64));
-            TiledMapTileLayer.Cell celda = capa.getCell(x,y);
-            if (celda!=null ) {
-                Object tipo = celda.getTile().getProperties().get("tipo");
-                if (!"puerta".equals(tipo) ) {
-                    Gdx.app.log("moverHorizontal","No choco con puerta");
-                    if(body.getLinearVelocity().x<3f)
-                        body.applyForceToCenter(10f, 0f, true);
-                    else
-                        body.setLinearVelocity(3f,body.getLinearVelocity().y);
-                } else{
-                    Gdx.app.log("verga","verga");
-                    body.setLinearVelocity(0f,body.getLinearVelocity().y);
-                }
-            } else {
-                Gdx.app.log("moverHorizontal","No choco con nada");
-                if (body.getLinearVelocity().x > 3f)
+            if(this.getHabilidad()!=Habilidad.INVULNERABLE) {
+                if (body.getLinearVelocity().x < 3f)
+                    body.applyForceToCenter(10f, 0f, true);
+                else
+                    body.setLinearVelocity(3f, body.getLinearVelocity().y);
+            }
+            else if(tiempoInv < TIEMPO_INV_INICIAL/2){
+                if (body.getLinearVelocity().x < 3f)
                     body.applyForceToCenter(10f, 0f, true);
                 else
                     body.setLinearVelocity(3f, body.getLinearVelocity().y);
             }
         }
         else if(estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
-            int x = (int)((sprite.getX()/64));
-            int y = (int)((sprite.getY()/64)+64);
-            TiledMapTileLayer.Cell celda = capa.getCell(x,y);
-            if (celda!=null ) {
-                Object tipo = celda.getTile().getProperties().get("tipo");
-                if (!"puerta".equals(tipo) ) {
-                    Gdx.app.log("moverHorizontal","Choco con puerta");
-                    if(body.getLinearVelocity().x<-3f)
-                        body.applyForceToCenter(-10f, 0f, true);
-                    else
-                        body.setLinearVelocity(-3f,body.getLinearVelocity().y);
-                } else{
-                    body.setLinearVelocity(0f,body.getLinearVelocity().y);
-                }
-            } else {
-                if (body.getLinearVelocity().x > -3f)
+            if(this.getHabilidad()!=Habilidad.INVULNERABLE) {
+                if (body.getLinearVelocity().x < -3f)
+                    body.applyForceToCenter(-10f, 0f, true);
+                else
+                    body.setLinearVelocity(-3f, body.getLinearVelocity().y);
+            } else if(tiempoInv < TIEMPO_INV_INICIAL/2){
+                if (body.getLinearVelocity().x < -3f)
                     body.applyForceToCenter(-10f, 0f, true);
                 else
                     body.setLinearVelocity(-3f, body.getLinearVelocity().y);
@@ -197,6 +202,7 @@ public class Robot extends Objeto {
         //estadoMovimiento = EstadoMovimiento.QUIETO;
     }
 
+    //Mejorar con or de celda izquierda, centro o derecha
     public boolean recolectarMiniVi(TiledMap mapa) {
         // Revisar si toca una moneda (pies)
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
@@ -206,7 +212,7 @@ public class Robot extends Objeto {
         if (celda!=null ) {
             Object tipo = celda.getTile().getProperties().get("tipo");
             if ("miniVi".equals(tipo) ) {
-                Gdx.app.log("robot","true, atrapo miniVi");
+                //Gdx.app.log("robot","true, atrapo miniVi");
                 capa.setCell(x,y,null);    // Borra la moneda del mapa
                 //capa.setCell(x, y, capa.getCell(0, 4)); // Cuadro azul en lugar de la moneda
                 return true;
@@ -261,6 +267,32 @@ public class Robot extends Objeto {
     public void setHabilidad(Habilidad habilidad) {
 
         this.habilidad = habilidad;
+    }
+
+    public void recibirDano(WorldManifold wm) {
+        Vector2 poc = new Vector2(0,0);
+        setVidas(getVidas()-1);
+        poc = wm.getPoints()[0];
+        Gdx.app.log("Daño","colision " + poc.toString());
+        Gdx.app.log("Daño","bodyGetX " + this.body.getPosition().x);
+        if(this.body.getPosition().x<poc.x){
+            Gdx.app.log("Dano","Recibio derecho");
+            this.body.setLinearVelocity(-this.body.getLinearVelocity().x-3f,2f);
+        }
+        else{
+            Gdx.app.log("Dano","Recibio izquierdo");
+            this.body.setLinearVelocity(this.body.getLinearVelocity().x+3f,2f);
+
+        }
+
+    }
+
+    public void setVidas(int vida){
+        vidas = vida;
+    }
+
+    public int getVidas(){
+        return vidas;
     }
 
 
