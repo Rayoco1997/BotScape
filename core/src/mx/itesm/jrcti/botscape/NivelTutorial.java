@@ -108,7 +108,7 @@ public class NivelTutorial extends Pantalla {
     private int contadorMiniVis=0;
     private Texto texto= new Texto();
 
-    private int vidasVIU=3;
+
     private ArrayList<Image> listaVidasVIU = new ArrayList<Image>();
     int altoVidasVIU;
 
@@ -117,17 +117,12 @@ public class NivelTutorial extends Pantalla {
     private FixtureDef fixPiso;
     private EdgeShape edgeShape;
     private Body bodyPlat1;
-    private Body bodyPlat2;
-    private Body bodyPlat3;
-    private Body bodyPlat4;
 
     private FixtureDef fix;
     private Robot robot;
 
     private Enemigo enemigo;
 
-
-    private int tiempoInvulnerable;
 
     public NivelTutorial(Juego j,EstadoMusica estadoMusicaGeneral){
         super();
@@ -143,7 +138,6 @@ public class NivelTutorial extends Pantalla {
         crearObjetos();
         crearCuerpos();
         crearHUD();
-        //Gdx.input.setInputProcessor(this);
     }
 
     private void crearHUD() {
@@ -236,7 +230,7 @@ public class NivelTutorial extends Pantalla {
         Gdx.input.setInputProcessor(escenaHUD);
 
         //LISTA DE VIDAS DE VIU
-        Image vida1= new Image(texturaVidasVIU);
+        /*Image vida1= new Image(texturaVidasVIU);
         altoVidasVIU= (int)ALTO-texturaMiniVI.getHeight()-10;
         vida1.setPosition(ANCHO/2,altoVidasVIU);
         Image vida2= new Image(texturaVidasVIU);
@@ -246,9 +240,18 @@ public class NivelTutorial extends Pantalla {
 
         listaVidasVIU.add(vida1);
         listaVidasVIU.add(vida2);
-        listaVidasVIU.add(vida3);
+        listaVidasVIU.add(vida3);*/
+        altoVidasVIU= (int)ALTO-texturaMiniVI.getHeight()-10;
 
-        for(int i=0;i<vidasVIU;i++){
+
+        for(int i=0;i<robot.getVidas();i++){
+            Image vida = new Image(texturaVidasVIU);
+            if(i!=0) {
+                vida.setPosition(listaVidasVIU.get(i - 1).getX() + vida.getWidth() + 10, altoVidasVIU);
+            } else{
+                vida.setPosition(ANCHO/2,altoVidasVIU);
+            }
+            listaVidasVIU.add(vida);
             escenaHUD.addActor(listaVidasVIU.get(i));
         }
 
@@ -373,7 +376,6 @@ public class NivelTutorial extends Pantalla {
         texturaFondo.setPosition(0,0);
         world=new World(new Vector2(0,-5),true);
         createCollisionListener();
-        tiempoInvulnerable=0;
 
 
         //escenaNivelTutorial = new Stage(vista,batch);
@@ -423,9 +425,9 @@ public class NivelTutorial extends Pantalla {
                                 contact.getFixtureB().getBody().getUserData() instanceof Robot)){
                     //Gdx.app.log("DAño","Khe");
                     if(robot.getHabilidad()!=Robot.Habilidad.INVULNERABLE) {
-                        vidasVIU--;
                         escenaHUD.getActors().get(escenaHUD.getActors().size-1).remove();
                         robot.setHabilidad(Robot.Habilidad.INVULNERABLE);
+                        robot.recibirDano(contact.getWorldManifold());
 
                     }
                 }
@@ -496,7 +498,7 @@ public class NivelTutorial extends Pantalla {
             escenaGanaste.draw();
         }
 
-        if(vidasVIU==0){
+        if(robot.getVidas()==0){
             estado= EstadoJuego.PIERDE;
             if(escenaPerdiste==null) {
                 escenaPerdiste = new EscenaPerdiste(vistaHUD, batch);
@@ -519,7 +521,7 @@ public class NivelTutorial extends Pantalla {
                     escenaPausa = new EscenaPausa(vistaHUD, batch);
                 }
                 Gdx.input.setInputProcessor(escenaPausa);
-            } else if(estado== EstadoJuego.PIERDE||estado== EstadoJuego.GANADO){
+            } else if(estado == EstadoJuego.PIERDE||estado == EstadoJuego.GANADO){
                 //ESTADO CUANDO EL JUGADOR HA PERDIDO O GANANDO
                 musicaFondo.stop();
                 juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral));
@@ -562,16 +564,7 @@ public class NivelTutorial extends Pantalla {
             }*/
 
             //System.out.println(robot.getHabilidad());
-            if(robot.getHabilidad()==Robot.Habilidad.INVULNERABLE){
-                Gdx.app.log("Daño","Es invulnerable");
-                if(tiempoInvulnerable>=60){
-                    robot.setHabilidad(Robot.Habilidad.NADA);
-                }
-                tiempoInvulnerable++;
-            }
-            else{
-                tiempoInvulnerable=0;
-            }
+
 
             //Debugging
             //debugMatrix = batch.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS,
