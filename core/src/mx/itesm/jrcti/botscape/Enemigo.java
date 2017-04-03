@@ -58,10 +58,10 @@ public class Enemigo extends Objeto implements MovimientoAutomatico {
         bodydef = new BodyDef();
         bodydef.type = type;
         bodydef.fixedRotation = true;
-        bodydef.position.set((sprite.getX() + sprite.getWidth() / 2) / 100f,
-                (sprite.getY() + sprite.getHeight() / 2) / 100f);
+        bodydef.position.set((sprite.getX() + sprite.getWidth() / 2) / PantallaNivel.getPtM(),
+                (sprite.getY() + sprite.getHeight() / 2) / PantallaNivel.getPtM());
         shape = new PolygonShape();
-        shape.setAsBox(sprite.getWidth() / 4 / 100f, 2*sprite.getHeight() / 5 / 100f);
+        shape.setAsBox(sprite.getWidth() / 4 / PantallaNivel.getPtM(), 2*sprite.getHeight() / 5 /PantallaNivel.getPtM());
         fix.shape = shape;
         body = world.createBody(bodydef);
         body.setUserData(this);
@@ -97,8 +97,8 @@ public class Enemigo extends Objeto implements MovimientoAutomatico {
                 }
 
         }
-        sprite.setPosition((body.getPosition().x*NivelTutorial.PIXELS_TO_METERS)-sprite.getWidth()/2,
-                (body.getPosition().y*NivelTutorial.PIXELS_TO_METERS)-sprite.getHeight()/2);
+        sprite.setPosition((body.getPosition().x*PantallaNivel.getPtM())-sprite.getWidth()/2,
+                (body.getPosition().y*PantallaNivel.getPtM())-sprite.getHeight()/2);
     }
 
     public void dibujar(SpriteBatch batch){

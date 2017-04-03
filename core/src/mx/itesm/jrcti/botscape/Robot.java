@@ -55,12 +55,12 @@ public class Robot extends Objeto {
                 texturaPersonaje[0][5], texturaPersonaje[0][6], texturaPersonaje[0][7],
                 texturaPersonaje[0][8], texturaPersonaje[0][9], texturaPersonaje[0][10],
                 texturaPersonaje[0][11], texturaPersonaje[0][12]);
-
+        //Crea la animación de salto
         spriteAnimadoSalto = new Animation(0.25f, texturaPersonaje[0][13],
                 texturaPersonaje[0][14], texturaPersonaje[0][15], texturaPersonaje[0][16],
-                texturaPersonaje[0][5], texturaPersonaje[0][6], texturaPersonaje[0][7],
-                texturaPersonaje[0][8], texturaPersonaje[0][9], texturaPersonaje[0][10],
-                texturaPersonaje[0][11], texturaPersonaje[0][12]);
+                texturaPersonaje[0][17], texturaPersonaje[0][18], texturaPersonaje[0][19],
+                texturaPersonaje[0][20], texturaPersonaje[0][21], texturaPersonaje[0][22],
+                texturaPersonaje[0][23], texturaPersonaje[0][24]);
         // Animación infinita
         spriteAnimadoMov.setPlayMode(Animation.PlayMode.LOOP);
         // Inicia el timer que contará tiempo para saber qué frame se dibuja
@@ -72,23 +72,21 @@ public class Robot extends Objeto {
         bodydef = new BodyDef();
         bodydef.type = type;
         bodydef.fixedRotation = true;
-        bodydef.position.set((sprite.getX() + sprite.getWidth() / 2) / 100f,
-                (sprite.getY() + sprite.getHeight() / 2) / 100f);
+        bodydef.position.set((sprite.getX() + sprite.getWidth() / 2) / PantallaNivel.getPtM(),
+                (sprite.getY() + sprite.getHeight() / 2) / PantallaNivel.getPtM());
         shape = new PolygonShape();
-        shape.setAsBox(sprite.getWidth() / 3 / 100f, sprite.getHeight() / 2 / 100f);
+        shape.setAsBox(sprite.getWidth() / 3 / PantallaNivel.getPtM(), sprite.getHeight() / 2 / PantallaNivel.getPtM());
         fix.shape = shape;
         body = world.createBody(bodydef);
         body.setUserData(this);
-        /*body.setUserData(this.getClass());
-        body = world.createBody(bodydef);*/
         body.createFixture(fix);
     }
 
     // Dibuja el personaje
     public void dibujar(SpriteBatch batch) {
         // Dibuja el personaje dependiendo del estadoMovimiento
-        sprite.setPosition((body.getPosition().x * NivelTutorial.PIXELS_TO_METERS) - sprite.getWidth() / 2,
-                (body.getPosition().y * NivelTutorial.PIXELS_TO_METERS) - sprite.getHeight()/ 2);
+        sprite.setPosition((body.getPosition().x * PantallaNivel.getPtM()) - sprite.getWidth() / 2,
+                (body.getPosition().y * PantallaNivel.getPtM()) - sprite.getHeight()/ 2);
         switch (estadoMovimiento) {
             case MOV_DERECHA:
             case MOV_IZQUIERDA:
@@ -153,7 +151,7 @@ public class Robot extends Objeto {
 
     private void moverVertical(TiledMap mapa) {
         if(estadoSalto==EstadoSalto.SUBIENDO)
-            body.applyForceToCenter(0f,80f,true);
+            body.applyForceToCenter(0f,200f,true);
         estadoSalto=EstadoSalto.BAJANDO;
     }
 
@@ -163,29 +161,29 @@ public class Robot extends Objeto {
     private void moverHorizontal(TiledMap mapa) {
         if(estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
             if(this.getHabilidad()!=Habilidad.INVULNERABLE) {
-                if (body.getLinearVelocity().x < 3f)
-                    body.applyForceToCenter(10f, 0f, true);
+                if (body.getLinearVelocity().x < 6f)
+                    body.applyForceToCenter(20f, 0f, true);
                 else
-                    body.setLinearVelocity(3f, body.getLinearVelocity().y);
+                    body.setLinearVelocity(6f, body.getLinearVelocity().y);
             }
             else if(tiempoInv < TIEMPO_INV_INICIAL/2){
-                if (body.getLinearVelocity().x < 3f)
-                    body.applyForceToCenter(10f, 0f, true);
+                if (body.getLinearVelocity().x < 6f)
+                    body.applyForceToCenter(20f, 0f, true);
                 else
-                    body.setLinearVelocity(3f, body.getLinearVelocity().y);
+                    body.setLinearVelocity(6f, body.getLinearVelocity().y);
             }
         }
         else if(estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
             if(this.getHabilidad()!=Habilidad.INVULNERABLE) {
-                if (body.getLinearVelocity().x < -3f)
-                    body.applyForceToCenter(-10f, 0f, true);
+                if (body.getLinearVelocity().x < -6f)
+                    body.applyForceToCenter(-20f, 0f, true);
                 else
-                    body.setLinearVelocity(-3f, body.getLinearVelocity().y);
+                    body.setLinearVelocity(-6f, body.getLinearVelocity().y);
             } else if(tiempoInv < TIEMPO_INV_INICIAL/2){
-                if (body.getLinearVelocity().x < -3f)
-                    body.applyForceToCenter(-10f, 0f, true);
+                if (body.getLinearVelocity().x < -6f)
+                    body.applyForceToCenter(-20f, 0f, true);
                 else
-                    body.setLinearVelocity(-3f, body.getLinearVelocity().y);
+                    body.setLinearVelocity(-6f, body.getLinearVelocity().y);
             }
         }
     }
@@ -204,9 +202,8 @@ public class Robot extends Objeto {
 
     //Mejorar con or de celda izquierda, centro o derecha
     public boolean recolectarMiniVi(TiledMap mapa) {
-        // Revisar si toca una moneda (pies)
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
-        int x = (int)((sprite.getX()/64));
+        int x = (int)((sprite.getX()/64)+1);
         int y = (int)(sprite.getY()/64);
         TiledMapTileLayer.Cell celda = capa.getCell(x,y);
         if (celda!=null ) {
@@ -222,7 +219,6 @@ public class Robot extends Objeto {
     }
 
     public boolean moverPalanca(TiledMap mapa) {
-        // Revisar si toca una moneda (pies)
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
         int x = (int)(sprite.getX()/64);
         int y = (int)(sprite.getY()/64)+1;
@@ -277,11 +273,11 @@ public class Robot extends Objeto {
         Gdx.app.log("Daño","bodyGetX " + this.body.getPosition().x);
         if(this.body.getPosition().x<poc.x){
             Gdx.app.log("Dano","Recibio derecho");
-            this.body.setLinearVelocity(-this.body.getLinearVelocity().x-3f,2f);
+            this.body.setLinearVelocity(-this.body.getLinearVelocity().x-5f,3f);
         }
         else{
             Gdx.app.log("Dano","Recibio izquierdo");
-            this.body.setLinearVelocity(this.body.getLinearVelocity().x+3f,2f);
+            this.body.setLinearVelocity(this.body.getLinearVelocity().x+5f,3f);
 
         }
 

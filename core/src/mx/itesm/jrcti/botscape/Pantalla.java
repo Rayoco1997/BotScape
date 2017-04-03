@@ -25,7 +25,7 @@ public abstract class Pantalla implements Screen {
     protected Viewport vista;
 
     public Pantalla(){
-        camara = new OrthographicCamera(ANCHO/100f, ALTO/100f);
+        camara = new OrthographicCamera(ANCHO, ALTO);
         camara.position.set(ANCHO/2, ALTO/2,0);
         camara.update();
         vista = new StretchViewport(ANCHO, ALTO, camara);

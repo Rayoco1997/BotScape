@@ -53,31 +53,19 @@ public class NivelTutorial extends Pantalla {
     private OrthogonalTiledMapRenderer renderarMapa;
     private SpriteBatch batch;
     private TiledMap mapa;
-    public static final float PIXELS_TO_METERS=100f;
+
     public static final int ANCHO_MAPA=3840;
 
     //Texturas
     Sprite texturaFondo;
     private Texture VIUWalk_Cycle;
-    private Texture texturaEnemigo;
     private Texture texturaPlataforma;
-    private Texture texturaBoton;
-    private Texture texturaIman;
     private Texture texturaMiniVI;
-    private Texture texturaVida;
-    private Texture texturaMiniVIRecolectados;
-    private Texture texturaPiso;
-    private Texture texturaTutorial;
-    private Texture texturaEscalon;
-    private Texture texturaPisoVerde;
-    private Texture texturaSalida;
     private Texture texturaFondoTutorial;
     private Texture texturaBtnPausa;
     private Texture texturaBtnIzquierda;
     private Texture texturaBtnDerecha;
     private Texture texturaBtnSaltar;
-    private Texture texturaBtnUsar;
-    private Texture texturaReintentar;
     private Texture LUGWalk_Cycle;
     private Texture texturaVidasVIU;
 
@@ -141,7 +129,6 @@ public class NivelTutorial extends Pantalla {
     }
 
     private void crearHUD() {
-
         camaraHUD = new OrthographicCamera(ANCHO, ALTO);
         camaraHUD.position.set(ANCHO / 2, ALTO / 2, 0);
         camaraHUD.update();
@@ -149,6 +136,89 @@ public class NivelTutorial extends Pantalla {
         escenaVidasVIU = new Stage(vistaHUD, batch);
         escenaHUD = new Stage(vistaHUD);
 
+        dibujarBtnPausa();
+        dibujarBtnIzq();
+        dibujarBtnDer();
+        dibujarBtnSalto();
+
+        //CREANDO ICONO DE MINIVI Contador
+        Image iconoMiniVi= new Image(texturaMiniVI);
+        iconoMiniVi.setPosition(ANCHO-2*iconoMiniVi.getWidth()-35,ALTO-iconoMiniVi.getHeight()-20);
+        escenaHUD.addActor(iconoMiniVi);
+
+        Gdx.input.setInputProcessor(escenaHUD);
+
+        altoVidasVIU= (int)ALTO-texturaMiniVI.getHeight()-10;
+        for(int i=0;i<robot.getVidas();i++){
+            Image vida = new Image(texturaVidasVIU);
+            if(i!=0) {
+                vida.setPosition(listaVidasVIU.get(i - 1).getX() + vida.getWidth() + 10, altoVidasVIU);
+            } else{
+                vida.setPosition(ANCHO/2,altoVidasVIU);
+            }
+            listaVidasVIU.add(vida);
+            escenaHUD.addActor(listaVidasVIU.get(i));
+        }
+
+
+    }
+
+    private void dibujarBtnSalto() {
+        TextureRegionDrawable trdBtnMovSalto= new TextureRegionDrawable(new TextureRegion(texturaBtnSaltar));
+        ImageButton btnMovSalto = new ImageButton(trdBtnMovSalto);
+        btnMovSalto.setPosition(6*ANCHO/8,50);
+        escenaHUD.addActor(btnMovSalto);
+        btnMovSalto.addListener( new InputListener(){
+
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //Gdx.app.log("click", "Salto");
+                if (robot.getEstadoSalto() == Robot.EstadoSalto.EN_PISO) {
+                    robot.setEstadoSalto(Robot.EstadoSalto.SUBIENDO);
+                }
+                return true;
+            }
+        });
+    }
+
+    private void dibujarBtnDer() {
+        TextureRegionDrawable trdBtnMovDerecha = new TextureRegionDrawable(new TextureRegion(texturaBtnDerecha));
+        ImageButton btnMovDer = new ImageButton(trdBtnMovDerecha);
+        btnMovDer.setPosition(ANCHO/4,50);
+        escenaHUD.addActor(btnMovDer);
+        btnMovDer.addListener( new InputListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                //Gdx.app.log("Click","Mover derecha");
+                robot.setEstadoMovimiento(Robot.EstadoMovimiento.MOV_DERECHA);
+                return true;
+            }
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                //Gdx.app.log("UnClick", "Mover derecha");
+                robot.frenar();
+
+            }
+        });
+    }
+
+    private void dibujarBtnIzq() {
+        TextureRegionDrawable trdBtnMovIzquierda = new TextureRegionDrawable(new TextureRegion(texturaBtnIzquierda));
+        ImageButton btnMovIzq = new ImageButton(trdBtnMovIzquierda);
+        btnMovIzq.setPosition(ANCHO/8,50);
+        escenaHUD.addActor(btnMovIzq);
+        btnMovIzq.addListener(new InputListener(){
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                //Gdx.app.log("Click","Mover izquierda");
+                robot.setEstadoMovimiento(Robot.EstadoMovimiento.MOV_IZQUIERDA);
+                return true;
+            }
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                //Gdx.app.log("UnClick", "Mover izquierda");
+                robot.frenar();
+
+            }
+        });
+    }
+
+    private void dibujarBtnPausa() {
         //Botón para ir al menu de pausa
         TextureRegionDrawable trdBtnPausa = new TextureRegionDrawable(new TextureRegion(texturaBtnPausa));
         ImageButton btnPausa = new ImageButton(trdBtnPausa);
@@ -169,93 +239,6 @@ public class NivelTutorial extends Pantalla {
                 }
             }
         });
-
-        TextureRegionDrawable trdBtnMovIzquierda = new TextureRegionDrawable(new TextureRegion(texturaBtnIzquierda));
-        ImageButton btnMovIzq = new ImageButton(trdBtnMovIzquierda);
-        btnMovIzq.setPosition(ANCHO/8,50);
-        escenaHUD.addActor(btnMovIzq);
-        btnMovIzq.addListener(new InputListener(){
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                //Gdx.app.log("Click","Mover izquierda");
-                robot.setEstadoMovimiento(Robot.EstadoMovimiento.MOV_IZQUIERDA);
-                return true;
-            }
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                //Gdx.app.log("UnClick", "Mover izquierda");
-                robot.frenar();
-
-            }
-        });
-
-        TextureRegionDrawable trdBtnMovDerecha = new TextureRegionDrawable(new TextureRegion(texturaBtnDerecha));
-        ImageButton btnMovDer = new ImageButton(trdBtnMovDerecha);
-        btnMovDer.setPosition(ANCHO/4,50);
-        escenaHUD.addActor(btnMovDer);
-        btnMovDer.addListener( new InputListener(){
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                //Gdx.app.log("Click","Mover derecha");
-                robot.setEstadoMovimiento(Robot.EstadoMovimiento.MOV_DERECHA);
-                return true;
-            }
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                //Gdx.app.log("UnClick", "Mover derecha");
-                robot.frenar();
-
-            }
-        });
-
-        TextureRegionDrawable trdBtnMovSalto= new TextureRegionDrawable(new TextureRegion(texturaBtnSaltar));
-        ImageButton btnMovSalto = new ImageButton(trdBtnMovSalto);
-        btnMovSalto.setPosition(6*ANCHO/8,50);
-        escenaHUD.addActor(btnMovSalto);
-        btnMovSalto.addListener( new InputListener(){
-
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //Gdx.app.log("click", "Salto");
-                if (robot.getEstadoSalto() == Robot.EstadoSalto.EN_PISO) {
-                    robot.setEstadoSalto(Robot.EstadoSalto.SUBIENDO);
-                }
-                return true;
-            }
-        });
-
-
-
-        //CREANDO ICONO DE MINIVI Contador
-
-        Image iconoMiniVi= new Image(texturaMiniVI);
-        iconoMiniVi.setPosition(ANCHO-2*iconoMiniVi.getWidth()-35,ALTO-iconoMiniVi.getHeight()-20);
-        escenaHUD.addActor(iconoMiniVi);
-
-        Gdx.input.setInputProcessor(escenaHUD);
-
-        //LISTA DE VIDAS DE VIU
-        /*Image vida1= new Image(texturaVidasVIU);
-        altoVidasVIU= (int)ALTO-texturaMiniVI.getHeight()-10;
-        vida1.setPosition(ANCHO/2,altoVidasVIU);
-        Image vida2= new Image(texturaVidasVIU);
-        vida2.setPosition(vida1.getX()+vida2.getWidth()+10,altoVidasVIU);
-        Image vida3= new Image(texturaVidasVIU);
-        vida3.setPosition(vida2.getX()+ vida3.getWidth()+10,altoVidasVIU);
-
-        listaVidasVIU.add(vida1);
-        listaVidasVIU.add(vida2);
-        listaVidasVIU.add(vida3);*/
-        altoVidasVIU= (int)ALTO-texturaMiniVI.getHeight()-10;
-
-
-        for(int i=0;i<robot.getVidas();i++){
-            Image vida = new Image(texturaVidasVIU);
-            if(i!=0) {
-                vida.setPosition(listaVidasVIU.get(i - 1).getX() + vida.getWidth() + 10, altoVidasVIU);
-            } else{
-                vida.setPosition(ANCHO/2,altoVidasVIU);
-            }
-            listaVidasVIU.add(vida);
-            escenaHUD.addActor(listaVidasVIU.get(i));
-        }
-
-
     }
 
     private void crearCuerpos() {
@@ -274,10 +257,10 @@ public class NivelTutorial extends Pantalla {
     private void crearPiso() {
         bodyDefPiso = new BodyDef();
         bodyDefPiso.type = BodyDef.BodyType.StaticBody;
-        float x1= -100f/PIXELS_TO_METERS;
-        float y1=128f/PIXELS_TO_METERS;
-        float x2= 4000/PIXELS_TO_METERS;
-        float y2=128f/PIXELS_TO_METERS;
+        float x1= -100f/PantallaNivel.getPtM();
+        float y1=128f/PantallaNivel.getPtM();
+        float x2= 4000/PantallaNivel.getPtM();
+        float y2=128f/PantallaNivel.getPtM();
         bodyDefPiso.position.set(0,0);
         fixPiso = new FixtureDef();
         edgeShape = new EdgeShape();
@@ -288,10 +271,10 @@ public class NivelTutorial extends Pantalla {
         bodyPiso.createFixture(fixPiso);
         bodyPiso.setUserData(plat1);
 
-        x1 = 128/PIXELS_TO_METERS;
-        y1 = 0/PIXELS_TO_METERS;
-        x2 = 128/PIXELS_TO_METERS;
-        y2 = ALTO/PIXELS_TO_METERS;
+        x1 = 128/PantallaNivel.getPtM();
+        y1 = 0/PantallaNivel.getPtM();
+        x2 = 128/PantallaNivel.getPtM();
+        y2 = ALTO/PantallaNivel.getPtM();
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
         fixPiso.shape=edgeShape;
@@ -301,10 +284,10 @@ public class NivelTutorial extends Pantalla {
         bodyPlat1.setUserData(plat1);
 
 
-        x1 = 576/PIXELS_TO_METERS;
-        y1 = 192/PIXELS_TO_METERS;
-        x2 = 896/PIXELS_TO_METERS;
-        y2 = 192/PIXELS_TO_METERS;
+        x1 = 576/PantallaNivel.getPtM();
+        y1 = 192/PantallaNivel.getPtM();
+        x2 = 896/PantallaNivel.getPtM();
+        y2 = 192/PantallaNivel.getPtM();
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
         fixPiso.shape=edgeShape;
@@ -313,8 +296,8 @@ public class NivelTutorial extends Pantalla {
         bodyPlat1.createFixture(fixPiso);
         bodyPlat1.setUserData(plat1);
 
-        x1 = 1216/PIXELS_TO_METERS;
-        x2 = 1536/PIXELS_TO_METERS;
+        x1 = 1216/PantallaNivel.getPtM();
+        x2 = 1536/PantallaNivel.getPtM();
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
         fixPiso.shape=edgeShape;
@@ -323,8 +306,8 @@ public class NivelTutorial extends Pantalla {
         bodyPlat1.createFixture(fixPiso);
         bodyPlat1.setUserData(plat1);
 
-        x1 = 2304/PIXELS_TO_METERS;
-        x2 = 2624/PIXELS_TO_METERS;
+        x1 = 2304/PantallaNivel.getPtM();
+        x2 = 2624/PantallaNivel.getPtM();
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
         fixPiso.shape=edgeShape;
@@ -333,10 +316,10 @@ public class NivelTutorial extends Pantalla {
         bodyPlat1.createFixture(fixPiso);
         bodyPlat1.setUserData(plat1);
 
-        x1 = 3584/PIXELS_TO_METERS;
-        y1 =  320/PIXELS_TO_METERS;
-        x2 = 3840/PIXELS_TO_METERS;
-        y2 = 320/PIXELS_TO_METERS;
+        x1 = 3584/PantallaNivel.getPtM();
+        y1 =  320/PantallaNivel.getPtM();
+        x2 = 3840/PantallaNivel.getPtM();
+        y2 = 320/PantallaNivel.getPtM();
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
         fixPiso.shape=edgeShape;
@@ -377,35 +360,12 @@ public class NivelTutorial extends Pantalla {
         world=new World(new Vector2(0,-5),true);
         createCollisionListener();
 
-
-        //escenaNivelTutorial = new Stage(vista,batch);
-        //escenaVidasVIU= new Stage(vista,batch);
-
-
         //Debugger
-        debugRenderer = new Box2DDebugRenderer();
+        //debugRenderer = new Box2DDebugRenderer();
 
         plat1 = new Plataforma(texturaPlataforma, 3, 3, 30, 30,
                 Plataforma.EstadoMovimiento.MOV_DERECHA);
 
-
-
-        //CREANDO AL ARRAY LIST PARA LAS VIDAS DE VIU
-        /*Image vida1= new Image(texturaVidasVIU);
-        altoVidasVIU= (int)ALTO-texturaMiniVI.getHeight()-10;
-        vida1.setPosition(ANCHO/2,altoVidasVIU);
-        Image vida2= new Image(texturaVidasVIU);
-        vida2.setPosition(vida1.getX()+vida2.getWidth()+10,altoVidasVIU);
-        Image vida3= new Image(texturaVidasVIU);
-        vida3.setPosition(vida2.getX()+ vida3.getWidth()+10,altoVidasVIU);
-
-        listaVidasVIU.add(vida1);
-        listaVidasVIU.add(vida2);
-        listaVidasVIU.add(vida3);*/
-
-
-
-        //Gdx.input.setInputProcessor(escenaNivelTutorial);
         Gdx.input.setCatchBackKey(true);
     }
 
@@ -415,12 +375,14 @@ public class NivelTutorial extends Pantalla {
             public void beginContact(Contact contact) {
                 if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
                     contact.getFixtureB().getBody().getUserData() instanceof Plataforma)||
+
                         (contact.getFixtureA().getBody().getUserData() instanceof Plataforma &&
                         contact.getFixtureB().getBody().getUserData() instanceof Robot)){
                     robot.setEstadoSalto(Robot.EstadoSalto.EN_PISO);
                 }
                 if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
                         contact.getFixtureB().getBody().getUserData() instanceof Enemigo)||
+
                         (contact.getFixtureA().getBody().getUserData() instanceof Enemigo &&
                                 contact.getFixtureB().getBody().getUserData() instanceof Robot)){
                     //Gdx.app.log("DAño","Khe");
@@ -453,40 +415,26 @@ public class NivelTutorial extends Pantalla {
 
     private void cargarTexturas(){
         VIUWalk_Cycle = manager.get("Personaje/VIUWalk_Cycle.png");
-        texturaEnemigo = manager.get("NivelEnemigo.png");
         texturaPlataforma = manager.get("NivelPlataforma.png");
-        texturaBoton = manager.get("NivelBoton.png");
-        texturaIman = manager.get("NivelIman.png");
         texturaMiniVI = manager.get("NivelMiniVI.png");
-        texturaVida = manager.get("NivelVida.png");
-        texturaMiniVIRecolectados = manager.get("NivelContador.png");
-        texturaPiso = manager.get("NivelPiso.png");
-        texturaEscalon = manager.get("NivelEscalon.png");
-        texturaSalida = manager.get("NivelSalida.png");
         texturaFondoTutorial = manager.get("Fondos/NivelTutorialFondo.jpg");
         texturaBtnPausa = manager.get("NivelPausa.png");
         texturaBtnIzquierda = manager.get("NivelIzquierda.png");
         texturaBtnDerecha = manager.get("NivelDerecha.png");
         texturaBtnSaltar = manager.get("NivelSaltar.png");
-        texturaBtnUsar = manager.get("NivelUsar.png");
-        texturaPisoVerde = manager.get ("NivelPiso2.png");
-        texturaTutorial = manager.get("Tutorial2.png");
-        texturaReintentar= manager.get("Botones/PerdisteBtnReintentar.png");
         texturaBtnIzquierda = manager.get("Botones/MovIzqButton.png");
         texturaBtnDerecha =  manager.get("Botones/MovDerButton.png");
         texturaBtnSaltar = manager.get("Botones/MovUpButton.png");
         LUGWalk_Cycle = manager.get("Personaje/LUG7 Walk_Cycle.png");
         texturaVidasVIU= manager.get("VidasVIU.png");
-
-
     }
 
     @Override
     public void render(float delta) {
         borrarPantalla();
         actualizarCamara();
-
         batch.setProjectionMatrix(camara.combined);
+
         if ((robot.sprite.getX()+robot.sprite.getWidth()/2)>ANCHO_MAPA){
             estado= EstadoJuego.GANADO;
             if(escenaGanaste==null){
@@ -552,26 +500,15 @@ public class NivelTutorial extends Pantalla {
             renderarMapa.render();
 
 
-            /*debugMatrix=batch.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS,PIXELS_TO_METERS,0);
+            /*debugMatrix=batch.getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
             debugRenderer.render(world,debugMatrix);
-            //mostrar vidas restantes
-            /*mostrarVidas(vidasVIU);
-            escenaVidasVIU.draw();*/
-
-            /*if(vidasVIU!= 3) {
-
-                escenaHUD.getActors().get(escenaHUD.getActors().size - 3-vi).remove();
-            }*/
-
-            //System.out.println(robot.getHabilidad());
 
 
             //Debugging
-            //debugMatrix = batch.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS,
-                    //PIXELS_TO_METERS, 0);
+            debugMatrix = batch.getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),
+                    PantallaNivel.getPtM(), 0);
+            */
 
-
-            //escenaNivelTutorial.draw();
 
 
 

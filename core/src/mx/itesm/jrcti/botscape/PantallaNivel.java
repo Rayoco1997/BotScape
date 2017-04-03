@@ -8,7 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 
 public abstract class PantallaNivel extends Pantalla {
 
-    private static final float PIXELS_TO_METERS = 100f;
+    private static final float PIXELS_TO_METERS = 64f;
 
     public PantallaNivel(){
         super();
