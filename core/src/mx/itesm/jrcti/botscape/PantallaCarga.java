@@ -100,17 +100,11 @@ public class PantallaCarga extends Pantalla{
         manager.load("NivelBoton.png", Texture.class);
         manager.load("NivelIman.png", Texture.class);
         manager.load("NivelMiniVI.png", Texture.class);
-        manager.load("NivelVida.png", Texture.class);
-        manager.load("NivelContador.png", Texture.class);
         manager.load("NivelPiso.png", Texture.class);
         manager.load("NivelEscalon.png", Texture.class);
         manager.load("NivelSalida.png", Texture.class);
         manager.load("Fondos/PausaFondo.jpg", Texture.class);
         manager.load("NivelPausa.png", Texture.class);
-        manager.load("NivelIzquierda.png", Texture.class);
-        manager.load("NivelDerecha.png", Texture.class);
-        manager.load("NivelSaltar.png", Texture.class);
-        manager.load("NivelUsar.png", Texture.class);
         manager.load("NivelPiso2.png", Texture.class);
         manager.load("Tutorial2.png", Texture.class);
         manager.load("Botones/PausaButtonMenuPrin.png", Texture.class);

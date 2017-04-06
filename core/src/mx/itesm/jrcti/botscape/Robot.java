@@ -151,7 +151,7 @@ public class Robot extends Objeto {
 
     private void moverVertical(TiledMap mapa) {
         if(estadoSalto==EstadoSalto.SUBIENDO)
-            body.applyForceToCenter(0f,200f,true);
+            body.applyForceToCenter(0f,400f,true);
         estadoSalto=EstadoSalto.BAJANDO;
     }
 
