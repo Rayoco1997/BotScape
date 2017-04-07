@@ -281,6 +281,7 @@ public class NivelTutorial extends PantallaNivel {
             plat1.mover(30, 900, 30, 600);*/
 
             buscarMiniVis();
+            getRobot().moverPalanca(getMapa());
 
             //para mostrar el puntaje de mini vis
             texto.mostrarMensaje(getBatch(), Integer.toString(contadorMiniVis), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);

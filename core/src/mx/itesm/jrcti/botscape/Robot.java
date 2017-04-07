@@ -219,16 +219,19 @@ public class Robot extends Objeto {
     }
 
     public boolean moverPalanca(TiledMap mapa) {
+        // Revisar si toca una moneda (pies)
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
         int x = (int)(sprite.getX()/64);
-        int y = (int)(sprite.getY()/64)+1;
+        int y = (int)(sprite.getY()/64);
         TiledMapTileLayer.Cell celda = capa.getCell(x,y);
         if (celda!=null ) {
             Object tipo = celda.getTile().getProperties().get("tipo");
             if ( "palanca".equals(tipo) ) {
-                //capa.setCell(x,y,null);    // Borra la moneda del mapa
-                capa.setCell(x,y,capa.getCell(0,4)); // Cuadro azul en lugar de la moneda
-                mapa.getLayers().remove(1);
+                //capa.setCell(x,y,null);// Borra la moneda del mapa
+                //capa.setCell(x,y,capa.getCell(0,4)); // Cuadro azul en lugar de la moneda
+                capa.setCell(x,y,celda.setFlipHorizontally(true));
+                mapa.getLayers().get(1).setVisible(!mapa.getLayers().get(1).isVisible());
+
                 return true;
             }
         }
