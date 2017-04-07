@@ -385,7 +385,7 @@ public abstract class PantallaNivel extends Pantalla {
     protected class EscenaPerdiste extends Stage {
         public EscenaPerdiste(Viewport vista, SpriteBatch batch) {
             super(vista, batch);
-            Texture texturaRectangulo = manager.get("Fondos/PausaFondo.jpg");
+            Texture texturaRectangulo = manager.get("Fondos/PantallaPerdiste.jpg");
             Image imgRectangulo = new Image(texturaRectangulo);
             this.addActor(imgRectangulo);
 
@@ -393,7 +393,7 @@ public abstract class PantallaNivel extends Pantalla {
             Texture texturaBtnSelecNivel = manager.get("Botones/PausaButtonSeleccionarNivel.png");
             TextureRegionDrawable trdSeleccion = new TextureRegionDrawable(new TextureRegion(texturaBtnSelecNivel));
             ImageButton btnSeleccionar = new ImageButton(trdSeleccion);
-            btnSeleccionar.setPosition(ANCHO / 2 - btnSeleccionar.getWidth() / 2 + 66, 1 * ALTO / 3 - 80);
+            btnSeleccionar.setPosition(3* ANCHO /5, ALTO / 10 );
             btnSeleccionar.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -425,11 +425,11 @@ public abstract class PantallaNivel extends Pantalla {
             this.addActor(btnSalir);
 
             // REINTENTAR
-            Texture texturabtnReanudar = manager.get("Botones/PerdisteBtnReintentar.png");
+            Texture texturabtnReintentar = manager.get("Botones/PantallaRetry.png");
             TextureRegionDrawable trdReintentar = new TextureRegionDrawable(
-                    new TextureRegion(texturabtnReanudar));
+                    new TextureRegion(texturabtnReintentar));
             ImageButton btnReanudar = new ImageButton(trdReintentar);
-            btnReanudar.setPosition(ANCHO / 2 - btnReanudar.getWidth() / 2 + 66, ALTO / 2 - 90);
+            btnReanudar.setPosition(3* ANCHO / 4 , ALTO / 2 - 90);
 
             btnReanudar.addListener(new ClickListener() {
                 @Override
@@ -449,7 +449,7 @@ public abstract class PantallaNivel extends Pantalla {
             //TEXTO DE QUE PERDIO
             Texture texturaTxtPausa = manager.get("Textos/Perdiste.png");
             Image imgTxtPausa = new Image(texturaTxtPausa);
-            imgTxtPausa.setPosition(ANCHO / 2 - imgTxtPausa.getWidth() / 2 + 66, 5 * ALTO / 6-100);
+            imgTxtPausa.setPosition(ANCHO / 2, 5 * ALTO / 6-100);
             this.addActor(imgTxtPausa);
 
         }
@@ -458,15 +458,54 @@ public abstract class PantallaNivel extends Pantalla {
     protected class EscenaGanaste extends Stage{
         public EscenaGanaste(Viewport vista, SpriteBatch batch){
             super(vista, batch);
-            Texture texturaRectangulo = manager.get("Fondos/PausaFondo.jpg");
+            Texture texturaRectangulo = manager.get("Fondos/PantallaGanaste.jpg");
             Image imgRectangulo = new Image(texturaRectangulo);
             this.addActor(imgRectangulo);
+
+            // REINTENTAR
+            Texture texturabtnReintentar = manager.get("Botones/PantallaRetry.png");
+            TextureRegionDrawable trdReintentar = new TextureRegionDrawable(
+                    new TextureRegion(texturabtnReintentar));
+            ImageButton btnReintentar = new ImageButton(trdReintentar);
+            btnReintentar.setPosition(ANCHO / 2, ALTO / 2 - btnReintentar.getHeight());
+
+            btnReintentar.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.app.log("clicked", "CLICK REINTENTAR PERDISTE");
+                    // REINTENTAR NIVEL
+                    estado = EstadoJuego.JUGANDO;
+                    musicaFondo.stop();
+                    manager.unload(nombreMapa);
+                    // Regresa el control a la pantalla
+                    //Gdx.input.setInputProcessor(escenaNivelTutorial);
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
+                }
+            });
+            this.addActor(btnReintentar);
+            //BOTON SIGUIENTE NIVEL
+
+            Texture texturaBtnNextLevel = manager.get("Botones/PantallaNextLevel.png");
+            TextureRegionDrawable trdNextLevel = new TextureRegionDrawable(new TextureRegion(texturaBtnNextLevel));
+            ImageButton btnNextLevel = new ImageButton(trdNextLevel);
+            btnNextLevel.setPosition(3*ANCHO / 4 , ALTO/2-btnNextLevel.getHeight());
+            btnNextLevel.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.app.log("clicked", "CLICK SELECCION NIVEL PERDISTE");
+                    // Regresa a la seleccion de nivel
+                    musicaFondo.stop();
+                    manager.unload(nombreMapa);
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                }
+            });
+            this.addActor(btnNextLevel);
 
             //SELECCION DE NIVEL
             Texture texturaBtnSelecNivel = manager.get("Botones/PausaButtonSeleccionarNivel.png");
             TextureRegionDrawable trdSeleccion = new TextureRegionDrawable(new TextureRegion(texturaBtnSelecNivel));
             ImageButton btnSeleccionar = new ImageButton(trdSeleccion);
-            btnSeleccionar.setPosition(ANCHO / 2 - btnSeleccionar.getWidth() / 2 + 66, ALTO/2);
+            btnSeleccionar.setPosition(ANCHO / 2+60 , ALTO/32);
             btnSeleccionar.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -497,10 +536,16 @@ public abstract class PantallaNivel extends Pantalla {
             });
             this.addActor(btnSalir);
 
+            //DIBUJANDO LAS ESTRELLAS
+            Texture texturaEstrella= manager.get("PantallaEstrella.png");
+            Image imgEstrella= new Image(texturaEstrella);
+            imgEstrella.setPosition(ANCHO/2,ALTO/2+30);
+            this.addActor(imgEstrella);
+
             //TEXTO DE QUE GANO
-            Texture texturaTxtPausa = manager.get("Textos/Ganaste.png");
+            Texture texturaTxtPausa = manager.get("Textos/TextoGanaste.png");
             Image imgTxtPausa = new Image(texturaTxtPausa);
-            imgTxtPausa.setPosition(ANCHO / 2 - imgTxtPausa.getWidth() / 2 + 66, 5 * ALTO / 6-100);
+            imgTxtPausa.setPosition(ANCHO / 2 , 5 * ALTO / 6);
             this.addActor(imgTxtPausa);
 
 
