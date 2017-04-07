@@ -462,6 +462,8 @@ public abstract class PantallaNivel extends Pantalla {
             Image imgRectangulo = new Image(texturaRectangulo);
             this.addActor(imgRectangulo);
 
+
+
             // REINTENTAR
             Texture texturabtnReintentar = manager.get("Botones/PantallaRetry.png");
             TextureRegionDrawable trdReintentar = new TextureRegionDrawable(
@@ -538,9 +540,8 @@ public abstract class PantallaNivel extends Pantalla {
 
             //DIBUJANDO LAS ESTRELLAS
             Texture texturaEstrella= manager.get("PantallaEstrella.png");
-            Image imgEstrella= new Image(texturaEstrella);
-            imgEstrella.setPosition(ANCHO/2,ALTO/2+30);
-            this.addActor(imgEstrella);
+            DibujaEstrellas(texturaEstrella,3);
+
 
             //TEXTO DE QUE GANO
             Texture texturaTxtPausa = manager.get("Textos/TextoGanaste.png");
@@ -550,6 +551,25 @@ public abstract class PantallaNivel extends Pantalla {
 
 
 
+        }
+        private void DibujaEstrellas(Texture textureEstrella, int num){
+
+            float ancho= ANCHO/2;
+            float alto= ALTO /2 +30;
+            Image imgEstrella1= new Image(textureEstrella);
+            imgEstrella1.setPosition(ancho,alto);
+            Image imgEstrella2= new Image(textureEstrella);
+            imgEstrella2.setPosition(imgEstrella1.getX()+ imgEstrella2.getWidth(),alto);
+            Image imgEstrella3= new Image(textureEstrella);
+            imgEstrella3.setPosition(imgEstrella2.getX()+imgEstrella3.getWidth(),alto);
+            ArrayList <Image> listaEstrellas= new ArrayList<Image>();
+            listaEstrellas.add(imgEstrella1);
+            listaEstrellas.add(imgEstrella2);
+            listaEstrellas.add(imgEstrella3);
+
+            for (int i=0; i<num; i++){
+                this.addActor(listaEstrellas.get(i));
+            }
         }
 
     }
