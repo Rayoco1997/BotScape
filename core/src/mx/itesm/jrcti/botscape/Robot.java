@@ -153,7 +153,7 @@ public class Robot extends Objeto {
 
     private void moverVertical(TiledMap mapa) {
         if(estadoSalto==EstadoSalto.SUBIENDO)
-            body.applyForceToCenter(0f,400f,true);
+            body.applyForceToCenter(0f,800f,true);
         estadoSalto=EstadoSalto.BAJANDO;
     }
 
@@ -174,6 +174,8 @@ public class Robot extends Objeto {
                     else
                         body.setLinearVelocity(6f, body.getLinearVelocity().y);
                 }
+            }else{
+                body.setLinearVelocity(0f,body.getLinearVelocity().y);
             }
         }
 
@@ -190,6 +192,8 @@ public class Robot extends Objeto {
                     else
                         body.setLinearVelocity(-6f, body.getLinearVelocity().y);
                 }
+            }else{
+                body.setLinearVelocity(0f,body.getLinearVelocity().y);
             }
         }
     }
@@ -197,8 +201,8 @@ public class Robot extends Objeto {
     private boolean checarMovDer(TiledMap mapa){
         TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(1);
         if(capa.isVisible()) {
-            int x = (int) ((sprite.getX() + 64) / 64);   // Convierte coordenadas del mundo en coordenadas del mapa
-            int y = (int) (sprite.getY() / 64);
+            int x = (int) (((body.getPosition().x*PantallaNivel.getPtM())+sprite.getWidth()/3) / 64);   // Convierte coordenadas del mundo en coordenadas del mapa
+            int y = (int) ((sprite.getY() + sprite.getHeight())/ 64);
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(x, y);
             if (celdaDerecha != null) {
                 Object tipo = (String) celdaDerecha.getTile().getProperties().get("tipo");
@@ -255,7 +259,6 @@ public class Robot extends Objeto {
                 Object tipo = celda.getTile().getProperties().get("tipo");
                 if ("miniVi".equals(tipo) ) {
                     capa.setCell(x,y,null);// Borra el mini vi del mapa
-                    Gdx.app.log("ancho viu",""+sprite.getWidth());
                     return true;
                 }
             }
@@ -266,20 +269,23 @@ public class Robot extends Objeto {
 
 
     public boolean moverPalanca(TiledMap mapa) {
-        // Revisar si toca una moneda (pies)
-        TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
-        int x = (int)(((sprite.getX()+sprite.getWidth()-10)/64));
-        int y = (int)(sprite.getY()/64);
-        TiledMapTileLayer.Cell celda = capa.getCell(x,y);
-        if (celda!=null ) {
-            Object tipo = celda.getTile().getProperties().get("tipo");
-            if ( "palanca".equals(tipo) ) {
-                //capa.setCell(x,y,null);// Borra la moneda del mapa
-                //capa.setCell(x,y,capa.getCell(0,4)); // Cuadro azul en lugar de la moneda
-                capa.setCell(x,y,celda.setFlipHorizontally(true));
-                mapa.getLayers().get(1).setVisible(!mapa.getLayers().get(1).isVisible());
 
-                return true;
+        TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
+        int x;
+        int y = (int)(sprite.getY()/64);
+        TiledMapTileLayer.Cell celda;
+        int cantPuntos=5;
+        for(int i=0; i<cantPuntos; i++){
+            x= (int)(((sprite.getX()+sprite.getWidth())/64));
+            x= x-i*(int)sprite.getWidth()/((cantPuntos-1)*64);
+            celda = capa.getCell(x,y);
+            if (celda!=null) {
+                Object tipo = celda.getTile().getProperties().get("tipo");
+                if ("palanca".equals(tipo) ) {
+                    capa.setCell(x,y,celda.setFlipHorizontally(true));
+                    mapa.getLayers().get(1).setVisible(!mapa.getLayers().get(1).isVisible());
+                    return true;
+                }
             }
         }
         return false;

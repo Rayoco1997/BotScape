@@ -60,6 +60,7 @@ public class NivelTutorial extends PantallaNivel {
 
 
     private Enemigo enemigo;
+    private boolean palancaActivada = false;
 
 
     public NivelTutorial(Juego j,EstadoMusica estadoMusicaGeneral){
@@ -282,7 +283,11 @@ public class NivelTutorial extends PantallaNivel {
             plat1.mover(100, 900, 100, 600);
 
             buscarMiniVis();
-            getRobot().moverPalanca(getMapa());
+            if(!palancaActivada) {
+                if(getRobot().moverPalanca(getMapa())){
+                    palancaActivada=true;
+                }
+            }
 
             //para mostrar el puntaje de mini vis
             texto.mostrarMensaje(getBatch(), Integer.toString(contadorMiniVis), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);
