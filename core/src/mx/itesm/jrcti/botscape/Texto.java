@@ -16,6 +16,11 @@ public class Texto {
         font = new BitmapFont(Gdx.files.internal("Textos/fuenteCuadro.fnt"));
     }
 
+    public Texto(String nivel){
+        font= new BitmapFont(Gdx.files.internal("Textos/FuenteNivelNumero.fnt"));
+
+    }
+
     public void mostrarMensaje(SpriteBatch batch, String mensaje, float x, float y) {
         GlyphLayout glyp = new GlyphLayout();
         glyp.setText(font, mensaje);

@@ -118,6 +118,14 @@ public class PantallaCarga extends Pantalla{
         manager.load("Personaje/LUG7 Walk_Cycle.png",Texture.class);
         manager.load("VidasVIU.png", Texture.class);
         manager.load("Textos/Ganaste.png",Texture.class);
+        manager.load("Fondos/PantallaGanaste.jpg", Texture.class);
+        manager.load("Fondos/PantallaPerdiste.jpg", Texture.class);
+        manager.load("Textos/TextoGanaste.png", Texture.class);
+        manager.load("Botones/PantallaNextLevel.png", Texture.class);
+        manager.load("Botones/PantallaRetry.png", Texture.class);
+        manager.load("PantallaEstrella.png", Texture.class);
+
+
     }
 
     private void cargarRecursosSelNivel(){

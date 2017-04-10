@@ -16,6 +16,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by rayoc on 08/03/2017.
@@ -157,35 +159,73 @@ public class Robot extends Objeto {
 
 
 
-    // Mueve el personaje a la derecha/izquierda, prueba choques con paredes
+    // Mueve el personaje a la derecha/izquierda, prueba choques con paredes y puerta
     private void moverHorizontal(TiledMap mapa) {
         if(estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
-            if(this.getHabilidad()!=Habilidad.INVULNERABLE) {
-                if (body.getLinearVelocity().x < 6f)
-                    body.applyForceToCenter(20f, 0f, true);
-                else
-                    body.setLinearVelocity(6f, body.getLinearVelocity().y);
-            }
-            else if(tiempoInv < TIEMPO_INV_INICIAL/2){
-                if (body.getLinearVelocity().x < 6f)
-                    body.applyForceToCenter(20f, 0f, true);
-                else
-                    body.setLinearVelocity(6f, body.getLinearVelocity().y);
+            if(checarMovDer(mapa)) {
+                if (this.getHabilidad() != Habilidad.INVULNERABLE) {
+                    if (body.getLinearVelocity().x < 6f)
+                        body.applyForceToCenter(20f, 0f, true);
+                    else
+                        body.setLinearVelocity(6f, body.getLinearVelocity().y);
+                } else if (tiempoInv < TIEMPO_INV_INICIAL / 2) {
+                    if (body.getLinearVelocity().x < 6f)
+                        body.applyForceToCenter(20f, 0f, true);
+                    else
+                        body.setLinearVelocity(6f, body.getLinearVelocity().y);
+                }
             }
         }
+
         else if(estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
-            if(this.getHabilidad()!=Habilidad.INVULNERABLE) {
-                if (body.getLinearVelocity().x < -6f)
-                    body.applyForceToCenter(-20f, 0f, true);
-                else
-                    body.setLinearVelocity(-6f, body.getLinearVelocity().y);
-            } else if(tiempoInv < TIEMPO_INV_INICIAL/2){
-                if (body.getLinearVelocity().x < -6f)
-                    body.applyForceToCenter(-20f, 0f, true);
-                else
-                    body.setLinearVelocity(-6f, body.getLinearVelocity().y);
+            if(checarMovIzq(mapa)){
+                if(this.getHabilidad()!=Habilidad.INVULNERABLE) {
+                    if (body.getLinearVelocity().x < -6f)
+                        body.applyForceToCenter(-20f, 0f, true);
+                    else
+                        body.setLinearVelocity(-6f, body.getLinearVelocity().y);
+                } else if(tiempoInv < TIEMPO_INV_INICIAL/2){
+                    if (body.getLinearVelocity().x < -6f)
+                        body.applyForceToCenter(-20f, 0f, true);
+                    else
+                        body.setLinearVelocity(-6f, body.getLinearVelocity().y);
+                }
             }
         }
+    }
+
+    private boolean checarMovDer(TiledMap mapa){
+        TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(1);
+        if(capa.isVisible()) {
+            int x = (int) ((sprite.getX() + 64) / 64);   // Convierte coordenadas del mundo en coordenadas del mapa
+            int y = (int) (sprite.getY() / 64);
+            TiledMapTileLayer.Cell celdaDerecha = capa.getCell(x, y);
+            if (celdaDerecha != null) {
+                Object tipo = (String) celdaDerecha.getTile().getProperties().get("tipo");
+                if ("puerta".equals(tipo)) {
+                    return false;  // Está chocando
+                }
+                else {return true;}
+            }
+        }
+        return true;
+    }
+
+    private boolean checarMovIzq(TiledMap mapa){
+        TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(1);
+        if(capa.isVisible()) {
+            int x = (int) ((sprite.getX() - 64) / 64);   // Convierte coordenadas del mundo en coordenadas del mapa
+            int y = (int) (sprite.getY() / 64);
+            TiledMapTileLayer.Cell celdaIzq = capa.getCell(x, y);
+            if (celdaIzq != null) {
+                Object tipo = (String) celdaIzq.getTile().getProperties().get("tipo");
+                if ("puerta".equals(tipo)) {
+                    return false;  // Está chocando
+                }
+                else {return true;}
+            }
+        }
+        return true;
     }
 
     public void frenar(){
@@ -203,32 +243,42 @@ public class Robot extends Objeto {
     //Mejorar con or de celda izquierda, centro o derecha
     public boolean recolectarMiniVi(TiledMap mapa) {
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
-        int x = (int)((sprite.getX()/64)+1);
+        int x;
         int y = (int)(sprite.getY()/64);
-        TiledMapTileLayer.Cell celda = capa.getCell(x,y);
-        if (celda!=null ) {
-            Object tipo = celda.getTile().getProperties().get("tipo");
-            if ("miniVi".equals(tipo) ) {
-                //Gdx.app.log("robot","true, atrapo miniVi");
-                capa.setCell(x,y,null);    // Borra la moneda del mapa
-                //capa.setCell(x, y, capa.getCell(0, 4)); // Cuadro azul en lugar de la moneda
-                return true;
+        TiledMapTileLayer.Cell celda;
+        int cantPuntos=5;
+        for(int i=0; i<cantPuntos; i++){
+            x= (int)(((sprite.getX()+sprite.getWidth())/64));
+            x= x-i*(int)sprite.getWidth()/((cantPuntos-1)*64);
+            celda = capa.getCell(x,y);
+            if (celda!=null) {
+                Object tipo = celda.getTile().getProperties().get("tipo");
+                if ("miniVi".equals(tipo) ) {
+                    capa.setCell(x,y,null);// Borra el mini vi del mapa
+                    Gdx.app.log("ancho viu",""+sprite.getWidth());
+                    return true;
+                }
             }
         }
         return false;
     }
 
+
+
     public boolean moverPalanca(TiledMap mapa) {
+        // Revisar si toca una moneda (pies)
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
-        int x = (int)(sprite.getX()/64);
-        int y = (int)(sprite.getY()/64)+1;
+        int x = (int)(((sprite.getX()+sprite.getWidth()-10)/64));
+        int y = (int)(sprite.getY()/64);
         TiledMapTileLayer.Cell celda = capa.getCell(x,y);
         if (celda!=null ) {
             Object tipo = celda.getTile().getProperties().get("tipo");
             if ( "palanca".equals(tipo) ) {
-                //capa.setCell(x,y,null);    // Borra la moneda del mapa
-                capa.setCell(x,y,capa.getCell(0,4)); // Cuadro azul en lugar de la moneda
-                mapa.getLayers().remove(1);
+                //capa.setCell(x,y,null);// Borra la moneda del mapa
+                //capa.setCell(x,y,capa.getCell(0,4)); // Cuadro azul en lugar de la moneda
+                capa.setCell(x,y,celda.setFlipHorizontally(true));
+                mapa.getLayers().get(1).setVisible(!mapa.getLayers().get(1).isVisible());
+
                 return true;
             }
         }

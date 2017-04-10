@@ -29,11 +29,6 @@ public class NivelTutorial extends PantallaNivel {
     Matrix4 debugMatrix;
 
 
-
-
-
-
-
     public static final int ANCHO_MAPA=3840;
     private int xInicialRobot = 100;
     private int yInicialRobot = 300;
@@ -287,6 +282,7 @@ public class NivelTutorial extends PantallaNivel {
             plat1.mover(100, 900, 100, 600);
 
             buscarMiniVis();
+            getRobot().moverPalanca(getMapa());
 
             //para mostrar el puntaje de mini vis
             texto.mostrarMensaje(getBatch(), Integer.toString(contadorMiniVis), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);
