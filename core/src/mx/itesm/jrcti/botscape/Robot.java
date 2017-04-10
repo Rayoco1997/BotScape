@@ -16,6 +16,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by rayoc on 08/03/2017.
@@ -244,11 +246,28 @@ public class Robot extends Objeto {
         int x = (int)(((sprite.getX()+sprite.getWidth()-10)/64));
         int y = (int)(sprite.getY()/64);
         TiledMapTileLayer.Cell celda = capa.getCell(x,y);
-        if (celda!=null) {
-            Object tipo = celda.getTile().getProperties().get("tipo");
-            if ("miniVi".equals(tipo) ) {
-                capa.setCell(x,y,null);    // Borra la moneda del mapa
-                return true;
+        ArrayList<TiledMapTileLayer.Cell> listaCeldas= new ArrayList<TiledMapTileLayer.Cell>();
+        listaCeldas.add(celda);
+
+        x = (int)(((sprite.getX()+sprite.getWidth()/2)/64));
+        y = (int)(sprite.getY()/64);
+        celda = capa.getCell(x,y);
+        listaCeldas.add(celda);
+
+        x = (int)(((sprite.getX())/64));
+        y = (int)(sprite.getY()/64);
+        celda = capa.getCell(x,y);
+        listaCeldas.add(celda);
+
+
+
+        for (TiledMapTileLayer.Cell cell: listaCeldas){
+            if (cell!=null) {
+                Object tipo = cell.getTile().getProperties().get("tipo");
+                if ("miniVi".equals(tipo) ) {
+                    capa.setCell(x,y,null);    // Borra la moneda del mapa
+                    return true;
+                }
             }
         }
         return false;
