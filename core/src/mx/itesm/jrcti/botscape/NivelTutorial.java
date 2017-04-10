@@ -274,7 +274,7 @@ public class NivelTutorial extends PantallaNivel {
             debugMatrix = getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),
                     PantallaNivel.getPtM(), 0);
 
-
+            //algo
             getBatch().begin();
             enemigo.dibujar(getBatch());
             enemigo.mover(1600,2300);
