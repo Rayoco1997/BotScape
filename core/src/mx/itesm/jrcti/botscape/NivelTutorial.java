@@ -29,11 +29,6 @@ public class NivelTutorial extends PantallaNivel {
     Matrix4 debugMatrix;
 
 
-
-
-
-
-
     public static final int ANCHO_MAPA=3840;
     private int xInicialRobot = 100;
     private int yInicialRobot = 300;
@@ -292,7 +287,7 @@ public class NivelTutorial extends PantallaNivel {
 
             getBatch().setProjectionMatrix(getCamaraHUD().combined);
             getEscenaHUD().draw();
-            Gdx.app.log("MI estado es:", ""+getEstadoJuego().toString());
+            //Gdx.app.log("MI estado es:", ""+getEstadoJuego().toString());
 
         }
 
