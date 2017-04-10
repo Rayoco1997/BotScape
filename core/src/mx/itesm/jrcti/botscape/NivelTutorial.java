@@ -110,10 +110,10 @@ public class NivelTutorial extends PantallaNivel {
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
         fixPiso.shape=edgeShape;
-        fixPiso.friction=.7f;
+        fixPiso.friction=.01f;
         bodyPiso = getWorld().createBody(bodyDefPiso);
         bodyPiso.createFixture(fixPiso);
-        bodyPiso.setUserData(plat1);
+        bodyPiso.setUserData("piso");
 
         x1 = 128/PantallaNivel.getPtM();
         y1 = 0/PantallaNivel.getPtM();
@@ -122,10 +122,10 @@ public class NivelTutorial extends PantallaNivel {
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
         fixPiso.shape=edgeShape;
-        fixPiso.friction=.7f;
+        fixPiso.friction=.01f;
         bodyPlat1 = getWorld().createBody(bodyDefPiso);
         bodyPlat1.createFixture(fixPiso);
-        bodyPlat1.setUserData(plat1);
+        bodyPlat1.setUserData("piso");
 
 
         x1 = 576/PantallaNivel.getPtM();
@@ -135,30 +135,30 @@ public class NivelTutorial extends PantallaNivel {
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
         fixPiso.shape=edgeShape;
-        fixPiso.friction=.7f;
+        fixPiso.friction=.01f;
         bodyPlat1 = getWorld().createBody(bodyDefPiso);
         bodyPlat1.createFixture(fixPiso);
-        bodyPlat1.setUserData(plat1);
+        bodyPlat1.setUserData("piso");
 
         x1 = 1216/PantallaNivel.getPtM();
         x2 = 1536/PantallaNivel.getPtM();
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
         fixPiso.shape=edgeShape;
-        fixPiso.friction=.7f;
+        fixPiso.friction=.01f;
         bodyPlat1 = getWorld().createBody(bodyDefPiso);
         bodyPlat1.createFixture(fixPiso);
-        bodyPlat1.setUserData(plat1);
+        bodyPlat1.setUserData("piso");
 
         x1 = 2304/PantallaNivel.getPtM();
         x2 = 2624/PantallaNivel.getPtM();
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
         fixPiso.shape=edgeShape;
-        fixPiso.friction=.7f;
+        fixPiso.friction=.01f;
         bodyPlat1 = getWorld().createBody(bodyDefPiso);
         bodyPlat1.createFixture(fixPiso);
-        bodyPlat1.setUserData(plat1);
+        bodyPlat1.setUserData("piso");
 
         x1 = 3584/PantallaNivel.getPtM();
         y1 =  320/PantallaNivel.getPtM();
@@ -167,10 +167,10 @@ public class NivelTutorial extends PantallaNivel {
         edgeShape = new EdgeShape();
         edgeShape.set(x1,y1,x2,y2);
         fixPiso.shape=edgeShape;
-        fixPiso.friction=.7f;
+        fixPiso.friction=.01f;
         bodyPlat1 = getWorld().createBody(bodyDefPiso);
         bodyPlat1.createFixture(fixPiso);
-        bodyPlat1.setUserData(plat1);
+        bodyPlat1.setUserData("piso");
 
         edgeShape.dispose();
 
@@ -185,10 +185,10 @@ public class NivelTutorial extends PantallaNivel {
         createCollisionListener();
 
         //Debugger
-        //debugRenderer = new Box2DDebugRenderer();
+        debugRenderer = new Box2DDebugRenderer();
 
-        plat1 = new Plataforma(texturaPlataforma, 3, 3, 30, 30,
-                Plataforma.EstadoMovimiento.MOV_DERECHA);
+        plat1 = new Plataforma(texturaPlataforma, 3, 3, 200, 120,
+                Plataforma.EstadoMovimiento.MOV_DERECHA, getWorld());
 
         Gdx.input.setCatchBackKey(true);
     }
@@ -201,7 +201,13 @@ public class NivelTutorial extends PantallaNivel {
                     contact.getFixtureB().getBody().getUserData() instanceof Plataforma)||
 
                         (contact.getFixtureA().getBody().getUserData() instanceof Plataforma &&
-                        contact.getFixtureB().getBody().getUserData() instanceof Robot)){
+                        contact.getFixtureB().getBody().getUserData() instanceof Robot) ||
+
+                        (contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+                                contact.getFixtureB().getBody().getUserData().equals("piso"))||
+
+                        (contact.getFixtureA().getBody().getUserData().equals("piso") &&
+                                contact.getFixtureB().getBody().getUserData() instanceof Robot)){
                     getRobot().setEstadoSalto(Robot.EstadoSalto.EN_PISO);
                 }
                 if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
@@ -265,20 +271,20 @@ public class NivelTutorial extends PantallaNivel {
             getMapRenderer().render();
 
 
-            /*debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
-            debugRenderer.render(world,debugMatrix);
+            debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
+            debugRenderer.render(getWorld(),debugMatrix);
 
 
             //Debugging
             debugMatrix = getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),
                     PantallaNivel.getPtM(), 0);
-            */
+
 
             getBatch().begin();
             enemigo.dibujar(getBatch());
             enemigo.mover(1600,2300);
-            /*plat1.dibujar(getBatch());
-            plat1.mover(30, 900, 30, 600);*/
+            plat1.dibujar(getBatch());
+            plat1.mover(100, 900, 100, 600);
 
             buscarMiniVis();
 
@@ -291,7 +297,7 @@ public class NivelTutorial extends PantallaNivel {
 
             getBatch().setProjectionMatrix(getCamaraHUD().combined);
             getEscenaHUD().draw();
-            Gdx.app.log("MI estado es:", ""+getEstadoJuego().toString());
+            //Gdx.app.log("MI estado es:", ""+getEstadoJuego().toString());
 
         }
 

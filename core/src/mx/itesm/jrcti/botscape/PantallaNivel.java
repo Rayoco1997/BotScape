@@ -157,9 +157,9 @@ public abstract class PantallaNivel extends Pantalla {
 
     protected void crearRobot(int x, int y) {
         fix = new FixtureDef();
-        fix.density=.1f;
-        fix.restitution=0.1f;
-        fix.friction=.3f;
+        fix.density=.3f;
+        fix.restitution=.1f;
+        fix.friction=10f;
         robot = new Robot(VIUWalk_Cycle,x,y,world, BodyDef.BodyType.DynamicBody,fix);
     }
 
