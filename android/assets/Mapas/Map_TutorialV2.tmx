@@ -2,6 +2,36 @@
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="60" height="12" tilewidth="64" tileheight="64" nextobjectid="1">
  <tileset firstgid="1" name="Tiles" tilewidth="64" tileheight="64" tilecount="50" columns="10">
   <image source="Tilesv3.png" width="640" height="320"/>
+  <tile id="0">
+   <properties>
+    <property name="body" value="piso"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="body" value="piso"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="body" value="piso"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="body" value="piso"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="body" value="piso"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="body" value="piso"/>
+   </properties>
+  </tile>
   <tile id="7">
    <properties>
     <property name="tipo" value="puerta"/>
@@ -17,6 +47,41 @@
     <property name="tipo" value="puerta"/>
    </properties>
   </tile>
+  <tile id="10">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="11">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="14">
+   <properties>
+    <property name="body" value="piso"/>
+   </properties>
+  </tile>
+  <tile id="15">
+   <properties>
+    <property name="body" value="piso"/>
+   </properties>
+  </tile>
+  <tile id="16">
+   <properties>
+    <property name="body" value="piso"/>
+   </properties>
+  </tile>
   <tile id="17">
    <properties>
     <property name="tipo" value="puerta"/>
@@ -25,6 +90,41 @@
   <tile id="19">
    <properties>
     <property name="tipo" value="miniVi"/>
+   </properties>
+  </tile>
+  <tile id="20">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="21">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="22">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="23">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="24">
+   <properties>
+    <property name="body" value="techo"/>
+   </properties>
+  </tile>
+  <tile id="25">
+   <properties>
+    <property name="body" value="techo"/>
+   </properties>
+  </tile>
+  <tile id="26">
+   <properties>
+    <property name="body" value="techo"/>
    </properties>
   </tile>
   <tile id="27">
@@ -37,19 +137,59 @@
     <property name="tipo" value="palanca"/>
    </properties>
   </tile>
+  <tile id="30">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="31">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="32">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="33">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="40">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="41">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="42">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
+  <tile id="43">
+   <properties>
+    <property name="body" value="columna"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Capa de Patrones 1" width="60" height="12">
   <data encoding="csv">
-14,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,
+14,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 24,25,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,27,
 34,25,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,27,
 34,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,35,36,37,
-34,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-34,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-34,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-34,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,16,17,
-34,21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0,0,27,
-34,31,0,0,0,0,0,0,0,15,16,16,16,17,0,0,0,0,0,15,16,16,16,17,0,0,0,0,0,0,0,0,0,0,0,0,15,16,16,16,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0,0,27,
+34,31,0,11,0,0,0,11,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,11,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+34,12,11,11,0,0,11,11,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,11,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+34,22,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+34,32,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,16,17,
+34,21,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0,0,27,
+34,31,0,0,0,0,0,0,0,15,16,16,16,17,0,11,0,0,0,15,16,16,16,17,0,0,0,0,0,0,0,0,0,0,0,0,15,16,16,16,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0,0,27,
 34,3,2,2,2,3,2,2,2,3,2,3,2,2,2,3,2,2,2,3,2,2,3,3,2,2,2,2,2,3,2,2,2,3,2,2,2,2,3,2,2,3,2,2,2,2,2,3,2,3,2,2,2,3,2,2,3,2,2,3,
 44,25,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,27
 </data>

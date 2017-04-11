@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -29,7 +31,7 @@ public class NivelTutorial extends PantallaNivel {
     Matrix4 debugMatrix;
 
 
-    public static final int ANCHO_MAPA=3840;
+    private static final int ANCHO_MAPA=3840;
     private int xInicialRobot = 100;
     private int yInicialRobot = 300;
 
@@ -95,80 +97,8 @@ public class NivelTutorial extends PantallaNivel {
     }
 
     private void crearPiso() {
-        bodyDefPiso = new BodyDef();
-        bodyDefPiso.type = BodyDef.BodyType.StaticBody;
-        float x1= -100f/PantallaNivel.getPtM();
-        float y1=128f/PantallaNivel.getPtM();
-        float x2= 4000/PantallaNivel.getPtM();
-        float y2=128f/PantallaNivel.getPtM();
-        bodyDefPiso.position.set(0,0);
-        fixPiso = new FixtureDef();
-        edgeShape = new EdgeShape();
-        edgeShape.set(x1,y1,x2,y2);
-        fixPiso.shape=edgeShape;
-        fixPiso.friction=.01f;
-        bodyPiso = getWorld().createBody(bodyDefPiso);
-        bodyPiso.createFixture(fixPiso);
-        bodyPiso.setUserData("piso");
 
-        x1 = 128/PantallaNivel.getPtM();
-        y1 = 0/PantallaNivel.getPtM();
-        x2 = 128/PantallaNivel.getPtM();
-        y2 = ALTO/PantallaNivel.getPtM();
-        edgeShape = new EdgeShape();
-        edgeShape.set(x1,y1,x2,y2);
-        fixPiso.shape=edgeShape;
-        fixPiso.friction=.01f;
-        bodyPlat1 = getWorld().createBody(bodyDefPiso);
-        bodyPlat1.createFixture(fixPiso);
-        bodyPlat1.setUserData("piso");
-
-
-        x1 = 576/PantallaNivel.getPtM();
-        y1 = 192/PantallaNivel.getPtM();
-        x2 = 896/PantallaNivel.getPtM();
-        y2 = 192/PantallaNivel.getPtM();
-        edgeShape = new EdgeShape();
-        edgeShape.set(x1,y1,x2,y2);
-        fixPiso.shape=edgeShape;
-        fixPiso.friction=.01f;
-        bodyPlat1 = getWorld().createBody(bodyDefPiso);
-        bodyPlat1.createFixture(fixPiso);
-        bodyPlat1.setUserData("piso");
-
-        x1 = 1216/PantallaNivel.getPtM();
-        x2 = 1536/PantallaNivel.getPtM();
-        edgeShape = new EdgeShape();
-        edgeShape.set(x1,y1,x2,y2);
-        fixPiso.shape=edgeShape;
-        fixPiso.friction=.01f;
-        bodyPlat1 = getWorld().createBody(bodyDefPiso);
-        bodyPlat1.createFixture(fixPiso);
-        bodyPlat1.setUserData("piso");
-
-        x1 = 2304/PantallaNivel.getPtM();
-        x2 = 2624/PantallaNivel.getPtM();
-        edgeShape = new EdgeShape();
-        edgeShape.set(x1,y1,x2,y2);
-        fixPiso.shape=edgeShape;
-        fixPiso.friction=.01f;
-        bodyPlat1 = getWorld().createBody(bodyDefPiso);
-        bodyPlat1.createFixture(fixPiso);
-        bodyPlat1.setUserData("piso");
-
-        x1 = 3584/PantallaNivel.getPtM();
-        y1 =  320/PantallaNivel.getPtM();
-        x2 = 3840/PantallaNivel.getPtM();
-        y2 = 320/PantallaNivel.getPtM();
-        edgeShape = new EdgeShape();
-        edgeShape.set(x1,y1,x2,y2);
-        fixPiso.shape=edgeShape;
-        fixPiso.friction=.01f;
-        bodyPlat1 = getWorld().createBody(bodyDefPiso);
-        bodyPlat1.createFixture(fixPiso);
-        bodyPlat1.setUserData("piso");
-
-        edgeShape.dispose();
+        leerMapa();
 
     }
 
@@ -195,15 +125,15 @@ public class NivelTutorial extends PantallaNivel {
             public void beginContact(Contact contact) {
                 if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
                     contact.getFixtureB().getBody().getUserData() instanceof Plataforma)||
-
                         (contact.getFixtureA().getBody().getUserData() instanceof Plataforma &&
                         contact.getFixtureB().getBody().getUserData() instanceof Robot) ||
 
                         (contact.getFixtureA().getBody().getUserData() instanceof Robot &&
-                                contact.getFixtureB().getBody().getUserData().equals("piso"))||
-
-                        (contact.getFixtureA().getBody().getUserData().equals("piso") &&
-                                contact.getFixtureB().getBody().getUserData() instanceof Robot)){
+                                (contact.getFixtureB().getBody().getUserData().equals("piso") ||
+                                        contact.getFixtureB().getBody().getUserData().equals("columna")))||
+                        ((contact.getFixtureA().getBody().getUserData().equals("piso") ||
+                                (contact.getFixtureA().getBody().getUserData().equals("columna")) &&
+                                contact.getFixtureB().getBody().getUserData() instanceof Robot))){
                     getRobot().setEstadoSalto(Robot.EstadoSalto.EN_PISO);
                 }
                 if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
@@ -284,7 +214,7 @@ public class NivelTutorial extends PantallaNivel {
 
             buscarMiniVis();
             if(!palancaActivada) {
-                if(getRobot().moverPalanca(getMapa())){
+                if(moverPalanca(getMapa())){
                     palancaActivada=true;
                 }
             }
@@ -347,6 +277,29 @@ public class NivelTutorial extends PantallaNivel {
 
 
 
+    }
+
+    public boolean moverPalanca(TiledMap mapa) {
+
+        TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
+        int x;
+        int y = (int)(getRobot().sprite.getY()/64);
+        TiledMapTileLayer.Cell celda;
+        int cantPuntos=5;
+        for(int i=0; i<cantPuntos; i++){
+            x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));
+            x= x-i*(int)getRobot().sprite.getWidth()/((cantPuntos-1)*64);
+            celda = capa.getCell(x,y);
+            if (celda!=null) {
+                Object tipo = celda.getTile().getProperties().get("tipo");
+                if ("palanca".equals(tipo) ) {
+                    capa.setCell(x,y,celda.setFlipHorizontally(true));
+                    mapa.getLayers().get(1).setVisible(!mapa.getLayers().get(1).isVisible());
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void actualizarCamara(){

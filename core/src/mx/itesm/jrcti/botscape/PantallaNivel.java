@@ -8,11 +8,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -61,6 +68,7 @@ public abstract class PantallaNivel extends Pantalla {
 
     private String nombreMapa;
     private String nombreMusicaFondo;
+    private int TtoP = 64;
 
 
 
@@ -144,15 +152,153 @@ public abstract class PantallaNivel extends Pantalla {
     }
 
 
-    public void leerMapa(TiledMap map){
-        /*get cell(x,y)
-        * if(is tipo.equals"piso" && x1!=0)
-        *   puntox1=cell.pos.x
-        * if(is tipo.equals"piso")
-        *   count++;
-        * else if(x1!=0){
-        *   x2= x1 + count*64
-        *   crear static body(x1,y1,x2,y1)*/
+    public void leerMapa(){
+        MapProperties prop = mapa.getProperties();
+        int mapWidth = prop.get("width", Integer.class);
+        int mapHeight = prop.get("height", Integer.class);
+        TiledMapTileLayer capaArq = (TiledMapTileLayer) mapa.getLayers().get(0);
+        int count = 0;
+        boolean flagPrimero = true;
+        int xInicial = 0;
+        int yInicial = 0;
+        Body bodyPiso;
+        BodyDef bodyDefPiso = new BodyDef();
+        FixtureDef fixPiso = new FixtureDef();
+        PolygonShape cuadro;
+        bodyDefPiso.type = BodyDef.BodyType.StaticBody;
+        fixPiso.friction = 0.01f;
+        fixPiso.density = 1f;
+
+        //Revisar horizontal con tipo piso y techo
+        for(int fila = 0; fila < mapHeight; fila++){
+            for(int col = 0; col < mapWidth; col++) {
+                //Gdx.app.log("Recorro","fila " + fila + " columna " + col);
+                if (capaArq.getCell(col, fila) != null) {
+                    //Gdx.app.log("Y ademas","Dije que no era null");
+                    Object body = capaArq.getCell(col, fila).getTile().getProperties().get("body");
+                    if (body != null && (body.equals("piso") || body.equals("techo"))) {
+                        //Gdx.app.log("Leer mapa: ","Detecto piso en " + fila + ", " + col);
+                        if (flagPrimero) {
+                            count = 0;
+                            xInicial = col * TtoP;
+                            Gdx.app.log("Leer mapa:","Creo un body en fila " + fila + " columna " + col + " con xInicial en " + xInicial);
+                            flagPrimero = false;
+                            count++;
+                        } else {
+                            //Gdx.app.log("Leer mapa","Detecte piso en fila " + fila + " columna " +col);
+                            count++;
+                        }
+                    } else if(!flagPrimero) {
+                        Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
+                        flagPrimero = true;
+                        cuadro = new PolygonShape();
+                        if(col == 0) {
+                            bodyDefPiso.position.set((xInicial + (TtoP * count) / 2) / getPtM(), (((fila-1) * TtoP) + 32) / getPtM());
+                        } else{
+                            bodyDefPiso.position.set((xInicial + (TtoP * count) / 2) / getPtM(), ((fila * TtoP) + 32) / getPtM());
+                        }
+                        cuadro.setAsBox((TtoP*count/2)/getPtM(),32/getPtM());
+                        fixPiso.shape = cuadro;
+                        bodyPiso = world.createBody(bodyDefPiso);
+                        bodyPiso.createFixture(fixPiso);
+                        bodyPiso.setUserData("piso");
+                    }
+                } else if (!flagPrimero){
+                    Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
+                    flagPrimero = true;
+                    cuadro = new PolygonShape();
+                    if(col == 0) {
+                        bodyDefPiso.position.set((xInicial + (TtoP * count) / 2) / getPtM(), (((fila-1) * TtoP) + 32) / getPtM());
+                    } else{
+                        bodyDefPiso.position.set((xInicial + (TtoP * count) / 2) / getPtM(), ((fila * TtoP) + 32) / getPtM());
+                    }
+                    cuadro.setAsBox((TtoP*count/2)/getPtM(),32/getPtM());
+                    fixPiso.shape = cuadro;
+                    bodyPiso = world.createBody(bodyDefPiso);
+                    bodyPiso.createFixture(fixPiso);
+                    bodyPiso.setUserData("piso");
+                }
+            }
+        }
+
+        if(!flagPrimero && count != 0){
+            flagPrimero = true;
+            cuadro = new PolygonShape();
+            bodyDefPiso.position.set((xInicial + (TtoP * count) / 2) / getPtM(), (((mapHeight-1) * TtoP) + 32) / getPtM());
+            cuadro.setAsBox((TtoP*count/2)/getPtM(),32/getPtM());
+            fixPiso.shape = cuadro;
+            bodyPiso = world.createBody(bodyDefPiso);
+            bodyPiso.createFixture(fixPiso);
+            bodyPiso.setUserData("piso");
+        }
+
+        flagPrimero = true;
+        count = 0;
+
+        for(int col = 0; col < mapWidth; col++){
+            for(int fila = 0; fila < mapHeight; fila++) {
+                //Gdx.app.log("Recorro","columna " + col + " fila " + fila);
+                if (capaArq.getCell(col, fila) != null) {
+                    //Gdx.app.log("Y ademas","Dije que no era null");
+                    Object body = capaArq.getCell(col, fila).getTile().getProperties().get("body");
+                    if (body != null && body.equals("columna")) {
+                        //Gdx.app.log("Leer mapa: ","Detecto columna en  columna" + col + ", fila " + fila);
+                        if (flagPrimero) {
+                            count = 0;
+                            yInicial = fila * TtoP;
+                            //Gdx.app.log("Leer mapa:","Creo un body columna en fila " + fila + " columna " + col + " con yInicial en " + yInicial);
+                            flagPrimero = false;
+                            count++;
+                        } else {
+                            //Gdx.app.log("Leer mapa","Detecte piso en fila " + fila + " columna " +col);
+                            count++;
+                        }
+                    } else if(!flagPrimero) {
+                        //Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
+                        flagPrimero = true;
+                        cuadro = new PolygonShape();
+                        if(fila == 0) {
+                            bodyDefPiso.position.set(((col-1)*TtoP+TtoP/2)/getPtM(), (yInicial+(TtoP*count)/2)/getPtM());
+                        } else{
+                            bodyDefPiso.position.set(((col)*TtoP+TtoP/2)/getPtM(), (yInicial+(TtoP*count)/2)/getPtM());
+                        }
+                        cuadro.setAsBox(32/getPtM(),(TtoP*count/2)/getPtM());
+                        fixPiso.shape = cuadro;
+                        bodyPiso = world.createBody(bodyDefPiso);
+                        bodyPiso.createFixture(fixPiso);
+                        bodyPiso.setUserData("columna");
+                    }
+                } else if (!flagPrimero){
+                    //Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
+                    flagPrimero = true;
+                    cuadro = new PolygonShape();
+                    if(fila == 0) {
+                        bodyDefPiso.position.set(((col-1)*TtoP+TtoP/2)/getPtM(), (yInicial+(TtoP*count)/2)/getPtM());
+                    } else{
+                        bodyDefPiso.position.set(((col)*TtoP+TtoP/2)/getPtM(), (yInicial+(TtoP*count)/2)/getPtM());
+                    }
+                    cuadro.setAsBox(32/getPtM(),(TtoP*count/2)/getPtM());
+                    fixPiso.shape = cuadro;
+                    bodyPiso = world.createBody(bodyDefPiso);
+                    bodyPiso.createFixture(fixPiso);
+                    bodyPiso.setUserData("columna");
+                }
+            }
+        }
+
+        if(!flagPrimero &&  count != 0){
+            flagPrimero = true;
+            cuadro = new PolygonShape();
+            bodyDefPiso.position.set(((mapWidth-1)*TtoP+TtoP/2)/getPtM(), (yInicial+(TtoP*count)/2)/getPtM());
+            cuadro.setAsBox(32/getPtM(),(TtoP*count/2)/getPtM());
+            fixPiso.shape = cuadro;
+            bodyPiso = world.createBody(bodyDefPiso);
+            bodyPiso.createFixture(fixPiso);
+            bodyPiso.setUserData("columna");
+        }
+        count = 0;
+
+
     }
 
     protected void crearRobot(int x, int y) {

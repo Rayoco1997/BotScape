@@ -201,7 +201,7 @@ public class Robot extends Objeto {
     private boolean checarMovDer(TiledMap mapa){
         TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(1);
         if(capa.isVisible()) {
-            int x = (int) (((body.getPosition().x*PantallaNivel.getPtM())+sprite.getWidth()/3) / 64);   // Convierte coordenadas del mundo en coordenadas del mapa
+            int x = (int) (((body.getPosition().x*PantallaNivel.getPtM())+sprite.getWidth()/8) / 64);   // Convierte coordenadas del mundo en coordenadas del mapa
             int y = (int) ((sprite.getY() + sprite.getHeight())/ 64);
             TiledMapTileLayer.Cell celdaDerecha = capa.getCell(x, y);
             if (celdaDerecha != null) {
@@ -218,8 +218,8 @@ public class Robot extends Objeto {
     private boolean checarMovIzq(TiledMap mapa){
         TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(1);
         if(capa.isVisible()) {
-            int x = (int) ((sprite.getX() - 64) / 64);   // Convierte coordenadas del mundo en coordenadas del mapa
-            int y = (int) (sprite.getY() / 64);
+            int x = (int) (((body.getPosition().x*PantallaNivel.getPtM())-sprite.getWidth()/8) / 64);   // Convierte coordenadas del mundo en coordenadas del mapa
+            int y = (int) ((sprite.getY() + sprite.getHeight())/ 64);
             TiledMapTileLayer.Cell celdaIzq = capa.getCell(x, y);
             if (celdaIzq != null) {
                 Object tipo = (String) celdaIzq.getTile().getProperties().get("tipo");
@@ -267,29 +267,6 @@ public class Robot extends Objeto {
     }
 
 
-
-    public boolean moverPalanca(TiledMap mapa) {
-
-        TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
-        int x;
-        int y = (int)(sprite.getY()/64);
-        TiledMapTileLayer.Cell celda;
-        int cantPuntos=5;
-        for(int i=0; i<cantPuntos; i++){
-            x= (int)(((sprite.getX()+sprite.getWidth())/64));
-            x= x-i*(int)sprite.getWidth()/((cantPuntos-1)*64);
-            celda = capa.getCell(x,y);
-            if (celda!=null) {
-                Object tipo = celda.getTile().getProperties().get("tipo");
-                if ("palanca".equals(tipo) ) {
-                    capa.setCell(x,y,celda.setFlipHorizontally(true));
-                    mapa.getLayers().get(1).setVisible(!mapa.getLayers().get(1).isVisible());
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
 
     // Accesor de estadoMovimiento
