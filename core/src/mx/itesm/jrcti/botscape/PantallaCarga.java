@@ -67,12 +67,15 @@ public class PantallaCarga extends Pantalla{
             case NIVEL:
                 cargarRecursosNivelTutorial();
                 break;
+            case NIVEL2:
+                cargarRecursosNivel2();
+                break;
         }
     }
 
     private void cargarMusica() {
 
-        if(siguientePantalla.equals(Pantallas.NIVEL)){
+        if(siguientePantalla.equals(Pantallas.NIVEL) || siguientePantalla.equals(Pantallas.NIVEL2)){
             musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/BringTheFoxhoundToMe.mp3"));
         } else if (estadoMusica != EstadoMusica.REPRODUCCION){
             musicaFondo = Gdx.audio.newMusic(Gdx.files.internal("Sonidos/Avoiding Danger1.mp3"));
@@ -94,6 +97,44 @@ public class PantallaCarga extends Pantalla{
         manager.load("Fondos/NivelTutorialFondo.jpg",Texture.class);
         manager.load("Mapas/Tilesv2.png", Texture.class);
         manager.load("Mapas/Map_TutorialV2.tmx", TiledMap.class);
+        manager.load("Personaje/VIUWalk_Cycle.png", Texture.class);
+        manager.load("NivelEnemigo.png", Texture.class);
+        manager.load("NivelPlataforma.png", Texture.class);
+        manager.load("NivelBoton.png", Texture.class);
+        manager.load("NivelIman.png", Texture.class);
+        manager.load("NivelMiniVI.png", Texture.class);
+        manager.load("NivelPiso.png", Texture.class);
+        manager.load("NivelEscalon.png", Texture.class);
+        manager.load("NivelSalida.png", Texture.class);
+        manager.load("Fondos/PausaFondo.jpg", Texture.class);
+        manager.load("NivelPausa.png", Texture.class);
+        manager.load("NivelPiso2.png", Texture.class);
+        manager.load("Tutorial2.png", Texture.class);
+        manager.load("Botones/PausaButtonMenuPrin.png", Texture.class);
+        manager.load("Botones/PausaButtonReanudar.png", Texture.class);
+        manager.load("Botones/PausaButtonSeleccionarNivel.png", Texture.class);
+        manager.load("Textos/PausaTextTittle.png",Texture.class);
+        manager.load("Personaje/Mini Vi.png",Texture.class);
+        manager.load("Botones/MovIzqButton.png",Texture.class);
+        manager.load("Botones/MovDerButton.png",Texture.class);
+        manager.load("Botones/MovUpButton.png",Texture.class);
+        manager.load("Personaje/LUG7 Walk_Cycle.png",Texture.class);
+        manager.load("VidasVIU.png", Texture.class);
+        manager.load("Textos/Ganaste.png",Texture.class);
+        manager.load("Fondos/PantallaGanaste.jpg", Texture.class);
+        manager.load("Fondos/PantallaPerdiste.jpg", Texture.class);
+        manager.load("Textos/TextoGanaste.png", Texture.class);
+        manager.load("Botones/PantallaNextLevel.png", Texture.class);
+        manager.load("Botones/PantallaRetry.png", Texture.class);
+        manager.load("PantallaEstrella.png", Texture.class);
+
+
+    }
+
+    private void cargarRecursosNivel2(){
+        manager.load("Fondos/NivelTutorialFondo.jpg",Texture.class);
+        manager.load("Mapas/Tilesv3.png", Texture.class);
+        manager.load("Mapas/Nivel2.tmx", TiledMap.class);
         manager.load("Personaje/VIUWalk_Cycle.png", Texture.class);
         manager.load("NivelEnemigo.png", Texture.class);
         manager.load("NivelPlataforma.png", Texture.class);
@@ -164,6 +205,9 @@ public class PantallaCarga extends Pantalla{
                     break;
                 case NIVEL:
                     juego.setScreen(new NivelTutorial(juego,estadoMusicaGeneral));   // 100% de carga
+                    break;
+                case NIVEL2:
+                    juego.setScreen(new Nivel2(juego,estadoMusicaGeneral));   // 100% de carga
                     break;
                 case SELECCION_NIVEL:
                     juego.setScreen(new MenuSeleccionNivel(juego, musicaFondo,estadoMusicaGeneral));

@@ -8,5 +8,5 @@ public enum Pantallas {
     MENU,
     SELECCION_NIVEL,
     NIVEL,
-
+    NIVEL2,
 }

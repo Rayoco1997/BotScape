@@ -103,7 +103,7 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click lvl2");
-                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musica, EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
+                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL2, musica, EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
             }
         });
 
