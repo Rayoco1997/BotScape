@@ -3,6 +3,7 @@ package mx.itesm.jrcti.botscape;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -61,6 +62,8 @@ public abstract class PantallaNivel extends Pantalla {
     private int contadorMiniVis=0;
     private Texto texto= new Texto();
     private Music musicaFondo;
+    public Sound sonidoGanaste;
+    public Sound sonidoPerdiste;
     private Texture texturaMiniVI;
     private Texture texturaVidasVIU;
     private Camera camaraHUD;
@@ -76,13 +79,18 @@ public abstract class PantallaNivel extends Pantalla {
     int altoVidasVIU;
 
 
-    public PantallaNivel(Juego j,EstadoMusica estadoMusicaGeneral, String nombreMapa, String nombreMusica){
+    public PantallaNivel(Juego j,EstadoMusica estadoMusicaGeneral, String nombreMapa, String nombreMusica, EstadoSonido estadoSonidoGeneral){
         super();
         this.juego=j;
         this.estadoMusicaGeneral= estadoMusicaGeneral;
         this.manager = j.getAssetManager();
         this.nombreMapa = nombreMapa;
         this.nombreMusicaFondo = nombreMusica;
+        this.estadoSonidoGeneral= estadoSonidoGeneral;
+
+        //CARGANDO LOS SONIDOS
+        sonidoGanaste= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/Win/collect_item_14.mp3"));
+        sonidoPerdiste= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/Lose/Impacts and Hits - Sub Zero 02.mp3"));
     }
 
 
@@ -445,6 +453,10 @@ public abstract class PantallaNivel extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "me hicieron CLICK");
 
+                if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                    sonidoBoton.play(volumenSonido);
+                }
+
                 estado = estado==EstadoJuego.PAUSADO?EstadoJuego.JUGANDO:EstadoJuego.PAUSADO;
 
                 if (estado==EstadoJuego.PAUSADO) {
@@ -452,6 +464,7 @@ public abstract class PantallaNivel extends Pantalla {
                     if (escenaPausa==null) {
                         escenaPausa = new EscenaPausa(vistaHUD, batch);
                     }
+
                     Gdx.input.setInputProcessor(escenaPausa);
                 }
             }
@@ -480,7 +493,10 @@ public abstract class PantallaNivel extends Pantalla {
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnSeleccionar);
@@ -497,7 +513,10 @@ public abstract class PantallaNivel extends Pantalla {
                     // Regresa al menú
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnSalir);
@@ -515,6 +534,9 @@ public abstract class PantallaNivel extends Pantalla {
                     // Continuar el juego
                     estado = EstadoJuego.JUGANDO;
                     // Regresa el control a la pantalla
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
                     Gdx.input.setInputProcessor(escenaHUD);
                 }
             });
@@ -525,6 +547,10 @@ public abstract class PantallaNivel extends Pantalla {
             Image imgTxtPausa= new Image(texturaTxtPausa);
             imgTxtPausa.setPosition(ANCHO/2-imgTxtPausa.getWidth()/2+66,5*ALTO/6);
             this.addActor(imgTxtPausa);
+
+            /*if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                sonidoBoton.play(volumenSonido);
+            }*/
         }
     }
 
@@ -547,7 +573,10 @@ public abstract class PantallaNivel extends Pantalla {
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnSeleccionar);
@@ -565,7 +594,10 @@ public abstract class PantallaNivel extends Pantalla {
                     // Regresa al menú
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnSalir);
@@ -587,7 +619,10 @@ public abstract class PantallaNivel extends Pantalla {
                     manager.unload(nombreMapa);
                     // Regresa el control a la pantalla
                     //Gdx.input.setInputProcessor(escenaNivelTutorial);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnReanudar);
@@ -597,6 +632,10 @@ public abstract class PantallaNivel extends Pantalla {
             Image imgTxtPausa = new Image(texturaTxtPausa);
             imgTxtPausa.setPosition(ANCHO / 2, 5 * ALTO / 6-100);
             this.addActor(imgTxtPausa);
+
+            if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                sonidoPerdiste.play(volumenSonido);
+            }
 
         }
     }
@@ -627,7 +666,10 @@ public abstract class PantallaNivel extends Pantalla {
                     manager.unload(nombreMapa);
                     // Regresa el control a la pantalla
                     //Gdx.input.setInputProcessor(escenaNivelTutorial);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnReintentar);
@@ -644,7 +686,10 @@ public abstract class PantallaNivel extends Pantalla {
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnNextLevel);
@@ -661,7 +706,10 @@ public abstract class PantallaNivel extends Pantalla {
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnSeleccionar);
@@ -679,7 +727,10 @@ public abstract class PantallaNivel extends Pantalla {
                     // Regresa al menú
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnSalir);
@@ -694,6 +745,10 @@ public abstract class PantallaNivel extends Pantalla {
             Image imgTxtPausa = new Image(texturaTxtPausa);
             imgTxtPausa.setPosition(ANCHO / 2 , 5 * ALTO / 6);
             this.addActor(imgTxtPausa);
+
+            if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                sonidoGanaste.play(volumenSonido);
+            }
 
 
 

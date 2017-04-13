@@ -33,10 +33,11 @@ public class PantallaCarga extends Pantalla{
     private SpriteBatch batch;
     private EstadoMusica estadoMusica;
 
-    public PantallaCarga(Juego juego, Pantallas siguientePantalla, Music musica, EstadoMusica estadoMusica, EstadoMusica estadoMusicaGeneral){
+    public PantallaCarga(Juego juego, Pantallas siguientePantalla, Music musica, EstadoMusica estadoMusica, EstadoMusica estadoMusicaGeneral, EstadoSonido estadoSonidoGeneral){
         this.juego = juego;
         this.siguientePantalla = siguientePantalla;
         this.estadoMusicaGeneral= estadoMusicaGeneral;
+        this.estadoSonidoGeneral= estadoSonidoGeneral;
         musicaFondo= musica;
         this.estadoMusica= estadoMusica;
         batch=new SpriteBatch();
@@ -85,13 +86,15 @@ public class PantallaCarga extends Pantalla{
 
     }
 
-    private void cargarRecursosMenu(){
-        manager.load("Fondos/PrincipalFondo.jpg",Texture.class);
-        manager.load("Botones/PrincipalBtnPlay.png",Texture.class);
-        manager.load("Botones/PrincipalBtnCredits.png",Texture.class);
-        manager.load("Textos/PrincipalTitle.png",Texture.class);
+    private void cargarRecursosMenu() {
+        manager.load("Fondos/PrincipalFondo.jpg", Texture.class);
+        manager.load("Botones/PrincipalBtnPlay.png", Texture.class);
+        manager.load("Botones/PrincipalBtnCredits.png", Texture.class);
+        manager.load("Textos/PrincipalTitle.png", Texture.class);
         manager.load("Botones/OptionsButtonMenuPrin.png", Texture.class);
+
     }
+
 
     private void cargarRecursosNivelTutorial(){
         manager.load("Fondos/NivelTutorialFondo.jpg",Texture.class);
@@ -127,6 +130,8 @@ public class PantallaCarga extends Pantalla{
         manager.load("Botones/PantallaNextLevel.png", Texture.class);
         manager.load("Botones/PantallaRetry.png", Texture.class);
         manager.load("PantallaEstrella.png", Texture.class);
+
+
 
 
     }
@@ -201,16 +206,16 @@ public class PantallaCarga extends Pantalla{
         if (manager.update()) { // Terminó?
             switch (siguientePantalla) {
                 case MENU:
-                    juego.setScreen(new MenuPrincipal(juego, musicaFondo,estadoMusicaGeneral));   // 100% de carga
+                    juego.setScreen(new MenuPrincipal(juego, musicaFondo,estadoMusicaGeneral,estadoSonidoGeneral));   // 100% de carga
                     break;
                 case NIVEL:
-                    juego.setScreen(new NivelTutorial(juego,estadoMusicaGeneral));   // 100% de carga
+                    juego.setScreen(new NivelTutorial(juego,estadoMusicaGeneral,estadoSonidoGeneral));   // 100% de carga
                     break;
                 case NIVEL2:
-                    juego.setScreen(new Nivel2(juego,estadoMusicaGeneral));   // 100% de carga
+                    juego.setScreen(new Nivel2(juego,estadoMusicaGeneral,estadoSonidoGeneral));   // 100% de carga
                     break;
                 case SELECCION_NIVEL:
-                    juego.setScreen(new MenuSeleccionNivel(juego, musicaFondo,estadoMusicaGeneral));
+                    juego.setScreen(new MenuSeleccionNivel(juego, musicaFondo,estadoMusicaGeneral,estadoSonidoGeneral));
                     break;
             }
         }

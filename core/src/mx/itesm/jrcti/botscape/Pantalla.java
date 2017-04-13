@@ -3,6 +3,7 @@ package mx.itesm.jrcti.botscape;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -20,15 +21,25 @@ public abstract class Pantalla implements Screen {
 
     protected Juego juego;
     public EstadoMusica estadoMusicaGeneral= EstadoMusica.REPRODUCCION;
+    public EstadoSonido estadoSonidoGeneral= EstadoSonido.ENCENDIDO;
+    public static  final float volumenSonido= 0.8f;
 
     protected OrthographicCamera camara;
     protected Viewport vista;
+
+    public Sound sonidoBoton;
+
+
 
     public Pantalla(){
         camara = new OrthographicCamera(ANCHO, ALTO);
         camara.position.set(ANCHO/2, ALTO/2,0);
         camara.update();
         vista = new StretchViewport(ANCHO, ALTO, camara);
+
+        //Sonido boton
+        sonidoBoton = Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/UI/Radar.mp3"));
+
     }
 
     protected void borrarPantalla(){

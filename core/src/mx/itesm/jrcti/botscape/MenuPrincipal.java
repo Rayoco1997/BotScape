@@ -43,17 +43,25 @@ public class MenuPrincipal extends Pantalla {
     private AssetManager manager;
 
 
-    public MenuPrincipal (Juego juego, Music musicaFondo, EstadoMusica estadoMusicaGeneral){
+    public MenuPrincipal (Juego juego, Music musicaFondo, EstadoMusica estadoMusicaGeneral, EstadoSonido estadoSonidoGeneral){
         super();
         this.juego=juego;
 
         this.estadoMusicaGeneral= estadoMusicaGeneral;
+        this.estadoSonidoGeneral= estadoSonidoGeneral;
+
         Gdx.app.log("Aviso", estadoMusicaGeneral.toString());
         musica= musicaFondo;
-        if(estadoMusicaGeneral.equals(EstadoMusica.APAGADO)){
+        musica.setLooping(true);
+
+        /*if(estadoMusicaGeneral.equals(EstadoMusica.APAGADO)){
             musica.stop();
             musicaFondo.stop();
-        }
+        }*/
+
+        /*if(estadoMusicaGeneral!= EstadoMusica.APAGADO) {
+            musica.play();
+        }*/
         manager = juego.getAssetManager();
 
     }
@@ -104,11 +112,14 @@ public class MenuPrincipal extends Pantalla {
         btnJugar.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                    sonidoBoton.play(volumenSonido);
+                }
                 Gdx.app.log("clicked","Me hicieron click");
                 //musica.pause();
 
 
-                juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musica,EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
+                juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musica,EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
             }
         });
 
@@ -117,7 +128,11 @@ public class MenuPrincipal extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click CREDITOS");
                 //musica.pause();
-                juego.setScreen(new MenuCreditos(juego,musica,estadoMusicaGeneral));
+                Gdx.app.log("Estado Sonido",""+ estadoSonidoGeneral);
+                if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                    sonidoBoton.play(volumenSonido);
+                }
+                juego.setScreen(new MenuCreditos(juego,musica,estadoMusicaGeneral,estadoSonidoGeneral));
             }
         });
 
@@ -126,7 +141,10 @@ public class MenuPrincipal extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click CREDITOS");
                 //musica.pause();
-                juego.setScreen(new PantallaConfiguracion(juego,musica,estadoMusicaGeneral));
+                if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                    sonidoBoton.play(volumenSonido);
+                }
+                juego.setScreen(new PantallaConfiguracion(juego,musica,estadoMusicaGeneral,estadoSonidoGeneral));
             }
         });
 
