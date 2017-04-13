@@ -125,6 +125,7 @@ public class PantallaConfiguracion extends Pantalla {
         buttonMusica.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
+                //AQUI VA EL CODIO PARA DESCATIVAR LA MUSICA
                 if(estadoMusicaGeneral==EstadoMusica.APAGADO){
                     estadoMusicaGeneral= EstadoMusica.REPRODUCCION;
                     buttonMusica.getStyle().imageUp= trdButtonMusicaOn;
@@ -140,10 +141,11 @@ public class PantallaConfiguracion extends Pantalla {
                     buttonMusica.getStyle().imageUp= trdButtonMusicaOff;
                     musica.stop();
                 }
+                //SONIDO DE OPRIMIR ESTE BOTON
                 if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
                     sonidoBoton.play(volumenSonido);
                 }
-                //AQUI VA EL CODIO PARA DESCATIVAR LA MUSICA
+
             }
         });
         buttonSonido.addListener(new ClickListener(){
@@ -162,7 +164,7 @@ public class PantallaConfiguracion extends Pantalla {
                     estadoSonidoGeneral= EstadoSonido.APAGADO;
                     buttonSonido.getStyle().imageUp= trdButtonSoundOff;
                 }
-                //AQUI VA EL CODIO PARA DESCATIVAR LA MUSICA
+
             }
         });
 
