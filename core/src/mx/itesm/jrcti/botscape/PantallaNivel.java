@@ -64,6 +64,8 @@ public abstract class PantallaNivel extends Pantalla {
     private Music musicaFondo;
     public Sound sonidoGanaste;
     public Sound sonidoPerdiste;
+    private ImageButton btnMusic;
+    private ImageButton btnSound;
     private Texture texturaMiniVI;
     private Texture texturaVidasVIU;
     private Camera camaraHUD;
@@ -551,12 +553,19 @@ public abstract class PantallaNivel extends Pantalla {
             //BOTONES PARA ACTIVAR Y DESACTIVAR SONIDOS Y MUSICA
 
             //BOTON DE LA MUSICA
-            Texture texturaBtnMusicOn = manager.get("Botones/MovUpButton.png");
-            //FALTA EL DE OFF
-            TextureRegionDrawable trdBtnMusicOn = new TextureRegionDrawable(new TextureRegion(texturaBtnMusicOn));
+            Texture texturaBtnMusicOn = manager.get("Botones/PausaBtnMusicOnMini.png");
+            Texture texturaBtnMusicOff = manager.get("Botones/PausaBtnMusicOffMini.png");
+
+            final TextureRegionDrawable trdBtnMusicOn = new TextureRegionDrawable(new TextureRegion(texturaBtnMusicOn));
+            final TextureRegionDrawable trdBtnMusicOff = new TextureRegionDrawable(new TextureRegion(texturaBtnMusicOff));
 
             //AQUI FALTA EL CODIGO PARA DECIDIR CON QUE IMAGEN VA INICIAR EL BOTON
-            final ImageButton btnMusic= new ImageButton(trdBtnMusicOn);
+            if (estadoMusicaGeneral== EstadoMusica.APAGADO) {
+                btnMusic= new ImageButton(trdBtnMusicOff);
+            }else{
+                btnMusic= new ImageButton(trdBtnMusicOn);
+            }
+
             btnMusic.setPosition(ANCHO-2*btnMusic.getMinWidth(),10);
             this.addActor(btnMusic);
 
@@ -566,7 +575,7 @@ public abstract class PantallaNivel extends Pantalla {
                     //AQUI VA EL CODIO PARA DESCATIVAR LA MUSICA
                     if(estadoMusicaGeneral==EstadoMusica.APAGADO){
                         estadoMusicaGeneral= EstadoMusica.REPRODUCCION;
-                        //btnMusic.getStyle().imageUp= trdButtonMusica;
+                        btnMusic.getStyle().imageUp= trdBtnMusicOn;
 
                         Gdx.app.log("Aviso", estadoMusicaGeneral.toString());
 
@@ -576,7 +585,7 @@ public abstract class PantallaNivel extends Pantalla {
                     }else{
                         estadoMusicaGeneral= EstadoMusica.APAGADO;
                         Gdx.app.log("Aviso", estadoMusicaGeneral.toString());
-                        //buttonMusica.getStyle().imageUp= trdButtonMusicaOff;
+                        btnMusic.getStyle().imageUp= trdBtnMusicOff;
                         musicaFondo.stop();
                     }
                     //SONIDO DE OPRIMIR ESTE BOTON
@@ -588,11 +597,17 @@ public abstract class PantallaNivel extends Pantalla {
             });
 
             //BOTON DE LOS SONIDOS
-            Texture texturaBtnSoundOn = manager.get("Botones/MovIzqButton.png");
-            //FALTA EL DE OFF
-            TextureRegionDrawable trdBtnSoundOn = new TextureRegionDrawable(new TextureRegion(texturaBtnSoundOn));
+            Texture texturaBtnSoundOn = manager.get("Botones/PausaBtnSoundOnMini.png");
+            Texture texturaBtnSoundOff = manager.get("Botones/PausaBtnSoundOffMini.png");
+
+            final TextureRegionDrawable trdBtnSoundOn = new TextureRegionDrawable(new TextureRegion(texturaBtnSoundOn));
+            final TextureRegionDrawable trdBtnSoundOff = new TextureRegionDrawable(new TextureRegion(texturaBtnSoundOff));
             //AQUI FALTA EL CODIGO PARA DECIDIR CON QUE IMAGEN VA INICIAR EL BOTON
-            ImageButton btnSound= new ImageButton(trdBtnSoundOn);
+            if (estadoSonidoGeneral== EstadoSonido.APAGADO) {
+                btnSound = new ImageButton(trdBtnSoundOff);
+            }else{
+                btnSound= new ImageButton(trdBtnSoundOn);
+            }
             btnSound.setPosition(ANCHO-btnSound.getWidth(),10);
             this.addActor(btnSound);
 
@@ -602,7 +617,7 @@ public abstract class PantallaNivel extends Pantalla {
                     if(estadoSonidoGeneral==EstadoSonido.APAGADO){
 
                         estadoSonidoGeneral= EstadoSonido.ENCENDIDO;
-                        //buttonSonido.getStyle().imageUp= trdButtonSoundOn;
+                        btnSound.getStyle().imageUp= trdBtnSoundOn;
 
 
                         Gdx.app.log("Aviso", estadoSonidoGeneral.toString());
@@ -610,7 +625,7 @@ public abstract class PantallaNivel extends Pantalla {
                         sonidoBoton.play(volumenSonido);
                     }else{
                         estadoSonidoGeneral= EstadoSonido.APAGADO;
-                        //buttonSonido.getStyle().imageUp= trdButtonSoundOff;
+                        btnSound.getStyle().imageUp= trdBtnSoundOff;
                     }
 
                 }
