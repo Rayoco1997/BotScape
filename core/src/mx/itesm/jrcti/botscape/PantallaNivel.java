@@ -3,6 +3,7 @@ package mx.itesm.jrcti.botscape;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -61,6 +62,10 @@ public abstract class PantallaNivel extends Pantalla {
     private int contadorMiniVis=0;
     private Texto texto= new Texto();
     private Music musicaFondo;
+    public Sound sonidoGanaste;
+    public Sound sonidoPerdiste;
+    private ImageButton btnMusic;
+    private ImageButton btnSound;
     private Texture texturaMiniVI;
     private Texture texturaVidasVIU;
     private Camera camaraHUD;
@@ -76,13 +81,18 @@ public abstract class PantallaNivel extends Pantalla {
     int altoVidasVIU;
 
 
-    public PantallaNivel(Juego j,EstadoMusica estadoMusicaGeneral, String nombreMapa, String nombreMusica){
+    public PantallaNivel(Juego j,EstadoMusica estadoMusicaGeneral, String nombreMapa, String nombreMusica, EstadoSonido estadoSonidoGeneral){
         super();
         this.juego=j;
         this.estadoMusicaGeneral= estadoMusicaGeneral;
         this.manager = j.getAssetManager();
         this.nombreMapa = nombreMapa;
         this.nombreMusicaFondo = nombreMusica;
+        this.estadoSonidoGeneral= estadoSonidoGeneral;
+
+        //CARGANDO LOS SONIDOS
+        sonidoGanaste= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/Win/collect_item_14.mp3"));
+        sonidoPerdiste= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/Lose/Impacts and Hits - Sub Zero 02.mp3"));
     }
 
 
@@ -445,6 +455,10 @@ public abstract class PantallaNivel extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "me hicieron CLICK");
 
+                if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                    sonidoBoton.play(volumenSonido);
+                }
+
                 estado = estado==EstadoJuego.PAUSADO?EstadoJuego.JUGANDO:EstadoJuego.PAUSADO;
 
                 if (estado==EstadoJuego.PAUSADO) {
@@ -452,6 +466,7 @@ public abstract class PantallaNivel extends Pantalla {
                     if (escenaPausa==null) {
                         escenaPausa = new EscenaPausa(vistaHUD, batch);
                     }
+
                     Gdx.input.setInputProcessor(escenaPausa);
                 }
             }
@@ -469,18 +484,21 @@ public abstract class PantallaNivel extends Pantalla {
             this.addActor(imgRectangulo);
 
             //SELECCION DE NIVEL
-            Texture texturaBtnSelecNivel= manager.get("Botones/PausaButtonSeleccionarNivel.png");
-            TextureRegionDrawable trdSeleccion= new TextureRegionDrawable(new TextureRegion(texturaBtnSelecNivel));
-            ImageButton btnSeleccionar= new ImageButton(trdSeleccion);
-            btnSeleccionar.setPosition(ANCHO/2-btnSeleccionar.getWidth()/2+66,1*ALTO/3-80);
-            btnSeleccionar.addListener(new ClickListener(){
+            Texture texturaBtnSelecNivel = manager.get("Botones/PausaButtonSeleccionarNivel.png");
+            TextureRegionDrawable trdSeleccion = new TextureRegionDrawable(new TextureRegion(texturaBtnSelecNivel));
+            ImageButton btnSeleccionar = new ImageButton(trdSeleccion);
+            btnSeleccionar.setPosition(ANCHO / 2 - btnSeleccionar.getWidth() / 2 + 66, 1 * ALTO / 3 - 80);
+            btnSeleccionar.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
 
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego,Pantallas.SELECCION_NIVEL,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral));
+                    if (estadoSonidoGeneral == EstadoSonido.ENCENDIDO) {
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral, estadoSonidoGeneral));
                 }
             });
             this.addActor(btnSeleccionar);
@@ -490,14 +508,17 @@ public abstract class PantallaNivel extends Pantalla {
             TextureRegionDrawable trdSalir = new TextureRegionDrawable(
                     new TextureRegion(texturaBtnSalir));
             ImageButton btnSalir = new ImageButton(trdSalir);
-            btnSalir.setPosition(ANCHO-btnSalir.getWidth()-10,10);
-            btnSalir.addListener(new ClickListener(){
+            btnSalir.setPosition(10, 10);
+            btnSalir.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     // Regresa al menú
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musicaFondo, EstadoMusica.DENIDO,estadoMusicaGeneral));
+                    if (estadoSonidoGeneral == EstadoSonido.ENCENDIDO) {
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral, estadoSonidoGeneral));
                 }
             });
             this.addActor(btnSalir);
@@ -507,14 +528,17 @@ public abstract class PantallaNivel extends Pantalla {
             TextureRegionDrawable trdReintentar = new TextureRegionDrawable(
                     new TextureRegion(texturabtnReanudar));
             ImageButton btnReanudar = new ImageButton(trdReintentar);
-            btnReanudar.setPosition(ANCHO/2-btnReanudar.getWidth()/2+66,ALTO/2-50);
+            btnReanudar.setPosition(ANCHO / 2 - btnReanudar.getWidth() / 2 + 66, ALTO / 2 - 50);
 
-            btnReanudar.addListener(new ClickListener(){
+            btnReanudar.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     // Continuar el juego
                     estado = EstadoJuego.JUGANDO;
                     // Regresa el control a la pantalla
+                    if (estadoSonidoGeneral == EstadoSonido.ENCENDIDO) {
+                        sonidoBoton.play(volumenSonido);
+                    }
                     Gdx.input.setInputProcessor(escenaHUD);
                 }
             });
@@ -522,9 +546,94 @@ public abstract class PantallaNivel extends Pantalla {
 
             //TEXTO DE PAUSA
             Texture texturaTxtPausa = manager.get("Textos/PausaTextTittle.png");
-            Image imgTxtPausa= new Image(texturaTxtPausa);
-            imgTxtPausa.setPosition(ANCHO/2-imgTxtPausa.getWidth()/2+66,5*ALTO/6);
+            Image imgTxtPausa = new Image(texturaTxtPausa);
+            imgTxtPausa.setPosition(ANCHO / 2 - imgTxtPausa.getWidth() / 2 + 66, 5 * ALTO / 6);
             this.addActor(imgTxtPausa);
+
+            //BOTONES PARA ACTIVAR Y DESACTIVAR SONIDOS Y MUSICA
+
+            //BOTON DE LA MUSICA
+            Texture texturaBtnMusicOn = manager.get("Botones/PausaBtnMusicOnMini.png");
+            Texture texturaBtnMusicOff = manager.get("Botones/PausaBtnMusicOffMini.png");
+
+            final TextureRegionDrawable trdBtnMusicOn = new TextureRegionDrawable(new TextureRegion(texturaBtnMusicOn));
+            final TextureRegionDrawable trdBtnMusicOff = new TextureRegionDrawable(new TextureRegion(texturaBtnMusicOff));
+
+            //AQUI FALTA EL CODIGO PARA DECIDIR CON QUE IMAGEN VA INICIAR EL BOTON
+            if (estadoMusicaGeneral== EstadoMusica.APAGADO) {
+                btnMusic= new ImageButton(trdBtnMusicOff);
+            }else{
+                btnMusic= new ImageButton(trdBtnMusicOn);
+            }
+
+            btnMusic.setPosition(ANCHO-2*btnMusic.getMinWidth(),10);
+            this.addActor(btnMusic);
+
+            btnMusic.addListener(new ClickListener(){
+                public void clicked(InputEvent event, float x, float y){
+                    Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
+                    //AQUI VA EL CODIO PARA DESCATIVAR LA MUSICA
+                    if(estadoMusicaGeneral==EstadoMusica.APAGADO){
+                        estadoMusicaGeneral= EstadoMusica.REPRODUCCION;
+                        btnMusic.getStyle().imageUp= trdBtnMusicOn;
+
+                        Gdx.app.log("Aviso", estadoMusicaGeneral.toString());
+
+
+
+                        musicaFondo.play();
+                    }else{
+                        estadoMusicaGeneral= EstadoMusica.APAGADO;
+                        Gdx.app.log("Aviso", estadoMusicaGeneral.toString());
+                        btnMusic.getStyle().imageUp= trdBtnMusicOff;
+                        musicaFondo.stop();
+                    }
+                    //SONIDO DE OPRIMIR ESTE BOTON
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+
+                }
+            });
+
+            //BOTON DE LOS SONIDOS
+            Texture texturaBtnSoundOn = manager.get("Botones/PausaBtnSoundOnMini.png");
+            Texture texturaBtnSoundOff = manager.get("Botones/PausaBtnSoundOffMini.png");
+
+            final TextureRegionDrawable trdBtnSoundOn = new TextureRegionDrawable(new TextureRegion(texturaBtnSoundOn));
+            final TextureRegionDrawable trdBtnSoundOff = new TextureRegionDrawable(new TextureRegion(texturaBtnSoundOff));
+            //AQUI FALTA EL CODIGO PARA DECIDIR CON QUE IMAGEN VA INICIAR EL BOTON
+            if (estadoSonidoGeneral== EstadoSonido.APAGADO) {
+                btnSound = new ImageButton(trdBtnSoundOff);
+            }else{
+                btnSound= new ImageButton(trdBtnSoundOn);
+            }
+            btnSound.setPosition(ANCHO-btnSound.getWidth(),10);
+            this.addActor(btnSound);
+
+            btnSound.addListener(new ClickListener(){
+                public void clicked(InputEvent event, float x, float y){
+                    Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
+                    if(estadoSonidoGeneral==EstadoSonido.APAGADO){
+
+                        estadoSonidoGeneral= EstadoSonido.ENCENDIDO;
+                        btnSound.getStyle().imageUp= trdBtnSoundOn;
+
+
+                        Gdx.app.log("Aviso", estadoSonidoGeneral.toString());
+
+                        sonidoBoton.play(volumenSonido);
+                    }else{
+                        estadoSonidoGeneral= EstadoSonido.APAGADO;
+                        btnSound.getStyle().imageUp= trdBtnSoundOff;
+                    }
+
+                }
+            });
+
+
+
+
         }
     }
 
@@ -547,7 +656,10 @@ public abstract class PantallaNivel extends Pantalla {
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnSeleccionar);
@@ -565,7 +677,10 @@ public abstract class PantallaNivel extends Pantalla {
                     // Regresa al menú
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnSalir);
@@ -587,7 +702,10 @@ public abstract class PantallaNivel extends Pantalla {
                     manager.unload(nombreMapa);
                     // Regresa el control a la pantalla
                     //Gdx.input.setInputProcessor(escenaNivelTutorial);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnReanudar);
@@ -597,6 +715,10 @@ public abstract class PantallaNivel extends Pantalla {
             Image imgTxtPausa = new Image(texturaTxtPausa);
             imgTxtPausa.setPosition(ANCHO / 2, 5 * ALTO / 6-100);
             this.addActor(imgTxtPausa);
+
+            if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                sonidoPerdiste.play(volumenSonido);
+            }
 
         }
     }
@@ -627,7 +749,10 @@ public abstract class PantallaNivel extends Pantalla {
                     manager.unload(nombreMapa);
                     // Regresa el control a la pantalla
                     //Gdx.input.setInputProcessor(escenaNivelTutorial);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnReintentar);
@@ -644,7 +769,10 @@ public abstract class PantallaNivel extends Pantalla {
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnNextLevel);
@@ -661,7 +789,10 @@ public abstract class PantallaNivel extends Pantalla {
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnSeleccionar);
@@ -679,7 +810,10 @@ public abstract class PantallaNivel extends Pantalla {
                     // Regresa al menú
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral));
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.MENU, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnSalir);
@@ -694,6 +828,10 @@ public abstract class PantallaNivel extends Pantalla {
             Image imgTxtPausa = new Image(texturaTxtPausa);
             imgTxtPausa.setPosition(ANCHO / 2 , 5 * ALTO / 6);
             this.addActor(imgTxtPausa);
+
+            if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                sonidoGanaste.play(volumenSonido);
+            }
 
 
 

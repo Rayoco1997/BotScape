@@ -43,8 +43,8 @@ public class Nivel2 extends PantallaNivel {
     //Asset Manager
     private AssetManager manager;
 
-    public Nivel2(Juego j, EstadoMusica estadoMusicaGeneral) {
-        super(j, estadoMusicaGeneral, "Mapas/Nivel2.tmx", "Sonidos/BringTheFoxhoundToMe.mp3");
+    public Nivel2(Juego j, EstadoMusica estadoMusicaGeneral,EstadoSonido estadoSonidoGeneral) {
+        super(j, estadoMusicaGeneral, "Mapas/Nivel2.tmx", "Sonidos/BringTheFoxhoundToMe.mp3",estadoSonidoGeneral);
         this.juego=j;
         manager = j.getAssetManager();
     }

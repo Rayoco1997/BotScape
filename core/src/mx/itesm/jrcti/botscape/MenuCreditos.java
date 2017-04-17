@@ -44,10 +44,11 @@ public class MenuCreditos extends Pantalla {
     //Escenas
     private Stage escenaMenuCreditos;
 
-    public MenuCreditos(Juego j,Music musicaFondo,EstadoMusica estadoMusicaGeneral){
+    public MenuCreditos(Juego j,Music musicaFondo,EstadoMusica estadoMusicaGeneral, EstadoSonido estadoSonidoGeneral){
 
         this.juego=j;
         this.estadoMusicaGeneral= estadoMusicaGeneral;
+        this.estadoSonidoGeneral= estadoSonidoGeneral;
         musica= musicaFondo;
 
     }
@@ -124,7 +125,10 @@ public class MenuCreditos extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "me hicieron CLICK");
                 //musica.pause();
-                juego.setScreen(new MenuPrincipal(juego,musica,estadoMusicaGeneral));
+                if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                    sonidoBoton.play(volumenSonido);
+                }
+                juego.setScreen(new MenuPrincipal(juego,musica,estadoMusicaGeneral,estadoSonidoGeneral));
             }
         });
 
@@ -159,7 +163,10 @@ public class MenuCreditos extends Pantalla {
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
             //musica.pause();
-            juego.setScreen(new MenuPrincipal(juego,musica,estadoMusicaGeneral));
+            if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                sonidoBoton.play(volumenSonido);
+            }
+            juego.setScreen(new MenuPrincipal(juego,musica,estadoMusicaGeneral,estadoSonidoGeneral));
         }
     }
 

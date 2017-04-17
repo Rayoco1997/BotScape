@@ -65,8 +65,9 @@ public class NivelTutorial extends PantallaNivel {
     private boolean palancaActivada = false;
 
 
-    public NivelTutorial(Juego j,EstadoMusica estadoMusicaGeneral){
-        super(j, estadoMusicaGeneral,"Mapas/Map_TutorialV2.tmx", "Sonidos/BringTheFoxhoundToMe.mp3");
+    public NivelTutorial(Juego j,EstadoMusica estadoMusicaGeneral,EstadoSonido estadoSonidoGeneral){
+
+        super(j, estadoMusicaGeneral,"Mapas/Map_TutorialV2.tmx", "Sonidos/BringTheFoxhoundToMe.mp3",estadoSonidoGeneral);
         this.juego=j;
         manager = j.getAssetManager();
     }
@@ -245,6 +246,7 @@ public class NivelTutorial extends PantallaNivel {
 
         if(getRobot().getVidas()==0){
             setEstadoJuego(EstadoJuego.PIERDE);
+
             if(getEscenaPerdiste()==null) {
                 setEscenaPerdiste(new EscenaPerdiste(getVistaHUD(), getBatch()));
             }
@@ -265,6 +267,7 @@ public class NivelTutorial extends PantallaNivel {
                 if (getEscenaPausa() == null) {
                     setEscenaPausa(new EscenaPausa(getVistaHUD(), getBatch()));
                 }
+
                 Gdx.input.setInputProcessor(getEscenaPausa());
             }else {
                 // Continuar el juego

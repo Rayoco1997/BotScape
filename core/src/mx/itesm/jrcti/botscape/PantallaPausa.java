@@ -85,21 +85,21 @@ public class PantallaPausa extends Pantalla {
         buttonReanudar.addListener(new ClickListener(){
            public void clicked(InputEvent event, float x, float y){
                Gdx.app.log("Aviso", "POS ME VOY A REANUDAR");
-               juego.setScreen(new NivelTutorial(juego,estadoMusicaGeneral));
+               juego.setScreen(new NivelTutorial(juego,estadoMusicaGeneral,estadoSonidoGeneral));
            }
         });
 
         buttonMenuPrincipal.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
-                juego.setScreen(new MenuPrincipal(juego,musica,estadoMusicaGeneral));
+                juego.setScreen(new MenuPrincipal(juego,musica,estadoMusicaGeneral,estadoSonidoGeneral));
             }
         });
 
         buttonSeleecionarNivel.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 Gdx.app.log("Aviso", "POS ME VOY A LA SELECCION DE NIVEL");
-                juego.setScreen(new MenuSeleccionNivel(juego,musica,estadoMusicaGeneral));
+                juego.setScreen(new MenuSeleccionNivel(juego,musica,estadoMusicaGeneral,estadoSonidoGeneral));
             }
         });
 
@@ -134,7 +134,7 @@ public class PantallaPausa extends Pantalla {
         escenaPantallaPausa.draw();
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            juego.setScreen(new NivelTutorial(juego,estadoMusicaGeneral));
+            juego.setScreen(new NivelTutorial(juego,estadoMusicaGeneral,estadoSonidoGeneral));
         }
 
     }
