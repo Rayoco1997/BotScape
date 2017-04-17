@@ -72,6 +72,7 @@ public abstract class PantallaNivel extends Pantalla {
     private int TtoP = 64;
     private int ANCHO_MAPA;
     private int ALTO_MAPA;
+    private int countMovCam=1;
 
 
 
@@ -190,6 +191,36 @@ public abstract class PantallaNivel extends Pantalla {
     protected void buscarMiniVis(){
         if(getRobot().recolectarMiniVi(getMapa()))
             contadorMiniVis++;
+    }
+    protected int getCountMovCam(){
+        return countMovCam;
+    }
+    protected int getANCHO_MAPA(){
+        return ANCHO_MAPA;
+    }
+    protected int getALTO_MAPA() {
+        return ALTO_MAPA;
+    }
+
+    public void actualizarCamara(int ANCHO_MAPA, int ALTO_MAPA){
+        float posX = getRobot().sprite.getX();
+        float posY = getRobot().sprite.getY();
+        if (posX>=ANCHO/2 && posX<=ANCHO_MAPA-ANCHO/2){
+            camara.position.set((int)posX, camara.position.y, 0);
+        }else if (posX>ANCHO_MAPA-ANCHO/2){
+            camara.position.set(ANCHO_MAPA-ANCHO/2,camara.position.y, 0);
+        }else if (posX<ANCHO/2){
+            camara.position.set(ANCHO/2,ALTO/2,0);
+        }
+        if (posY > ALTO*countMovCam){
+            camara.position.set(ANCHO/2,ALTO/2+ALTO,0);
+            countMovCam++;
+        }
+        else if(posY < 0 && countMovCam>=1){
+            camara.position.set(ANCHO/2,ALTO/2-ALTO,0);
+            countMovCam--;
+        }
+        camara.update();
     }
 
 

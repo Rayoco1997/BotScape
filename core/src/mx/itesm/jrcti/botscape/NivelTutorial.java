@@ -176,7 +176,7 @@ public class NivelTutorial extends PantallaNivel {
     @Override
     public void render(float delta) {
         borrarPantalla();
-        actualizarCamara();
+        actualizarCamara(ANCHO_MAPA, 0);
         getEstadoJuego();
         getBatch().setProjectionMatrix(camara.combined);
 
@@ -300,18 +300,6 @@ public class NivelTutorial extends PantallaNivel {
             }
         }
         return false;
-    }
-
-    private void actualizarCamara(){
-        float posX = getRobot().sprite.getX();
-        if (posX>=ANCHO/2 && posX<=ANCHO_MAPA-ANCHO/2){
-            camara.position.set((int)posX, camara.position.y, 0);
-        }else if (posX>ANCHO_MAPA-ANCHO/2){
-            camara.position.set(ANCHO_MAPA-ANCHO/2,camara.position.y, 0);
-        }else if (posX<ANCHO/2){
-            camara.position.set(ANCHO/2,ALTO/2,0);
-        }
-        camara.update();
     }
 
 
