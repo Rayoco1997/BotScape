@@ -17,9 +17,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -109,12 +113,14 @@ public abstract class PantallaNivel extends Pantalla {
     protected SpriteBatch getBatch(){
         return batch;
     }
+
     protected TiledMap getMapa(){
         return mapa;
     }
     protected World getWorld(){
         return world;
     }
+
     protected OrthogonalTiledMapRenderer getMapRenderer(){
         return renderarMapa;
     }
@@ -504,6 +510,63 @@ public abstract class PantallaNivel extends Pantalla {
         });
     }
 
+    private void revisarTocarPiso(Contact contact){
+        if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+                contact.getFixtureB().getBody().getUserData() instanceof Plataforma)||
+                (contact.getFixtureA().getBody().getUserData() instanceof Plataforma &&
+                        contact.getFixtureB().getBody().getUserData() instanceof Robot) ||
+
+                (contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+                        (contact.getFixtureB().getBody().getUserData().equals("piso") ||
+                                contact.getFixtureB().getBody().getUserData().equals("columna")))||
+                ((contact.getFixtureA().getBody().getUserData().equals("piso") ||
+                        (contact.getFixtureA().getBody().getUserData().equals("columna")) &&
+                                contact.getFixtureB().getBody().getUserData() instanceof Robot))){
+            getRobot().setEstadoSalto(Robot.EstadoSalto.EN_PISO);
+        }
+
+    }
+
+    private void revisarDanoEnemigo(Contact contact){
+        if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+                contact.getFixtureB().getBody().getUserData() instanceof Enemigo)||
+
+                (contact.getFixtureA().getBody().getUserData() instanceof Enemigo &&
+                        contact.getFixtureB().getBody().getUserData() instanceof Robot)){
+            if(getRobot().getHabilidad()!=Robot.Habilidad.INVULNERABLE) {
+                getEscenaHUD().getActors().get(getEscenaHUD().getActors().size-1).remove();
+                getRobot().setHabilidad(Robot.Habilidad.INVULNERABLE);
+                getRobot().recibirDano(contact.getWorldManifold());
+
+            }
+        }
+    }
+
+    protected void createCollisionListener() {
+        ContactListener conList = new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                revisarTocarPiso(contact);
+                revisarDanoEnemigo(contact);
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
+            }
+        };
+        getWorld().setContactListener(conList);
+    }
 
     // La escena que se muestra cuando el juego se pausa
     protected class EscenaPausa extends Stage
