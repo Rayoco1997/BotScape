@@ -57,10 +57,7 @@ public abstract class PantallaNivel extends Pantalla {
     private EscenaPausa escenaPausa;
     private EscenaPerdiste escenaPerdiste;
     private EscenaGanaste escenaGanaste;
-    private AssetManager manager;
     private StretchViewport vistaHUD;
-    private int contadorMiniVis=0;
-    private Texto texto= new Texto();
     private Music musicaFondo;
     public Sound sonidoGanaste;
     public Sound sonidoPerdiste;
@@ -70,15 +67,24 @@ public abstract class PantallaNivel extends Pantalla {
     private Texture texturaVidasVIU;
     private Camera camaraHUD;
     private Stage escenaVidasVIU;
-
     private String nombreMapa;
     private String nombreMusicaFondo;
     private int TtoP = 64;
+    private int ANCHO_MAPA;
+    private int ALTO_MAPA;
 
 
 
     private ArrayList<Image> listaVidasVIU = new ArrayList<Image>();
     int altoVidasVIU;
+
+    private int contadorMiniVis=0;
+    private Texto texto= new Texto();
+
+
+
+    //Asset Manager
+    private AssetManager manager;
 
 
     public PantallaNivel(Juego j,EstadoMusica estadoMusicaGeneral, String nombreMapa, String nombreMusica, EstadoSonido estadoSonidoGeneral){
@@ -141,9 +147,22 @@ public abstract class PantallaNivel extends Pantalla {
         return escenaPerdiste;
     }
 
+    protected AssetManager getManager(){
+        return manager;
+    }
+
+    protected Texto getTexto(){
+        return texto;
+    }
+
+    protected int getContadorMiniVis(){
+        return contadorMiniVis;
+    }
+
     public static float getPtM(){
         return PIXELS_TO_METERS;
     }
+
 
     protected void setEstadoJuego(EstadoJuego estado){
         this.estado=estado;
@@ -159,6 +178,18 @@ public abstract class PantallaNivel extends Pantalla {
 
     protected void setEscenaPausa(EscenaPausa escenaPausa){
         this.escenaPausa=escenaPausa;
+    }
+
+    protected void setContadorMiniVis(int nuevasVidas){
+        contadorMiniVis = nuevasVidas;
+    }
+
+    protected void setManager(AssetManager ass){
+        manager = ass;
+    }
+    protected void buscarMiniVis(){
+        if(getRobot().recolectarMiniVi(getMapa()))
+            contadorMiniVis++;
     }
 
 
@@ -191,7 +222,7 @@ public abstract class PantallaNivel extends Pantalla {
                         if (flagPrimero) {
                             count = 0;
                             xInicial = col * TtoP;
-                            Gdx.app.log("Leer mapa:","Creo un body en fila " + fila + " columna " + col + " con xInicial en " + xInicial);
+                            //Gdx.app.log("Leer mapa:","Creo un body en fila " + fila + " columna " + col + " con xInicial en " + xInicial);
                             flagPrimero = false;
                             count++;
                         } else {
@@ -199,7 +230,7 @@ public abstract class PantallaNivel extends Pantalla {
                             count++;
                         }
                     } else if(!flagPrimero) {
-                        Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
+                        //Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
                         flagPrimero = true;
                         cuadro = new PolygonShape();
                         if(col == 0) {
@@ -214,7 +245,7 @@ public abstract class PantallaNivel extends Pantalla {
                         bodyPiso.setUserData("piso");
                     }
                 } else if (!flagPrimero){
-                    Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
+                    //Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
                     flagPrimero = true;
                     cuadro = new PolygonShape();
                     if(col == 0) {
@@ -860,5 +891,6 @@ public abstract class PantallaNivel extends Pantalla {
 
 
     public abstract void cargarTexturasExtras();
+    public abstract boolean moverPalanca(TiledMap mapa);
 
 }

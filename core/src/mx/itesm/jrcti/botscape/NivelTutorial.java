@@ -43,11 +43,7 @@ public class NivelTutorial extends PantallaNivel {
     private Texture LUGWalk_Cycle;
     private Plataforma plat1;
 
-    //Asset Manager
-    private AssetManager manager;
 
-    private int contadorMiniVis=0;
-    private Texto texto= new Texto();
 
 
     private ArrayList<Image> listaVidasVIU = new ArrayList<Image>();
@@ -69,7 +65,7 @@ public class NivelTutorial extends PantallaNivel {
 
         super(j, estadoMusicaGeneral,"Mapas/Map_TutorialV2.tmx", "Sonidos/BringTheFoxhoundToMe.mp3",estadoSonidoGeneral);
         this.juego=j;
-        manager = j.getAssetManager();
+        setManager(j.getAssetManager());
     }
 
     @Override
@@ -172,9 +168,9 @@ public class NivelTutorial extends PantallaNivel {
 
     @Override
     public void cargarTexturasExtras(){
-        texturaPlataforma = manager.get("NivelPlataforma.png");
-        texturaFondoTutorial = manager.get("Fondos/NivelTutorialFondo.jpg");
-        LUGWalk_Cycle = manager.get("Personaje/LUG7 Walk_Cycle.png");
+        texturaPlataforma = getManager().get("NivelPlataforma.png");
+        texturaFondoTutorial = getManager().get("Fondos/NivelTutorialFondo.jpg");
+        LUGWalk_Cycle = getManager().get("Personaje/LUG7 Walk_Cycle.png");
     }
 
     @Override
@@ -221,7 +217,7 @@ public class NivelTutorial extends PantallaNivel {
             }
 
             //para mostrar el puntaje de mini vis
-            texto.mostrarMensaje(getBatch(), Integer.toString(contadorMiniVis), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);
+            getTexto().mostrarMensaje(getBatch(), Integer.toString(getContadorMiniVis()), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);
             getRobot().dibujar(getBatch());
             getBatch().end();
 
@@ -282,6 +278,7 @@ public class NivelTutorial extends PantallaNivel {
 
     }
 
+    @Override
     public boolean moverPalanca(TiledMap mapa) {
 
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
@@ -317,10 +314,7 @@ public class NivelTutorial extends PantallaNivel {
         camara.update();
     }
 
-    private void buscarMiniVis(){
-        if(getRobot().recolectarMiniVi(getMapa()))
-            contadorMiniVis++;
-    }
+
 
 
     @Override

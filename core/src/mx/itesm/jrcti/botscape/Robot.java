@@ -258,6 +258,7 @@ public class Robot extends Objeto {
             if (celda!=null) {
                 Object tipo = celda.getTile().getProperties().get("tipo");
                 if ("miniVi".equals(tipo) ) {
+                    Gdx.app.log("DEUS","VULT");
                     capa.setCell(x,y,null);// Borra el mini vi del mapa
                     return true;
                 }
