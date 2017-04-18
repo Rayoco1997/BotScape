@@ -1,16 +1,11 @@
 package mx.itesm.jrcti.botscape;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
 /**
  * Created by Julio on 11/04/2017.
@@ -32,7 +27,10 @@ public class Nivel2 extends PantallaNivel {
     private Texture texturaPlataforma;
     private Texture texturaFondoTutorial;
     private Texture LUGWalk_Cycle;
-    private Plataforma plat1;
+
+    //Objetos
+    private Plataforma platf1;
+    private Plataforma platf2;
 
     public Nivel2(Juego j, EstadoMusica estadoMusicaGeneral,EstadoSonido estadoSonidoGeneral) {
         super(j, estadoMusicaGeneral, "Mapas/Nivel2.tmx", "Sonidos/BringTheFoxhoundToMe.mp3",estadoSonidoGeneral);
@@ -72,6 +70,11 @@ public class Nivel2 extends PantallaNivel {
         texturaFondo.setPosition(0,0);
         createCollisionListener();
 
+        platf1 = new Plataforma(texturaPlataforma, 3, 3, 1536, 192,
+                Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
+        platf2 = new Plataforma(texturaPlataforma, 2.7f, 2.7f, 2560, 740,
+                Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
+
         //Debugger
         debugRenderer = new Box2DDebugRenderer();
         Gdx.input.setCatchBackKey(true);
@@ -80,6 +83,7 @@ public class Nivel2 extends PantallaNivel {
     @Override
     protected void revisarMuertePorCaida(int countMovCam) {
         Gdx.app.log("x "+getRobot().sprite.getX(),"  y "+getRobot().sprite.getY());
+        Gdx.app.log("Cámara:   x "+camara.position.x,"  y "+camara.position.y);
         if(getRobot().getBody().getTransform().getPosition().y< 0.0f) {
             Gdx.app.log("Cambio de posición"," a su posición inicial");
             getRobot().morir();
@@ -113,6 +117,12 @@ public class Nivel2 extends PantallaNivel {
                     PantallaNivel.getPtM(), 0);
 
             getBatch().begin();
+            //Dibujando plataforma
+            platf1.dibujar(getBatch());
+            platf1.mover(1536,1536,192,870);
+            platf2.dibujar(getBatch());
+            platf2.mover(2560,3280,740,740);
+
             buscarMiniVis();
             //para mostrar el puntaje de mini vis
             getTexto().mostrarMensaje(getBatch(), Integer.toString(getContadorMiniVis()), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);

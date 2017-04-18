@@ -216,14 +216,14 @@ public abstract class PantallaNivel extends Pantalla {
         }else if (posX>ANCHO_MAPA-ANCHO/2){
             camara.position.set(ANCHO_MAPA-ANCHO/2,camara.position.y, 0);
         }else if (posX<ANCHO/2){
-            camara.position.set(ANCHO/2,ALTO/2,0);
+            camara.position.set(ANCHO/2,camara.position.y,0);
         }
         if (posY > ALTO*countMovCam){
-            camara.position.set(ANCHO/2,ALTO/2+ALTO,0);
+            camara.position.set(camara.position.x,camara.position.y+ALTO,0);
             countMovCam++;
         }
         else if(posY<ALTO*countMovCam-ALTO && countMovCam>1){
-            camara.position.set(ANCHO/2,ALTO/2-ALTO,0);
+            camara.position.set(camara.position.y,camara.position.y-ALTO,0);
             countMovCam--;
         }
         camara.update();

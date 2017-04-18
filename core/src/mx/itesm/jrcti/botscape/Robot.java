@@ -42,6 +42,7 @@ public class Robot extends Objeto {
     private int vidas = 3;
     private final int TIEMPO_INV_INICIAL = 90;
     private int tiempoInv = 90;
+    private TextureRegion[][] texturaPersonaje;
 
     // Recibe una imagen con varios frames (ver marioSprite.png)
     public Robot(Texture textura, float x, float y, World world, BodyDef.BodyType type,
@@ -50,7 +51,7 @@ public class Robot extends Objeto {
         // Lee la textura como región
         TextureRegion texturaCompleta = new TextureRegion(textura);
 
-        TextureRegion[][] texturaPersonaje = texturaCompleta.split(233, 195);
+        texturaPersonaje = texturaCompleta.split(233, 195);
         // Crea la animación con tiempo de 0.10 segundos entre frames.
         spriteAnimadoMov = new Animation(0.10f, texturaPersonaje[0][1],
                 texturaPersonaje[0][2], texturaPersonaje[0][3], texturaPersonaje[0][4],
@@ -335,6 +336,8 @@ public class Robot extends Objeto {
 
     public void reposicionar(float xInic, float yInic){
         this.body.setTransform(xInic,yInic,0);
+        this.sprite=new Sprite(texturaPersonaje[0][0]);
+        this.sprite.setPosition(xInic, yInic);
     }
 
     public enum EstadoMovimiento {
