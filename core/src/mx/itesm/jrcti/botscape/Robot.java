@@ -38,6 +38,8 @@ public class Robot extends Objeto {
     private Body body;
     private BodyDef bodydef;
     private PolygonShape shape;
+    private World world;
+    private FixtureDef fix;
 
     private int vidas = 3;
     private final int TIEMPO_INV_INICIAL = 90;
@@ -50,7 +52,8 @@ public class Robot extends Objeto {
         super(textura, x, y);
         // Lee la textura como región
         TextureRegion texturaCompleta = new TextureRegion(textura);
-
+        this.world = world;
+        this.fix=fix;
         texturaPersonaje = texturaCompleta.split(233, 195);
         // Crea la animación con tiempo de 0.10 segundos entre frames.
         spriteAnimadoMov = new Animation(0.10f, texturaPersonaje[0][1],
@@ -328,13 +331,27 @@ public class Robot extends Objeto {
     }
 
     public void morir(){
-        vidas--;
+        setVidas(getVidas()-1);
     }
 
     public void reposicionar(float xInic, float yInic){
-        this.body.setTransform(xInic,yInic,0);
-        this.sprite=new Sprite(texturaPersonaje[0][0]);
+        world.destroyBody(body);
         this.sprite.setPosition(xInic, yInic);
+
+        //this.body.setTransform(xInic,yInic,0);
+        bodydef = new BodyDef();
+        bodydef.type = BodyDef.BodyType.DynamicBody;
+        bodydef.fixedRotation = true;
+        bodydef.position.set((sprite.getX() + sprite.getWidth() / 2) / PantallaNivel.getPtM(),
+                (sprite.getY() + sprite.getHeight() / 2) / PantallaNivel.getPtM());
+        shape = new PolygonShape();
+        shape.setAsBox(sprite.getWidth() / 3 / PantallaNivel.getPtM(), sprite.getHeight() / 2 / PantallaNivel.getPtM());
+        fix.shape = shape;
+        body = world.createBody(bodydef);
+        body.setUserData(this);
+        body.createFixture(fix);
+        //this.sprite=new Sprite(texturaPersonaje[0][0]);
+
     }
 
     public enum EstadoMovimiento {
