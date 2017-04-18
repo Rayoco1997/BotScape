@@ -553,7 +553,11 @@ public abstract class PantallaNivel extends Pantalla {
                 ((contact.getFixtureA().getBody().getUserData().equals("piso") ||
                         (contact.getFixtureA().getBody().getUserData().equals("columna")) &&
                                 contact.getFixtureB().getBody().getUserData() instanceof Robot))){
-            getRobot().setEstadoSalto(Robot.EstadoSalto.EN_PISO);
+            Vector2 punto = contact.getWorldManifold().getPoints()[0];
+            if(punto.y*PIXELS_TO_METERS <= getRobot().sprite.getY()){
+                //Gdx.app.log("punto y " + punto.y*PIXELS_TO_METERS," robot y " + getRobot().sprite.getY());
+                getRobot().setEstadoSalto(Robot.EstadoSalto.EN_PISO);
+            }
         }
 
     }
@@ -600,6 +604,8 @@ public abstract class PantallaNivel extends Pantalla {
         };
         getWorld().setContactListener(conList);
     }
+
+
 
     // La escena que se muestra cuando el juego se pausa
     protected class EscenaPausa extends Stage
