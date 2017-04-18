@@ -107,6 +107,7 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click lvl2");
+                musica.stop();
                 if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
                     sonidoBoton.play(volumenSonido);
                 }
