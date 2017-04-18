@@ -272,9 +272,6 @@ public class Robot extends Objeto {
         return false;
     }
 
-
-
-
     // Accesor de estadoMovimiento
     public EstadoMovimiento getEstadoMovimiento() {
         return estadoMovimiento;

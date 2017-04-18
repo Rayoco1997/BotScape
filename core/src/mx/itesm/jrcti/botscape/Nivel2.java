@@ -4,8 +4,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 /**
  * Created by Julio on 11/04/2017.
@@ -31,6 +34,11 @@ public class Nivel2 extends PantallaNivel {
     //Objetos
     private Plataforma platf1;
     private Plataforma platf2;
+    private Plataforma platf3;
+
+    private FixtureDef fix;
+    private Enemigo enemigo1;
+    private Enemigo enemigo2;
 
     public Nivel2(Juego j, EstadoMusica estadoMusicaGeneral,EstadoSonido estadoSonidoGeneral) {
         super(j, estadoMusicaGeneral, "Mapas/Nivel2.tmx", "Sonidos/BringTheFoxhoundToMe.mp3",estadoSonidoGeneral);
@@ -52,6 +60,7 @@ public class Nivel2 extends PantallaNivel {
         cargarTexturasExtras();
         crearObjetos();
         crearCuerpos();
+        crearEnemigos();
         crearHUD();
     }
 
@@ -64,6 +73,15 @@ public class Nivel2 extends PantallaNivel {
         leerMapa();
     }
 
+    private void crearEnemigos() {
+        fix = new FixtureDef();
+        fix.density=.1f;
+        enemigo1 = new Enemigo(LUGWalk_Cycle,3f,64,832,Enemigo.EstadoMovimiento.MOV_DERECHA,
+                getWorld(), BodyDef.BodyType.KinematicBody,fix);
+        enemigo2 = new Enemigo(LUGWalk_Cycle,3f,1408,1536,Enemigo.EstadoMovimiento.MOV_DERECHA,
+                getWorld(), BodyDef.BodyType.KinematicBody,fix);
+    }
+
     private void crearObjetos() {
         crearMundo();
         texturaFondo=new Sprite(texturaFondoTutorial);
@@ -73,6 +91,8 @@ public class Nivel2 extends PantallaNivel {
         platf1 = new Plataforma(texturaPlataforma, 3, 3, 1536, 192,
                 Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
         platf2 = new Plataforma(texturaPlataforma, 2.7f, 2.7f, 2560, 740,
+                Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
+        platf3 = new Plataforma(texturaPlataforma, 2.9f, 2.9f, 192, 1472,
                 Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
 
         //Debugger
@@ -122,8 +142,17 @@ public class Nivel2 extends PantallaNivel {
             platf1.mover(1536,1536,192,870);
             platf2.dibujar(getBatch());
             platf2.mover(2560,3280,740,740);
+            platf3.dibujar(getBatch());
+            platf3.mover(192,1344,1472,2176);
+
+            enemigo1.dibujar(getBatch());
+            enemigo1.mover(64,640);
+            enemigo2.dibujar(getBatch());
+            enemigo2.mover(1408,1984);
+
 
             buscarMiniVis();
+            moverPalanca(getMapa());
             //para mostrar el puntaje de mini vis
             getTexto().mostrarMensaje(getBatch(), Integer.toString(getContadorMiniVis()), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);
             getRobot().dibujar(getBatch());
@@ -181,6 +210,33 @@ public class Nivel2 extends PantallaNivel {
 
     @Override
     public boolean moverPalanca(TiledMap mapa) {
+        for(int j=3; j<=4;j++){
+            TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(j);
+            int x;
+            int y = (int)(getRobot().sprite.getY()/64);
+            TiledMapTileLayer.Cell celda;
+            int cantPuntos=5;
+            for(int i=0; i<cantPuntos; i++){
+                x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));
+                x= x-i*(int)getRobot().sprite.getWidth()/((cantPuntos-1)*64);
+                celda = capa.getCell(x,y);
+                if (celda!=null) {
+                    Object tipo = celda.getTile().getProperties().get("tipo");
+                    if ("palanca".equals(tipo) ) {
+                        capa.setCell(x,y,celda.setFlipHorizontally(true));
+                        if(j==3){
+                            Gdx.app.log("ACA DEBO:"," APARECER UNA PLATAFORMA");
+                        }
+                        else if(j==4){
+                            //Aqui abre la puerta
+                            mapa.getLayers().get(1).setVisible(!mapa.getLayers().get(1).isVisible());
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 
