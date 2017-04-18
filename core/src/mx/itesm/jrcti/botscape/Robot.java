@@ -84,6 +84,10 @@ public class Robot extends Objeto {
         body.createFixture(fix);
     }
 
+    public Body getBody(){
+        return body;
+    }
+
     // Dibuja el personaje
     public void dibujar(SpriteBatch batch) {
         // Dibuja el personaje dependiendo del estadoMovimiento
@@ -325,6 +329,13 @@ public class Robot extends Objeto {
         return vidas;
     }
 
+    public void morir(){
+        vidas--;
+    }
+
+    public void reposicionar(float xInic, float yInic){
+        this.body.setTransform(xInic,yInic,0);
+    }
 
     public enum EstadoMovimiento {
         QUIETO,

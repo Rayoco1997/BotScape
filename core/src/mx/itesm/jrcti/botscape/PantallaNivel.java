@@ -222,7 +222,7 @@ public abstract class PantallaNivel extends Pantalla {
             camara.position.set(ANCHO/2,ALTO/2+ALTO,0);
             countMovCam++;
         }
-        else if(posY < 0 && countMovCam>=1){
+        else if(posY<ALTO*countMovCam-ALTO && countMovCam>1){
             camara.position.set(ANCHO/2,ALTO/2-ALTO,0);
             countMovCam--;
         }
@@ -572,6 +572,8 @@ public abstract class PantallaNivel extends Pantalla {
             }
         }
     }
+
+    protected abstract void revisarMuertePorCaida(int countMovCam);
 
     protected void createCollisionListener() {
         ContactListener conList = new ContactListener() {

@@ -29,14 +29,10 @@ public class Nivel2 extends PantallaNivel {
 
     //Texturas
     Sprite texturaFondo;
-
     private Texture texturaPlataforma;
     private Texture texturaFondoTutorial;
     private Texture LUGWalk_Cycle;
     private Plataforma plat1;
-
-
-
 
     public Nivel2(Juego j, EstadoMusica estadoMusicaGeneral,EstadoSonido estadoSonidoGeneral) {
         super(j, estadoMusicaGeneral, "Mapas/Nivel2.tmx", "Sonidos/BringTheFoxhoundToMe.mp3",estadoSonidoGeneral);
@@ -50,7 +46,6 @@ public class Nivel2 extends PantallaNivel {
         texturaFondoTutorial = getManager().get("Fondos/NivelTutorialFondo.jpg");
         LUGWalk_Cycle = getManager().get("Personaje/LUG7 Walk_Cycle.png");
     }
-
 
     @Override
     public void show() {
@@ -82,104 +77,52 @@ public class Nivel2 extends PantallaNivel {
         Gdx.input.setCatchBackKey(true);
     }
 
-
-    private void createCollisionListener() {
-        ContactListener conList = new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {
-                if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
-                        contact.getFixtureB().getBody().getUserData() instanceof Plataforma)||
-                        (contact.getFixtureA().getBody().getUserData() instanceof Plataforma &&
-                                contact.getFixtureB().getBody().getUserData() instanceof Robot) ||
-
-                        (contact.getFixtureA().getBody().getUserData() instanceof Robot &&
-                                (contact.getFixtureB().getBody().getUserData().equals("piso") ||
-                                        contact.getFixtureB().getBody().getUserData().equals("columna")))||
-                        ((contact.getFixtureA().getBody().getUserData().equals("piso") ||
-                                (contact.getFixtureA().getBody().getUserData().equals("columna")) &&
-                                        contact.getFixtureB().getBody().getUserData() instanceof Robot))){
-                    getRobot().setEstadoSalto(Robot.EstadoSalto.EN_PISO);
-                }
-                if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
-                        contact.getFixtureB().getBody().getUserData() instanceof Enemigo)||
-
-                        (contact.getFixtureA().getBody().getUserData() instanceof Enemigo &&
-                                contact.getFixtureB().getBody().getUserData() instanceof Robot)){
-                    //Gdx.app.log("DAño","Khe");
-                    if(getRobot().getHabilidad()!=Robot.Habilidad.INVULNERABLE) {
-                        getEscenaHUD().getActors().get(getEscenaHUD().getActors().size-1).remove();
-                        getRobot().setHabilidad(Robot.Habilidad.INVULNERABLE);
-                        getRobot().recibirDano(contact.getWorldManifold());
-
-                    }
-                }
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
-
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-
-            }
-        };
-        getWorld().setContactListener(conList);
+    @Override
+    protected void revisarMuertePorCaida(int countMovCam) {
+        Gdx.app.log("x "+getRobot().sprite.getX(),"  y "+getRobot().sprite.getY());
+        if(getRobot().getBody().getTransform().getPosition().y< 0.0f) {
+            Gdx.app.log("Cambio de posición"," a su posición inicial");
+            getRobot().morir();
+            getRobot().reposicionar(xInicialRobot, yInicialRobot);
+        }
     }
-
 
     @Override
     public void render(float delta) {
-
         borrarPantalla();
         actualizarCamara(ANCHO_MAPA,ALTO_MAPA);
+        revisarMuertePorCaida(getCountMovCam());
         getEstadoJuego();
         getBatch().setProjectionMatrix(camara.combined);
 
         if (getEstadoJuego() == EstadoJuego.PAUSADO) {
             getEscenaPausa().draw();
         } else if (getEstadoJuego()== EstadoJuego.JUGANDO){
-
             getRobot().actualizar(getMapa());
             getBatch().begin();
             texturaFondo.draw(getBatch());
             getBatch().end();
-
-
             getMapRenderer().setView(camara);
             getMapRenderer().render();
 
-
             debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
             debugRenderer.render(getWorld(),debugMatrix);
-
 
             //Debugging
             debugMatrix = getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),
                     PantallaNivel.getPtM(), 0);
 
-            //algo
             getBatch().begin();
-
             buscarMiniVis();
-
             //para mostrar el puntaje de mini vis
             getTexto().mostrarMensaje(getBatch(), Integer.toString(getContadorMiniVis()), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);
             getRobot().dibujar(getBatch());
             getBatch().end();
 
             getWorld().step(delta,6,2);
-
             getBatch().setProjectionMatrix(getCamaraHUD().combined);
             getEscenaHUD().draw();
             //Gdx.app.log("MI estado es:", ""+getEstadoJuego().toString());
-
         }
 
         if ((getRobot().sprite.getX()+getRobot().sprite.getWidth()/2)>ANCHO_MAPA){
@@ -224,21 +167,12 @@ public class Nivel2 extends PantallaNivel {
             }
 
         }
-
-
-
-
-
     }
-
-
 
     @Override
     public boolean moverPalanca(TiledMap mapa) {
         return false;
     }
-
-
 
     @Override
     public void pause() {

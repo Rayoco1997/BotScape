@@ -116,54 +116,12 @@ public class NivelTutorial extends PantallaNivel {
         Gdx.input.setCatchBackKey(true);
     }
 
-    private void createCollisionListener() {
-        ContactListener conList = new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {
-                if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
-                    contact.getFixtureB().getBody().getUserData() instanceof Plataforma)||
-                        (contact.getFixtureA().getBody().getUserData() instanceof Plataforma &&
-                        contact.getFixtureB().getBody().getUserData() instanceof Robot) ||
-
-                        (contact.getFixtureA().getBody().getUserData() instanceof Robot &&
-                                (contact.getFixtureB().getBody().getUserData().equals("piso") ||
-                                        contact.getFixtureB().getBody().getUserData().equals("columna")))||
-                        ((contact.getFixtureA().getBody().getUserData().equals("piso") ||
-                                (contact.getFixtureA().getBody().getUserData().equals("columna")) &&
-                                contact.getFixtureB().getBody().getUserData() instanceof Robot))){
-                    getRobot().setEstadoSalto(Robot.EstadoSalto.EN_PISO);
-                }
-                if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
-                        contact.getFixtureB().getBody().getUserData() instanceof Enemigo)||
-
-                        (contact.getFixtureA().getBody().getUserData() instanceof Enemigo &&
-                                contact.getFixtureB().getBody().getUserData() instanceof Robot)){
-                    //Gdx.app.log("DAño","Khe");
-                    if(getRobot().getHabilidad()!=Robot.Habilidad.INVULNERABLE) {
-                        getEscenaHUD().getActors().get(getEscenaHUD().getActors().size-1).remove();
-                        getRobot().setHabilidad(Robot.Habilidad.INVULNERABLE);
-                        getRobot().recibirDano(contact.getWorldManifold());
-
-                    }
-                }
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
-
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-
-            }
-        };
-        getWorld().setContactListener(conList);
+    @Override
+    protected void revisarMuertePorCaida(int countMovCam) {
+        if(getRobot().sprite.getY()+getRobot().sprite.getHeight()<0) {
+            getRobot().morir();
+            getRobot().reposicionar(xInicialRobot, yInicialRobot);
+        }
     }
 
     @Override
