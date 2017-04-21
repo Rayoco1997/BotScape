@@ -190,7 +190,7 @@ public class NivelTutorial extends PantallaNivel {
         if ((getRobot().sprite.getX()+getRobot().sprite.getWidth()/2)>ANCHO_MAPA){
             setEstadoJuego(EstadoJuego.GANADO);
             if(getEscenaGanaste()==null){
-                setEscenaGanaste(new EscenaGanaste(getVistaHUD(), getBatch()));
+                setEscenaGanaste(new EscenaGanaste(getVistaHUD(), getBatch(),this,3));
             }
             Gdx.input.setInputProcessor(getEscenaGanaste());
         }

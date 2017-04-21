@@ -1,6 +1,7 @@
 package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -605,7 +606,37 @@ public abstract class PantallaNivel extends Pantalla {
         getWorld().setContactListener(conList);
     }
 
+    private void ActualizarEstadoNiveles(PantallaNivel nivel, int puntaje){
+        String nivelEnJuego;
+        Preferences estadoNiveles = Gdx.app.getPreferences("estadoNiveles");
+        Gdx.app.log("VOY A CHECAR EL ESTADO DE NIVEL 1", " "+ estadoNiveles.getInteger("estado1"));
+        Gdx.app.log("VOY A CHECAR EL ESTADO DE NIVEL 2", " "+ estadoNiveles.getInteger("estado2"));
+        if (nivel instanceof NivelTutorial){
+            nivelEnJuego= "estado1";
 
+
+            if(estadoNiveles.getInteger("estado2")== (Integer)4){
+
+                estadoNiveles.putInteger("estado2",0);
+                estadoNiveles.flush();
+                Gdx.app.log("EL ESTADO DOS ESTABA EN BLOQUEADO", "AHORA LO DESBLOQUEO Y EL ESTADO ES: " + estadoNiveles.getInteger("estado2"));
+            }
+        }else{
+            nivelEnJuego= "estado2";
+            if(estadoNiveles.getInteger("estado3")==4){
+                estadoNiveles.putInteger("estado3",0);
+            }
+        }
+
+        //CHECAR SI EL PUNTAJE QUE ME DIERON ES MAYOR A LO QUE YA HAY
+        if(puntaje>estadoNiveles.getInteger(nivelEnJuego)){
+            estadoNiveles.putInteger(nivelEnJuego,puntaje);
+
+        }
+        estadoNiveles.flush();
+        Gdx.app.log("ACTUALIZADOS: EL ESTADO DE NIVEL 1 ", " "+ estadoNiveles.getInteger("estado1"));
+        Gdx.app.log("ACTUALIIZADOS:  EL ESTADO DE NIVEL 2", " "+ estadoNiveles.getInteger("estado2"));
+    }
 
     // La escena que se muestra cuando el juego se pausa
     protected class EscenaPausa extends Stage
@@ -857,13 +888,25 @@ public abstract class PantallaNivel extends Pantalla {
     }
 
     protected class EscenaGanaste extends Stage{
-        public EscenaGanaste(Viewport vista, SpriteBatch batch){
+        Pantallas nivelActual;
+        Pantallas nivelSiguiente;
+
+        public EscenaGanaste(Viewport vista, SpriteBatch batch, PantallaNivel nivel, int puntaje){
             super(vista, batch);
             Texture texturaRectangulo = manager.get("Fondos/PantallaGanaste.jpg");
             Image imgRectangulo = new Image(texturaRectangulo);
             this.addActor(imgRectangulo);
+            //ACTUALIZANDO EL ESTADO DE LOS NIVELES
+            ActualizarEstadoNiveles(nivel,puntaje);
 
-
+            //INICIANLIZANDO EL NIVEL ACTUAL Y EL SIGUIENTE
+            if(nivel instanceof NivelTutorial){
+                nivelActual= Pantallas.NIVEL;
+                nivelSiguiente=Pantallas.NIVEL2;
+            }else{
+                nivelActual=Pantallas.NIVEL2;
+                nivelSiguiente= nivelActual;
+            }
 
             // REINTENTAR
             Texture texturabtnReintentar = manager.get("Botones/PantallaRetry.png");
@@ -885,10 +928,11 @@ public abstract class PantallaNivel extends Pantalla {
                     if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
                         sonidoBoton.play(volumenSonido);
                     }
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
+                    juego.setScreen(new PantallaCarga(juego, nivelActual, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnReintentar);
+
             //BOTON SIGUIENTE NIVEL
 
             Texture texturaBtnNextLevel = manager.get("Botones/PantallaNextLevel.png");
@@ -905,7 +949,7 @@ public abstract class PantallaNivel extends Pantalla {
                     if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
                         sonidoBoton.play(volumenSonido);
                     }
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.SELECCION_NIVEL, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
+                    juego.setScreen(new PantallaCarga(juego, nivelSiguiente, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnNextLevel);

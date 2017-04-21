@@ -187,6 +187,21 @@ public class PantallaCarga extends Pantalla{
         manager.load("Botones/SeleccionNivelBtnBack.png",Texture.class);
         manager.load("Botones/PerdisteBtnReintentar.png", Texture.class);
         manager.load("Textos/Perdiste.png",Texture.class);
+
+        //NIVELES CON ESTRELLAS
+        manager.load("Botones/Stars/Level1.png",Texture.class);
+        manager.load("Botones/Stars/Level1_1.png",Texture.class);
+        manager.load("Botones/Stars/Level1_2.png",Texture.class);
+        manager.load("Botones/Stars/Level1_3.png",Texture.class);
+        manager.load("Botones/Stars/Level2.png",Texture.class);
+        manager.load("Botones/Stars/Level2_1.png",Texture.class);
+        manager.load("Botones/Stars/Level2_2.png",Texture.class);
+        manager.load("Botones/Stars/Level2_3.png",Texture.class);
+        manager.load("Botones/Stars/Level3.png",Texture.class);
+        manager.load("Botones/Stars/Level3_1.png",Texture.class);
+        manager.load("Botones/Stars/Level3_2.png",Texture.class);
+        manager.load("Botones/Stars/Level3_3.png",Texture.class);
+
     }
 
     @Override

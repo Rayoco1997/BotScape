@@ -2,6 +2,7 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.ArrayList;
+
+import javax.swing.plaf.TextUI;
+
 /**
  * Created by Julio on 15/02/2017.
  */
@@ -26,6 +31,7 @@ public class MenuSeleccionNivel extends Pantalla {
     private Texture texturaBtnNivel1;
     private Texture texturaBtnNivel2;
     private Texture texturaBtnNivel3;
+    private Texture texturaBtnBloqueado;
     private Texture texturaBtnRegresar;
 
     // Ayuda a dibujar
@@ -35,6 +41,13 @@ public class MenuSeleccionNivel extends Pantalla {
     private final int NUM_BOTONES = 4;
     private Array<ImageButton> arrBtn;
 
+    //Varibales para los estados de cada nivel
+    private int estadoNivel1,estadoNivel2,estadoNivel3;
+
+    //LISTAS DE LAS IMAGENES PARA LOS NIVELES
+    ArrayList<Texture> texturasNivel1= new ArrayList<Texture>();
+    ArrayList<Texture> texturasNivel2= new ArrayList<Texture>();
+    ArrayList<Texture> texturasNivel3= new ArrayList<Texture>();
     //Escenas
     private Stage escenaSeleccionNivel;
 
@@ -63,11 +76,16 @@ public class MenuSeleccionNivel extends Pantalla {
     }
 
     private void crearObjetos() {
+
+
         batch = new SpriteBatch();
 
         escenaSeleccionNivel = new Stage(vista, batch);
         Image imgFondo = new Image(texturaFondo);
         escenaSeleccionNivel.addActor(imgFondo);
+
+
+
 
         TextureRegionDrawable trdBtnNivel1 = new TextureRegionDrawable(new TextureRegion(texturaBtnNivel1));
         ImageButton btnNivel1 = new ImageButton(trdBtnNivel1);
@@ -144,12 +162,58 @@ public class MenuSeleccionNivel extends Pantalla {
     }
 
     private void cargarTexturas() {
+        //PARA OBTENER EL ESTADO DEL JUEGO
+        //ESTADOS 0= DESBLOQUEADO, 1= 1 ESTRELLA, 2= DOS ESTRELLAS, 3= TRES ESTRELAS, 4= BLOQUEADO
+        Preferences estadoNiveles= Gdx.app.getPreferences("estadoNiveles");
+        estadoNivel1= estadoNiveles.getInteger("estado1",0);
+        estadoNivel2= estadoNiveles.getInteger("estado2", 4);
+        estadoNivel3= estadoNiveles.getInteger("estado3", 4);
 
         texturaFondo = manager.get("Fondos/SeleccionNivelFondo.jpg");
-        texturaBtnNivel1 = manager.get("Botones/SeleccionNivelBtnNivel1.png");
-        texturaBtnNivel2 = manager.get("Botones/SeleccionNivelBtnLocked.png");
-        texturaBtnNivel3 = manager.get("Botones/SeleccionNivelBtnLocked.png");
+        for(int i= 0; i<4; i++) {
+            if(i==0) {
+                texturasNivel1.add((Texture) manager.get("Botones/Stars/Level1.png"));
+                texturasNivel2.add((Texture) manager.get("Botones/Stars/Level2.png"));
+                texturasNivel3.add((Texture) manager.get("Botones/Stars/Level3.png"));
+            }else if (i==1){
+                texturasNivel1.add((Texture) manager.get("Botones/Stars/Level1_1.png"));
+                texturasNivel2.add((Texture) manager.get("Botones/Stars/Level2_1.png"));
+                texturasNivel3.add((Texture) manager.get("Botones/Stars/Level3_1.png"));
+            }else if(i==2){
+                texturasNivel1.add((Texture) manager.get("Botones/Stars/Level1_2.png"));
+                texturasNivel2.add((Texture) manager.get("Botones/Stars/Level2_2.png"));
+                texturasNivel3.add((Texture) manager.get("Botones/Stars/Level3_2.png"));
+            }else{
+                texturasNivel1.add((Texture) manager.get("Botones/Stars/Level1_3.png"));
+                texturasNivel2.add((Texture) manager.get("Botones/Stars/Level2_3.png"));
+                texturasNivel3.add((Texture) manager.get("Botones/Stars/Level3_3.png"));
+            }
+            //FALTA REMPLAZAR ESTAS POR LAS DE LA LISTA EN EL CODIGO
+
+        }
+        Gdx.app.log("ESTADO DEL NIVEL 1: ", ""+estadoNivel1);
+        Gdx.app.log("ESTADO DEL NIVEL 2: ", ""+estadoNivel2);
+        Gdx.app.log("ESTADO DEL NIVEL 3: ", ""+estadoNivel3);
+        texturaBtnBloqueado= manager.get("Botones/SeleccionNivelBtnLocked.png");
+        if (estadoNivel1==4){
+            texturaBtnNivel1= texturaBtnBloqueado;
+        }else{
+            texturaBtnNivel1= texturasNivel1.get(estadoNivel1);
+        }
+
+        if (estadoNivel2==4){
+            texturaBtnNivel2= texturaBtnBloqueado;
+        }else{
+            texturaBtnNivel2= texturasNivel2.get(estadoNivel2);
+        }
+        if (estadoNivel3==4){
+            texturaBtnNivel3= texturaBtnBloqueado;
+        }else{
+            texturaBtnNivel3= texturasNivel3.get(estadoNivel3);
+        }
+
         texturaBtnRegresar = manager.get("Botones/SeleccionNivelBtnBack.png");
+
 
     }
 
