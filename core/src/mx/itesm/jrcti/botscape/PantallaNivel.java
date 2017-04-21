@@ -610,7 +610,7 @@ public abstract class PantallaNivel extends Pantalla {
         String nivelEnJuego;
         Preferences estadoNiveles = Gdx.app.getPreferences("estadoNiveles");
         Gdx.app.log("VOY A CHECAR EL ESTADO DE NIVEL 1", " "+ estadoNiveles.getInteger("estado1"));
-        Gdx.app.log("VOY A CHECAR EL ESTADO DE NIVEL 2", " "+ estadoNiveles.getInteger("estado2"));
+        Gdx.app.log("VOY A CHECAR EL ESTADO DE NIVEL 2", " "+ estadoNiveles.getInteger("estado2",1000));
         if (nivel instanceof NivelTutorial){
             nivelEnJuego= "estado1";
 
@@ -802,11 +802,18 @@ public abstract class PantallaNivel extends Pantalla {
     }
 
     protected class EscenaPerdiste extends Stage {
-        public EscenaPerdiste(Viewport vista, SpriteBatch batch) {
+        Pantallas nivelActual;
+        public EscenaPerdiste(Viewport vista, SpriteBatch batch, PantallaNivel nivel) {
             super(vista, batch);
             Texture texturaRectangulo = manager.get("Fondos/PantallaPerdiste.jpg");
             Image imgRectangulo = new Image(texturaRectangulo);
             this.addActor(imgRectangulo);
+
+            if(nivel instanceof NivelTutorial){
+                nivelActual= Pantallas.NIVEL;
+            }else {
+                nivelActual=Pantallas.NIVEL2;
+            }
 
             //SELECCION DE NIVEL
             Texture texturaBtnSelecNivel = manager.get("Botones/PausaButtonSeleccionarNivel.png");
@@ -869,7 +876,7 @@ public abstract class PantallaNivel extends Pantalla {
                     if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
                         sonidoBoton.play(volumenSonido);
                     }
-                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
+                    juego.setScreen(new PantallaCarga(juego, nivelActual, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
             this.addActor(btnReanudar);

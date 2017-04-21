@@ -178,7 +178,7 @@ public class Nivel2 extends PantallaNivel {
         if(getRobot().getVidas()==0){
             setEstadoJuego(EstadoJuego.PIERDE);
             if(getEscenaPerdiste()==null) {
-                setEscenaPerdiste(new EscenaPerdiste(getVistaHUD(), getBatch()));
+                setEscenaPerdiste(new EscenaPerdiste(getVistaHUD(), getBatch(),this));
             }
             Gdx.input.setInputProcessor(getEscenaPerdiste());
 

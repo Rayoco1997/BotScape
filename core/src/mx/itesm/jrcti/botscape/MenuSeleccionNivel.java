@@ -165,9 +165,19 @@ public class MenuSeleccionNivel extends Pantalla {
         //PARA OBTENER EL ESTADO DEL JUEGO
         //ESTADOS 0= DESBLOQUEADO, 1= 1 ESTRELLA, 2= DOS ESTRELLAS, 3= TRES ESTRELAS, 4= BLOQUEADO
         Preferences estadoNiveles= Gdx.app.getPreferences("estadoNiveles");
-        estadoNivel1= estadoNiveles.getInteger("estado1",0);
-        estadoNivel2= estadoNiveles.getInteger("estado2", 4);
-        estadoNivel3= estadoNiveles.getInteger("estado3", 4);
+        if(estadoNiveles.getInteger("estado1",100)==100){
+            estadoNiveles.putInteger("estado1",0);
+        }
+        if (estadoNiveles.getInteger("estado2",100)==100){
+            estadoNiveles.putInteger("estado2",4);
+        }
+        if (estadoNiveles.getInteger("estado3",100)==100){
+            estadoNiveles.putInteger("estado3",4);
+        }
+        estadoNiveles.flush();
+        estadoNivel1= estadoNiveles.getInteger("estado1");
+        estadoNivel2= estadoNiveles.getInteger("estado2");
+        estadoNivel3= estadoNiveles.getInteger("estado3");
 
         texturaFondo = manager.get("Fondos/SeleccionNivelFondo.jpg");
         for(int i= 0; i<4; i++) {
