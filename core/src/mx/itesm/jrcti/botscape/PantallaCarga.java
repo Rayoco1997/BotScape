@@ -135,6 +135,7 @@ public class PantallaCarga extends Pantalla{
         manager.load("Botones/PausaBtnMusicOnMini.png",Texture.class);
         manager.load("Botones/PausaBtnSoundOffMini.png",Texture.class);
         manager.load("Botones/PausaBtnSoundOnMini.png",Texture.class);
+        manager.load("Viñeta.png",Texture.class);
 
 
 
@@ -175,8 +176,7 @@ public class PantallaCarga extends Pantalla{
         manager.load("Botones/PantallaNextLevel.png", Texture.class);
         manager.load("Botones/PantallaRetry.png", Texture.class);
         manager.load("PantallaEstrella.png", Texture.class);
-
-
+        manager.load("Viñeta.png",Texture.class);
     }
 
     private void cargarRecursosSelNivel(){

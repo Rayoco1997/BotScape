@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
@@ -70,6 +71,8 @@ public abstract class PantallaNivel extends Pantalla {
     private ImageButton btnSound;
     private Texture texturaMiniVI;
     private Texture texturaVidasVIU;
+    private Texture texturaViñeta;
+    private Image imgViñeta;
     private Camera camaraHUD;
     private Stage escenaVidasVIU;
     private String nombreMapa;
@@ -399,7 +402,8 @@ public abstract class PantallaNivel extends Pantalla {
         vistaHUD = new StretchViewport(ANCHO, ALTO, camaraHUD);
         escenaVidasVIU = new Stage(vistaHUD, batch);
         escenaHUD = new Stage(vistaHUD);
-
+        imgViñeta=new Image(texturaViñeta);
+        escenaHUD.addActor(imgViñeta);
         crearBotones();
 
         //CREANDO ICONO DE MINIVI Contador
@@ -448,6 +452,7 @@ public abstract class PantallaNivel extends Pantalla {
     public void cargarTexturasEscenciales(){
         VIUWalk_Cycle = manager.get("Personaje/VIUWalk_Cycle.png");
         texturaMiniVI = manager.get("NivelMiniVI.png");
+        texturaViñeta = manager.get("Viñeta.png");
         texturaBtnPausa = manager.get("NivelPausa.png");
         texturaBtnIzquierda = manager.get("Botones/MovIzqButton.png");
         texturaBtnDerecha =  manager.get("Botones/MovDerButton.png");
@@ -578,7 +583,7 @@ public abstract class PantallaNivel extends Pantalla {
         }
     }
 
-    protected abstract void revisarMuertePorCaida(int countMovCam);
+    protected abstract void revisarMuertePorCaida();
 
     protected void createCollisionListener() {
         ContactListener conList = new ContactListener() {

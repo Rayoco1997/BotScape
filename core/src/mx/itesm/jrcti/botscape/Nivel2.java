@@ -101,11 +101,10 @@ public class Nivel2 extends PantallaNivel {
     }
 
     @Override
-    protected void revisarMuertePorCaida(int countMovCam) {
-        Gdx.app.log("x "+getRobot().sprite.getX(),"  y "+getRobot().sprite.getY());
-        Gdx.app.log("Cámara:   x "+camara.position.x,"  y "+camara.position.y);
+    protected void revisarMuertePorCaida() {
         if(getRobot().getBody().getTransform().getPosition().y< 0.0f) {
-            Gdx.app.log("Cambio de posición"," a su posición inicial");
+            //Gdx.app.log("Cambio de posición"," a su posición inicial");
+            getEscenaHUD().getActors().get(getEscenaHUD().getActors().size-1).remove();
             getRobot().morir();
             getRobot().reposicionar(xInicialRobot, yInicialRobot);
         }
@@ -115,7 +114,7 @@ public class Nivel2 extends PantallaNivel {
     public void render(float delta) {
         borrarPantalla();
         actualizarCamara(ANCHO_MAPA,ALTO_MAPA);
-        revisarMuertePorCaida(getCountMovCam());
+        revisarMuertePorCaida();
         getEstadoJuego();
         getBatch().setProjectionMatrix(camara.combined);
 
