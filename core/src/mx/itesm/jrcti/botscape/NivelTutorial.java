@@ -117,7 +117,7 @@ public class NivelTutorial extends PantallaNivel {
     }
 
     @Override
-    protected void revisarMuertePorCaida(int countMovCam) {
+    protected void revisarMuertePorCaida() {
         if(getRobot().sprite.getY()+getRobot().sprite.getHeight()<0) {
             getRobot().morir();
             getRobot().reposicionar(xInicialRobot, yInicialRobot);
