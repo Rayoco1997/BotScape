@@ -103,7 +103,7 @@ public class Nivel2 extends PantallaNivel {
     @Override
     protected void revisarMuertePorCaida() {
         if(getRobot().getBody().getTransform().getPosition().y< 0.0f) {
-            Gdx.app.log("Cambio de posición"," a su posición inicial");
+            //Gdx.app.log("Cambio de posición"," a su posición inicial");
             getEscenaHUD().getActors().get(getEscenaHUD().getActors().size-1).remove();
             getRobot().morir();
             getRobot().reposicionar(xInicialRobot, yInicialRobot);
