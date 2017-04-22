@@ -44,6 +44,8 @@ public class Robot extends Objeto {
     private int vidas = 3;
     private final int TIEMPO_INV_INICIAL = 90;
     private int tiempoInv = 90;
+    private final int TIEMPO_RUN_INICIAL =120;
+    private int tiempoRun;
     private TextureRegion[][] texturaPersonaje;
 
     // Recibe una imagen con varios frames (ver marioSprite.png)
@@ -159,6 +161,18 @@ public class Robot extends Objeto {
         }
     }
 
+    private void correr() {
+        if(this.getHabilidad()==Habilidad.CORRER){
+            if(tiempoRun==0){
+                this.setHabilidad(Habilidad.NADA);
+                tiempoRun=TIEMPO_RUN_INICIAL;
+            }
+            else{
+                tiempoRun--;
+            }
+        }
+    }
+
     private void moverVertical(TiledMap mapa) {
         if(estadoSalto==EstadoSalto.SUBIENDO)
             body.applyForceToCenter(0f,800f,true);
@@ -171,16 +185,30 @@ public class Robot extends Objeto {
     private void moverHorizontal(TiledMap mapa) {
         if(estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
             if(checarMovDer(mapa)) {
-                if (this.getHabilidad() != Habilidad.INVULNERABLE) {
-                    if (body.getLinearVelocity().x < 6f)
-                        body.applyForceToCenter(20f, 0f, true);
-                    else
-                        body.setLinearVelocity(6f, body.getLinearVelocity().y);
-                } else if (tiempoInv < TIEMPO_INV_INICIAL / 2) {
-                    if (body.getLinearVelocity().x < 6f)
-                        body.applyForceToCenter(20f, 0f, true);
-                    else
-                        body.setLinearVelocity(6f, body.getLinearVelocity().y);
+                switch(this.getHabilidad()){
+                    case NADA:
+                        if (body.getLinearVelocity().x < 6f)
+                            body.applyForceToCenter(20f, 0f, true);
+                        else
+                            body.setLinearVelocity(6f, body.getLinearVelocity().y);
+                        break;
+
+                    case INVULNERABLE:
+                        if (tiempoInv < TIEMPO_INV_INICIAL / 2) {
+                            if (body.getLinearVelocity().x < 6f)
+                                body.applyForceToCenter(20f, 0f, true);
+                            else
+                                body.setLinearVelocity(6f, body.getLinearVelocity().y);
+                        }
+
+                    case CORRER:
+                        if (tiempoRun < TIEMPO_RUN_INICIAL / 2) {
+                            //Lo que sea que pase cuando corre
+                            if (body.getLinearVelocity().x < 6f)
+                                body.applyForceToCenter(20f, 0f, true);
+                            else
+                                body.setLinearVelocity(6f, body.getLinearVelocity().y);
+                        }
                 }
             }else{
                 body.setLinearVelocity(0f,body.getLinearVelocity().y);

@@ -49,7 +49,7 @@ public class Nivel2 extends PantallaNivel {
     @Override
     public void cargarTexturasExtras() {
         texturaPlataforma = getManager().get("NivelPlataforma.png");
-        texturaFondoTutorial = getManager().get("Fondos/NivelTutorialFondo.jpg");
+        texturaFondoTutorial = getManager().get("Fondos/Fondo2.jpg");
         LUGWalk_Cycle = getManager().get("Personaje/LUG7 Walk_Cycle.png");
     }
 
