@@ -238,25 +238,29 @@ public class NivelTutorial extends PantallaNivel {
 
     @Override
     public boolean moverPalanca(TiledMap mapa) {
-
+        long inicio=System.nanoTime();
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
-        int x;
+        int x=(int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));
         int y = (int)(getRobot().sprite.getY()/64);
         TiledMapTileLayer.Cell celda;
         int cantPuntos=5;
         for(int i=0; i<cantPuntos; i++){
-            x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));
+            //x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));
             x= x-i*(int)getRobot().sprite.getWidth()/((cantPuntos-1)*64);
             celda = capa.getCell(x,y);
-            if (celda!=null) {
+            //Optimización detectada por Cinthya
+            //Usar lazy evaluation y reduce el tiempo de ciclo a la mitad
+            if (celda!=null && celda.getTile().getProperties().get("tipo").equals("palanca")) {
                 Object tipo = celda.getTile().getProperties().get("tipo");
-                if ("palanca".equals(tipo) ) {
+                //if ("palanca".equals(tipo) ) {
                     capa.setCell(x,y,celda.setFlipHorizontally(true));
                     mapa.getLayers().get(1).setVisible(!mapa.getLayers().get(1).isVisible());
                     return true;
-                }
+                //}
             }
         }
+        long fin=System.nanoTime();
+        Gdx.app.log("Sin usar lazy evaluation","Tiempo: "+(fin-inicio)/1000);
         return false;
     }
 
