@@ -209,14 +209,18 @@ public class Nivel2 extends PantallaNivel {
 
     @Override
     public boolean moverPalanca(TiledMap mapa) {
+        //Saqué elementos comunes en un ciclo para detectar la
+        //colisión con las palancas dentro del juego
+        //Con esta optimización se puede notar una mejora en el tiempo de procesamiento,
+        //al no tener que asignar continuamente los mismos valores a las variables antes mencionadas.
+        long inicio = System.nanoTime();
+        int x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));         //  Variables
+        int y = (int)(getRobot().sprite.getY()/64);                                         //  extraidas
+        TiledMapTileLayer.Cell celda;                                                       //  de la ejecución
+        int cantPuntos=5;                                                                   //  del bucle.
         for(int j=3; j<=4;j++){
             TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(j);
-            int x;
-            int y = (int)(getRobot().sprite.getY()/64);
-            TiledMapTileLayer.Cell celda;
-            int cantPuntos=5;
             for(int i=0; i<cantPuntos; i++){
-                x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));
                 x= x-i*(int)getRobot().sprite.getWidth()/((cantPuntos-1)*64);
                 celda = capa.getCell(x,y);
                 if (celda!=null) {
@@ -235,7 +239,8 @@ public class Nivel2 extends PantallaNivel {
                 }
             }
         }
-
+        long fin = System.nanoTime();
+        Gdx.app.log("MoverPalancaOptimizado","Tiempo: " + (fin-inicio)/1000);
         return false;
     }
 
