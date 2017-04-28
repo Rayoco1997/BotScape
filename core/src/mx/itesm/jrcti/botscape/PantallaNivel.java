@@ -195,7 +195,7 @@ public abstract class PantallaNivel extends Pantalla {
         manager = ass;
     }
     protected void buscarMiniVis(){
-        if(getRobot().recolectarItem(getMapa()))
+        if(getRobot().recolectarItem(getMapa()).equals("miniVi"))
             contadorMiniVis++;
     }
     protected int getCountMovCam(){

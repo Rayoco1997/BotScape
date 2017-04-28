@@ -293,7 +293,7 @@ public class Robot extends Objeto {
         //estadoMovimiento = EstadoMovimiento.QUIETO;
     }
 
-    public boolean recolectarItem(TiledMap mapa) {
+    public String recolectarItem(TiledMap mapa) {
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
         int x;
         int y = (int)(sprite.getY()/64);
@@ -308,17 +308,17 @@ public class Robot extends Objeto {
                 if ("miniVi".equals(tipo) ) {
                     Gdx.app.log("Recolectar Item","miniVi");
                     capa.setCell(x,y,null);// Borra el mini vi del mapa
-                    return true;
+                    return "miniVi";
                 }else if("correr".equals(tipo)){
                     Gdx.app.log("RecolectarItem","corriendo");
                     capa.setCell(x,y,null);
                     this.setHabilidad(Habilidad.CORRER);
                     Gdx.app.log("Habilidad actual:",""+this.getHabilidad());
-                    return true;
+                    return "correr";
                 }
             }
         }
-        return false;
+        return "";
     }
 
     // Accesor de estadoMovimiento
