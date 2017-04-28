@@ -2,6 +2,7 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,6 +33,7 @@ public class PantallaConfiguracion extends Pantalla {
 
     private ImageButton buttonMusica;
     private ImageButton buttonSonido;
+    private ImageButton buttonReset;
 
     private SpriteBatch batch;
 
@@ -93,6 +95,24 @@ public class PantallaConfiguracion extends Pantalla {
         }
         //ImageButton buttonSonido= new ImageButton(trdButtonSonido);
 
+        //BOTON DE RESETEAR JUEGO
+        final Preferences estadoNiveles= Gdx.app.getPreferences("estadoNiveles");
+        buttonReset= new ImageButton(trdButtonMusicaOff);
+        buttonReset.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y){
+                Gdx.app.log("Aviso", "POS ME RESETEOL");
+                if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                    sonidoBoton.play(volumenSonido);
+                }
+                estadoNiveles.putInteger("estado1",0);
+                estadoNiveles.putInteger("estado2",4);
+                estadoNiveles.putInteger("estado3",4);
+                estadoNiveles.flush();
+
+            }
+        });
+        buttonReset.setPosition(ANCHO/2,0);
+
         //UBICANDO TODOS LOS BOTONES
         buttonRegresar.setPosition(10,10);
         imgTextConfig.setPosition(ANCHO/2- imgTextConfig.getWidth()/2,4*ALTO/5-imgTextConfig.getHeight()/2);
@@ -108,6 +128,7 @@ public class PantallaConfiguracion extends Pantalla {
         escenaPantallaConfig.addActor(buttonMusica);
         escenaPantallaConfig.addActor(buttonSonido);
         escenaPantallaConfig.addActor(buttonRegresar);
+        escenaPantallaConfig.addActor(buttonReset);
         //escenaPantallaConfig.addActor(buttonSonido);
         escenaPantallaConfig.addActor(imgTextConfig);
 

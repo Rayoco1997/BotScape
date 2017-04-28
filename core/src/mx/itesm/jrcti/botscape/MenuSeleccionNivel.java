@@ -107,6 +107,7 @@ public class MenuSeleccionNivel extends Pantalla {
         escenaSeleccionNivel.addActor(btnNivel2);
         escenaSeleccionNivel.addActor(btnNivel3);
         escenaSeleccionNivel.addActor(btnBack);
+        final Preferences estadoNiveles= Gdx.app.getPreferences("estadoNiveles");
 
         btnNivel1.addListener(new ClickListener(){
             @Override
@@ -129,7 +130,9 @@ public class MenuSeleccionNivel extends Pantalla {
                 if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
                     sonidoBoton.play(volumenSonido);
                 }
-                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL2, musica, EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
+                if(estadoNiveles.getInteger("estado2")!=4) {
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL2, musica, EstadoMusica.REPRODUCCION, estadoMusicaGeneral, estadoSonidoGeneral));
+                }
             }
         });
 
@@ -140,7 +143,9 @@ public class MenuSeleccionNivel extends Pantalla {
                 if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
                     sonidoBoton.play(volumenSonido);
                 }
-                juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musica, EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
+                if(estadoNiveles.getInteger("estado3")!=4) {
+                    juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL, musica, EstadoMusica.REPRODUCCION, estadoMusicaGeneral, estadoSonidoGeneral));
+                }
             }
         });
 
