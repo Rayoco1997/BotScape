@@ -133,6 +133,7 @@ public class NivelTutorial extends PantallaNivel {
 
     @Override
     public void render(float delta) {
+        Gdx.app.log("Habilidad Actual",""+this.getRobot().getHabilidad());
         borrarPantalla();
         actualizarCamara(ANCHO_MAPA, 0);
         getEstadoJuego();
@@ -260,7 +261,7 @@ public class NivelTutorial extends PantallaNivel {
             }
         }
         long fin=System.nanoTime();
-        Gdx.app.log("Sin usar lazy evaluation","Tiempo: "+(fin-inicio)/1000);
+        //Gdx.app.log("Sin usar lazy evaluation","Tiempo: "+(fin-inicio)/1000);
         return false;
     }
 
