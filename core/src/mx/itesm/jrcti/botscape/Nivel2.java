@@ -49,7 +49,7 @@ public class Nivel2 extends PantallaNivel {
     @Override
     public void cargarTexturasExtras() {
         texturaPlataforma = getManager().get("NivelPlataforma.png");
-        texturaFondoTutorial = getManager().get("Fondos/NivelTutorialFondo.jpg");
+        texturaFondoTutorial = getManager().get("Fondos/Fondo2.jpg");
         LUGWalk_Cycle = getManager().get("Personaje/LUG7 Walk_Cycle.png");
     }
 
@@ -101,11 +101,10 @@ public class Nivel2 extends PantallaNivel {
     }
 
     @Override
-    protected void revisarMuertePorCaida(int countMovCam) {
-        Gdx.app.log("x "+getRobot().sprite.getX(),"  y "+getRobot().sprite.getY());
-        Gdx.app.log("Cámara:   x "+camara.position.x,"  y "+camara.position.y);
+    protected void revisarMuertePorCaida() {
         if(getRobot().getBody().getTransform().getPosition().y< 0.0f) {
-            Gdx.app.log("Cambio de posición"," a su posición inicial");
+            //Gdx.app.log("Cambio de posición"," a su posición inicial");
+            getEscenaHUD().getActors().get(getEscenaHUD().getActors().size-1).remove();
             getRobot().morir();
             getRobot().reposicionar(xInicialRobot, yInicialRobot);
         }
@@ -115,7 +114,7 @@ public class Nivel2 extends PantallaNivel {
     public void render(float delta) {
         borrarPantalla();
         actualizarCamara(ANCHO_MAPA,ALTO_MAPA);
-        revisarMuertePorCaida(getCountMovCam());
+        revisarMuertePorCaida();
         getEstadoJuego();
         getBatch().setProjectionMatrix(camara.combined);
 
@@ -210,14 +209,18 @@ public class Nivel2 extends PantallaNivel {
 
     @Override
     public boolean moverPalanca(TiledMap mapa) {
+        //Saqué elementos comunes en un ciclo para detectar la
+        //colisión con las palancas dentro del juego
+        //Con esta optimización se puede notar una mejora en el tiempo de procesamiento,
+        //al no tener que asignar continuamente los mismos valores a las variables antes mencionadas.
+        long inicio = System.nanoTime();
+        int x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));         //  Variables
+        int y = (int)(getRobot().sprite.getY()/64);                                         //  extraidas
+        TiledMapTileLayer.Cell celda;                                                       //  de la ejecución
+        int cantPuntos=5;                                                                   //  del bucle.
         for(int j=3; j<=4;j++){
             TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(j);
-            int x;
-            int y = (int)(getRobot().sprite.getY()/64);
-            TiledMapTileLayer.Cell celda;
-            int cantPuntos=5;
             for(int i=0; i<cantPuntos; i++){
-                x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));
                 x= x-i*(int)getRobot().sprite.getWidth()/((cantPuntos-1)*64);
                 celda = capa.getCell(x,y);
                 if (celda!=null) {
@@ -236,7 +239,8 @@ public class Nivel2 extends PantallaNivel {
                 }
             }
         }
-
+        long fin = System.nanoTime();
+        Gdx.app.log("MoverPalancaOptimizado","Tiempo: " + (fin-inicio)/1000);
         return false;
     }
 
