@@ -101,10 +101,10 @@ public class Enemigo extends Objeto implements MovimientoAutomatico {
                 (body.getPosition().y*PantallaNivel.getPtM())-sprite.getHeight()/2);
     }
 
-    public void dibujar(SpriteBatch batch){
+    public void dibujar(SpriteBatch batch, float delta){
         TextureRegion region = spriteAnimado.getKeyFrame(timerAnimacion);
 
-        timerAnimacion += Gdx.graphics.getDeltaTime();
+        timerAnimacion += delta;
         // Frame que se dibujará
         if (estadoMovimiento == EstadoMovimiento.MOV_IZQUIERDA) {
             if (!region.isFlipX()) {

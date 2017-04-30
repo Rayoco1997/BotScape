@@ -44,8 +44,6 @@ public class Robot extends Objeto {
     private int vidas = 3;
     private final int TIEMPO_INV_INICIAL = 90;
     private int tiempoInv = 90;
-    private final int TIEMPO_RUN_INICIAL =600;
-    private int tiempoRun=600;
     private TextureRegion[][] texturaPersonaje;
 
     // Recibe una imagen con varios frames (ver marioSprite.png)
@@ -145,29 +143,19 @@ public class Robot extends Objeto {
                 moverVertical(mapa);
                 break;
         }
-        checarHabilidad();
+        recuperar();
+
     }
-    private void checarHabilidad(){
-        switch(habilidad){
-            case INVULNERABLE:
-                if(tiempoInv==0){
-                    this.setHabilidad(Habilidad.NADA);
-                    tiempoInv=TIEMPO_INV_INICIAL;
-                }
-                else{
-                    tiempoInv--;
-                }
-                break;
-            case CORRER:
-                //Cuando está corriendo
-                if(tiempoRun==0){
-                    this.setHabilidad(Habilidad.NADA);
-                    tiempoRun=TIEMPO_RUN_INICIAL;
-                }
-                else{
-                    tiempoRun--;
-                }
-                break;
+
+    private void recuperar() {
+        if(this.getHabilidad()==Habilidad.INVULNERABLE){
+            if(tiempoInv==0){
+                this.setHabilidad(Habilidad.NADA);
+                tiempoInv=TIEMPO_INV_INICIAL;
+            }
+            else{
+                tiempoInv--;
+            }
         }
     }
 
@@ -183,63 +171,34 @@ public class Robot extends Objeto {
     private void moverHorizontal(TiledMap mapa) {
         if(estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
             if(checarMovDer(mapa)) {
-                switch(this.getHabilidad()){
-                    case NADA:
-                        if (body.getLinearVelocity().x < 6f)
-                            body.applyForceToCenter(20f, 0f, true);
-                        else
-                            body.setLinearVelocity(6f, body.getLinearVelocity().y);
-                        break;
-
-                    case INVULNERABLE:
-                        if (tiempoInv < TIEMPO_INV_INICIAL / 2) {
-                            if (body.getLinearVelocity().x < 6f)
-                                body.applyForceToCenter(20f, 0f, true);
-                            else
-                                body.setLinearVelocity(6f, body.getLinearVelocity().y);
-                        }
-
-                    case CORRER:
-                        if (tiempoRun < TIEMPO_RUN_INICIAL) {
-                            //Lo que sea que pase cuando corre
-                            if (body.getLinearVelocity().x < 12f)
-                                body.applyForceToCenter(40f, 0f, true);
-                            else
-                                body.setLinearVelocity(12f, body.getLinearVelocity().y);
-                        }
+                if (this.getHabilidad() != Habilidad.INVULNERABLE) {
+                    if (body.getLinearVelocity().x < 6f)
+                        body.applyForceToCenter(20f, 0f, true);
+                    else
+                        body.setLinearVelocity(6f, body.getLinearVelocity().y);
+                } else if (tiempoInv < TIEMPO_INV_INICIAL / 2) {
+                    if (body.getLinearVelocity().x < 6f)
+                        body.applyForceToCenter(20f, 0f, true);
+                    else
+                        body.setLinearVelocity(6f, body.getLinearVelocity().y);
                 }
             }else{
                 body.setLinearVelocity(0f,body.getLinearVelocity().y);
             }
         }
+
         else if(estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
             if(checarMovIzq(mapa)){
-                switch(this.getHabilidad()){
-                    case NADA:
-                        if (body.getLinearVelocity().x < -6f)
-                            body.applyForceToCenter(-20f, 0f, true);
-                        else
-                            body.setLinearVelocity(-6f, body.getLinearVelocity().y);
-                        break;
-
-                    case INVULNERABLE:
-                        if (tiempoInv < TIEMPO_INV_INICIAL / 2) {
-                            if (body.getLinearVelocity().x < -6f)
-                                body.applyForceToCenter(-20f, 0f, true);
-                            else
-                                body.setLinearVelocity(-6f, body.getLinearVelocity().y);
-                        }
-                        break;
-
-                    case CORRER:
-                        if (tiempoRun < TIEMPO_RUN_INICIAL) {
-                            //Lo que sea que pase cuando corre
-                            if (body.getLinearVelocity().x < -12f)
-                                body.applyForceToCenter(-40f, 0f, true);
-                            else
-                                body.setLinearVelocity(-12f, body.getLinearVelocity().y);
-                        }
-                        break;
+                if(this.getHabilidad()!=Habilidad.INVULNERABLE) {
+                    if (body.getLinearVelocity().x > -6f)
+                        body.applyForceToCenter(-20f, 0f, true);
+                    else
+                        body.setLinearVelocity(-6f, body.getLinearVelocity().y);
+                } else if(tiempoInv < TIEMPO_INV_INICIAL/2){
+                    if (body.getLinearVelocity().x < -6f)
+                        body.applyForceToCenter(-20f, 0f, true);
+                    else
+                        body.setLinearVelocity(-6f, body.getLinearVelocity().y);
                 }
             }else{
                 body.setLinearVelocity(0f,body.getLinearVelocity().y);
@@ -293,7 +252,8 @@ public class Robot extends Objeto {
         //estadoMovimiento = EstadoMovimiento.QUIETO;
     }
 
-    public String recolectarItem(TiledMap mapa) {
+    //Mejorar con or de celda izquierda, centro o derecha
+    public boolean recolectarMiniVi(TiledMap mapa) {
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
         int x;
         int y = (int)(sprite.getY()/64);
@@ -306,19 +266,13 @@ public class Robot extends Objeto {
             if (celda!=null) {
                 Object tipo = celda.getTile().getProperties().get("tipo");
                 if ("miniVi".equals(tipo) ) {
-                    Gdx.app.log("Recolectar Item","miniVi");
+                    //Gdx.app.log("DEUS","VULT");
                     capa.setCell(x,y,null);// Borra el mini vi del mapa
-                    return "miniVi";
-                }else if("correr".equals(tipo)){
-                    Gdx.app.log("RecolectarItem","corriendo");
-                    capa.setCell(x,y,null);
-                    this.setHabilidad(Habilidad.CORRER);
-                    Gdx.app.log("Habilidad actual:",""+this.getHabilidad());
-                    return "correr";
+                    return true;
                 }
             }
         }
-        return "";
+        return false;
     }
 
     // Accesor de estadoMovimiento
@@ -354,14 +308,14 @@ public class Robot extends Objeto {
         Vector2 poc = new Vector2(0,0);
         setVidas(getVidas()-1);
         poc = wm.getPoints()[0];
-        Gdx.app.log("Daño","colision " + poc.toString());
-        Gdx.app.log("Daño","bodyGetX " + this.body.getPosition().x);
+       // Gdx.app.log("Daño","colision " + poc.toString());
+       // Gdx.app.log("Daño","bodyGetX " + this.body.getPosition().x);
         if(this.body.getPosition().x<poc.x){
-            Gdx.app.log("Dano","Recibio derecho");
+           // Gdx.app.log("Dano","Recibio derecho");
             this.body.setLinearVelocity(-this.body.getLinearVelocity().x-5f,3f);
         }
         else{
-            Gdx.app.log("Dano","Recibio izquierdo");
+           // Gdx.app.log("Dano","Recibio izquierdo");
             this.body.setLinearVelocity(this.body.getLinearVelocity().x+5f,3f);
 
         }
