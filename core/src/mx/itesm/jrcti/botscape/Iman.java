@@ -40,12 +40,12 @@ public class Iman extends Objeto implements MovimientoAutomatico {
         bodyDef.type= BodyDef.BodyType.KinematicBody;
         shape = new PolygonShape();
         fix = new FixtureDef();
-        fix.friction = 10f;
+        fix.friction = 0.1f;
         fix.density = .1f;
         fix.restitution = 0f;
         bodyDef.fixedRotation = true;
         bodyDef.position.set((sprite.getX() + sprite.getWidth()/2)/PantallaNivel.getPtM()
-                ,(sprite.getY()+sprite.getHeight()/2)/PantallaNivel.getPtM());
+                ,(sprite.getY() + sprite.getHeight()/19)/PantallaNivel.getPtM());
         shape.setAsBox(sprite.getWidth()/2/PantallaNivel.getPtM(),sprite.getHeight()/16/PantallaNivel.getPtM());
         fix.shape = shape;
         body = world.createBody(bodyDef);
@@ -59,7 +59,7 @@ public class Iman extends Objeto implements MovimientoAutomatico {
         bodyDefSen = new BodyDef();
         bodyDefSen.type = BodyDef.BodyType.KinematicBody;
         bodyDefSen.position.set((sprite.getX() + sprite.getWidth()/2)/PantallaNivel.getPtM()
-                ,(sprite.getY()-100)/PantallaNivel.getPtM());
+                ,(sprite.getY()-4*sprite.getHeight()/5)/PantallaNivel.getPtM());
         shapeSen = new PolygonShape();
         shapeSen.setAsBox(sprite.getWidth()/2/PantallaNivel.getPtM(),350/PantallaNivel.getPtM());
         fixSen.shape = shapeSen;
@@ -73,7 +73,7 @@ public class Iman extends Objeto implements MovimientoAutomatico {
     @Override
     public void mover(float xMin, float xMax, float yMin, float yMax) {
         sprite.setPosition((body.getPosition().x * PantallaNivel.getPtM()) - sprite.getWidth()/2,
-                (body.getPosition().y * PantallaNivel.getPtM()) - sprite.getHeight()/15);
+                (body.getPosition().y * PantallaNivel.getPtM())-sprite.getHeight()/20);
 
 
         //Gdx.app.log("Body","x "+body.getPosition().x*PantallaNivel.getPtM() + " y " + body.getPosition().y*PantallaNivel.getPtM());

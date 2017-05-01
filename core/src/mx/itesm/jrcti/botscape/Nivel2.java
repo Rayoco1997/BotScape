@@ -28,17 +28,28 @@ public class Nivel2 extends PantallaNivel {
     //Texturas
     Sprite texturaFondo;
     private Texture texturaPlataforma;
-    private Texture texturaFondoTutorial;
+    private Texture texturaFondoNivel2;
     private Texture LUGWalk_Cycle;
+    private Texture texturaIman;
+    private Texture texturaBanda;
 
     //Objetos
     private Plataforma platf1;
     private Plataforma platf2;
     private Plataforma platf3;
 
+    private Banda banda1;
+    private Banda banda2;
+
+    private Iman iman;
+
     private FixtureDef fix;
     private Enemigo enemigo1;
     private Enemigo enemigo2;
+
+    private boolean flagPlat;
+    private boolean flagIman;
+    private boolean flagPuerta;
 
     public Nivel2(Juego j, EstadoMusica estadoMusicaGeneral,EstadoSonido estadoSonidoGeneral) {
         super(j, estadoMusicaGeneral, "Mapas/Nivel2.tmx", "Sonidos/BringTheFoxhoundToMe.mp3",estadoSonidoGeneral);
@@ -49,8 +60,10 @@ public class Nivel2 extends PantallaNivel {
     @Override
     public void cargarTexturasExtras() {
         texturaPlataforma = getManager().get("NivelPlataforma.png");
-        texturaFondoTutorial = getManager().get("Fondos/Fondo2.jpg");
+        texturaFondoNivel2 = getManager().get("Fondos/Fondo2.jpg");
         LUGWalk_Cycle = getManager().get("Personaje/LUG7 Walk_Cycle.png");
+        texturaIman = getManager().get("NivelIman.png");
+        texturaBanda = getManager().get("NivelBandas.png");
     }
 
     @Override
@@ -84,7 +97,7 @@ public class Nivel2 extends PantallaNivel {
 
     private void crearObjetos() {
         crearMundo();
-        texturaFondo=new Sprite(texturaFondoTutorial);
+        texturaFondo=new Sprite(texturaFondoNivel2);
         texturaFondo.setPosition(0,0);
         createCollisionListener();
 
@@ -94,6 +107,9 @@ public class Nivel2 extends PantallaNivel {
                 Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
         platf3 = new Plataforma(texturaPlataforma, 2.9f, 2.9f, 192, 1472,
                 Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
+        banda1 = new Banda(texturaBanda, 22*PantallaNivel.getTtoP(),33*PantallaNivel.getTtoP()+32,fix,getWorld(),true);
+        banda2 = new Banda(texturaBanda, 31*PantallaNivel.getTtoP(),33*PantallaNivel.getTtoP()+32,fix,getWorld(),true);
+        iman = new Iman(texturaIman,2.5f,2.5f, 52*PantallaNivel.getTtoP(),42*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
 
         //Debugger
         debugRenderer = new Box2DDebugRenderer();
@@ -102,9 +118,10 @@ public class Nivel2 extends PantallaNivel {
 
     @Override
     protected void revisarMuertePorCaida() {
+        //Gdx.app.log("x "+getRobot().sprite.getX(),"  y "+getRobot().sprite.getY());
+        //Gdx.app.log("Cámara:   x "+camara.position.x,"  y "+camara.position.y);
         if(getRobot().getBody().getTransform().getPosition().y< 0.0f) {
             //Gdx.app.log("Cambio de posición"," a su posición inicial");
-            getEscenaHUD().getActors().get(getEscenaHUD().getActors().size-1).remove();
             getRobot().morir();
             getRobot().reposicionar(xInicialRobot, yInicialRobot);
         }
@@ -144,10 +161,19 @@ public class Nivel2 extends PantallaNivel {
             platf3.dibujar(getBatch());
             platf3.mover(192,1344,1472,2176);
 
-            enemigo1.dibujar(getBatch());
+            banda1.dibujar(getBatch(),delta);
+            banda2.dibujar(getBatch(),delta);
+
+            iman.dibujar(getBatch());
+            iman.mover(52*PantallaNivel.getTtoP(),52*PantallaNivel.getTtoP(),21*PantallaNivel.getTtoP(),43*PantallaNivel.getTtoP());
+
+            enemigo1.dibujar(getBatch(),delta);
             enemigo1.mover(64,640);
-            enemigo2.dibujar(getBatch());
+            enemigo2.dibujar(getBatch(),delta);
             enemigo2.mover(1408,1984);
+
+            moverRobotConBanda(banda1);
+            elevarRobotConIman(iman);
 
 
             buscarMiniVis();
@@ -160,7 +186,7 @@ public class Nivel2 extends PantallaNivel {
             getWorld().step(delta,6,2);
             getBatch().setProjectionMatrix(getCamaraHUD().combined);
             getEscenaHUD().draw();
-            //Gdx.app.log("MI estado es:", ""+getEstadoJuego().toString());
+            Gdx.app.log("MI estado de robot es:", ""+getRobot().getEstadoSalto());
         }
 
         if ((getRobot().sprite.getX()+getRobot().sprite.getWidth()/2)>ANCHO_MAPA){
@@ -209,18 +235,14 @@ public class Nivel2 extends PantallaNivel {
 
     @Override
     public boolean moverPalanca(TiledMap mapa) {
-        //Saqué elementos comunes en un ciclo para detectar la
-        //colisión con las palancas dentro del juego
-        //Con esta optimización se puede notar una mejora en el tiempo de procesamiento,
-        //al no tener que asignar continuamente los mismos valores a las variables antes mencionadas.
-        long inicio = System.nanoTime();
-        int x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));         //  Variables
-        int y = (int)(getRobot().sprite.getY()/64);                                         //  extraidas
-        TiledMapTileLayer.Cell celda;                                                       //  de la ejecución
-        int cantPuntos=5;                                                                   //  del bucle.
         for(int j=3; j<=4;j++){
             TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(j);
+            int x;
+            int y = (int)(getRobot().sprite.getY()/64);
+            TiledMapTileLayer.Cell celda;
+            int cantPuntos=5;
             for(int i=0; i<cantPuntos; i++){
+                x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));
                 x= x-i*(int)getRobot().sprite.getWidth()/((cantPuntos-1)*64);
                 celda = capa.getCell(x,y);
                 if (celda!=null) {
@@ -228,19 +250,21 @@ public class Nivel2 extends PantallaNivel {
                     if ("palanca".equals(tipo) ) {
                         capa.setCell(x,y,celda.setFlipHorizontally(true));
                         if(j==3){
-                            Gdx.app.log("ACA DEBO:"," APARECER UNA PLATAFORMA");
+                            //Gdx.app.log("ACA DEBO:"," APARECER UNA PLATAFORMA");
                         }
                         else if(j==4){
                             //Aqui abre la puerta
                             mapa.getLayers().get(1).setVisible(!mapa.getLayers().get(1).isVisible());
+                        }
+                        else if(j==5){
+
                         }
                         return true;
                     }
                 }
             }
         }
-        long fin = System.nanoTime();
-        Gdx.app.log("MoverPalancaOptimizado","Tiempo: " + (fin-inicio)/1000);
+
         return false;
     }
 

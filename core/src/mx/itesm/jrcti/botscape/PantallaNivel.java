@@ -201,7 +201,7 @@ public abstract class PantallaNivel extends Pantalla {
         manager = ass;
     }
     protected void buscarMiniVis(){
-        if(getRobot().recolectarMiniVi(getMapa()))
+        if(getRobot().recolectarItem(getMapa()).equals("miniVi"))
             contadorMiniVis++;
     }
     protected int getCountMovCam(){
@@ -265,7 +265,7 @@ public abstract class PantallaNivel extends Pantalla {
                         if (flagPrimero) {
                             count = 0;
                             xInicial = col * TtoP;
-                            //Gdx.app.log("Leer mapa:","Creo un body en fila " + fila + " columna " + col + " con xInicial en " + xInicial);
+                           // Gdx.app.log("Leer mapa:","Creo un body en fila " + fila + " columna " + col + " con xInicial en " + xInicial);
                             flagPrimero = false;
                             count++;
                         } else {
@@ -527,7 +527,7 @@ public abstract class PantallaNivel extends Pantalla {
         btnPausa.addListener( new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("clicked", "me hicieron CLICK");
+                //Gdx.app.log("clicked", "me hicieron CLICK");
 
                 if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
                     sonidoBoton.play(volumenSonido);
@@ -664,7 +664,7 @@ public abstract class PantallaNivel extends Pantalla {
 
     public void moverRobotConBanda(Banda banda){
         if(contactoBanda){
-            Gdx.app.log("Banda","Debi haberme movido a un lado");
+            //Gdx.app.log("Banda","Debi haberme movido a un lado");
             if(banda.esDerecha()){
                 getRobot().getBody().applyForceToCenter(60f,0f,true);
             } else{
@@ -673,7 +673,7 @@ public abstract class PantallaNivel extends Pantalla {
         }
     }
 
-    public void elevarRobotIman(Iman iman){
+    public void elevarRobotConIman(Iman iman){
         if(contactoIman){
             getRobot().getBody().applyForceToCenter(0f,30f,true);
         }
@@ -682,8 +682,8 @@ public abstract class PantallaNivel extends Pantalla {
     private void ActualizarEstadoNiveles(PantallaNivel nivel, int puntaje){
         String nivelEnJuego;
         Preferences estadoNiveles = Gdx.app.getPreferences("estadoNiveles");
-        Gdx.app.log("VOY A CHECAR EL ESTADO DE NIVEL 1", " "+ estadoNiveles.getInteger("estado1"));
-        Gdx.app.log("VOY A CHECAR EL ESTADO DE NIVEL 2", " "+ estadoNiveles.getInteger("estado2",1000));
+        //Gdx.app.log("VOY A CHECAR EL ESTADO DE NIVEL 1", " "+ estadoNiveles.getInteger("estado1"));
+        //Gdx.app.log("VOY A CHECAR EL ESTADO DE NIVEL 2", " "+ estadoNiveles.getInteger("estado2",1000));
         if (nivel instanceof NivelTutorial){
             nivelEnJuego= "estado1";
 
@@ -692,7 +692,7 @@ public abstract class PantallaNivel extends Pantalla {
 
                 estadoNiveles.putInteger("estado2",0);
                 estadoNiveles.flush();
-                Gdx.app.log("EL ESTADO DOS ESTABA EN BLOQUEADO", "AHORA LO DESBLOQUEO Y EL ESTADO ES: " + estadoNiveles.getInteger("estado2"));
+                //Gdx.app.log("EL ESTADO DOS ESTABA EN BLOQUEADO", "AHORA LO DESBLOQUEO Y EL ESTADO ES: " + estadoNiveles.getInteger("estado2"));
             }
         }else{
             nivelEnJuego= "estado2";
@@ -707,8 +707,8 @@ public abstract class PantallaNivel extends Pantalla {
 
         }
         estadoNiveles.flush();
-        Gdx.app.log("ACTUALIZADOS: EL ESTADO DE NIVEL 1 ", " "+ estadoNiveles.getInteger("estado1"));
-        Gdx.app.log("ACTUALIIZADOS:  EL ESTADO DE NIVEL 2", " "+ estadoNiveles.getInteger("estado2"));
+        //Gdx.app.log("ACTUALIZADOS: EL ESTADO DE NIVEL 1 ", " "+ estadoNiveles.getInteger("estado1"));
+        //Gdx.app.log("ACTUALIIZADOS:  EL ESTADO DE NIVEL 2", " "+ estadoNiveles.getInteger("estado2"));
     }
 
     // La escena que se muestra cuando el juego se pausa
@@ -808,20 +808,20 @@ public abstract class PantallaNivel extends Pantalla {
 
             btnMusic.addListener(new ClickListener(){
                 public void clicked(InputEvent event, float x, float y){
-                    Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
+                    //Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
                     //AQUI VA EL CODIO PARA DESCATIVAR LA MUSICA
                     if(estadoMusicaGeneral==EstadoMusica.APAGADO){
                         estadoMusicaGeneral= EstadoMusica.REPRODUCCION;
                         btnMusic.getStyle().imageUp= trdBtnMusicOn;
 
-                        Gdx.app.log("Aviso", estadoMusicaGeneral.toString());
+                        //Gdx.app.log("Aviso", estadoMusicaGeneral.toString());
 
 
 
                         musicaFondo.play();
                     }else{
                         estadoMusicaGeneral= EstadoMusica.APAGADO;
-                        Gdx.app.log("Aviso", estadoMusicaGeneral.toString());
+                        //Gdx.app.log("Aviso", estadoMusicaGeneral.toString());
                         btnMusic.getStyle().imageUp= trdBtnMusicOff;
                         musicaFondo.stop();
                     }
@@ -850,14 +850,14 @@ public abstract class PantallaNivel extends Pantalla {
 
             btnSound.addListener(new ClickListener(){
                 public void clicked(InputEvent event, float x, float y){
-                    Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
+                    //Gdx.app.log("Aviso", "POS ME VOY AL MENU PRINCIPAL");
                     if(estadoSonidoGeneral==EstadoSonido.APAGADO){
 
                         estadoSonidoGeneral= EstadoSonido.ENCENDIDO;
                         btnSound.getStyle().imageUp= trdBtnSoundOn;
 
 
-                        Gdx.app.log("Aviso", estadoSonidoGeneral.toString());
+                        //Gdx.app.log("Aviso", estadoSonidoGeneral.toString());
 
                         sonidoBoton.play(volumenSonido);
                     }else{
@@ -896,7 +896,7 @@ public abstract class PantallaNivel extends Pantalla {
             btnSeleccionar.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Gdx.app.log("clicked", "CLICK SELECCION NIVEL PERDISTE");
+                    //Gdx.app.log("clicked", "CLICK SELECCION NIVEL PERDISTE");
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
@@ -917,7 +917,7 @@ public abstract class PantallaNivel extends Pantalla {
             btnSalir.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Gdx.app.log("clicked", "CLICK SALIR PERDISTE");
+                    //Gdx.app.log("clicked", "CLICK SALIR PERDISTE");
                     // Regresa al menú
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
@@ -939,7 +939,7 @@ public abstract class PantallaNivel extends Pantalla {
             btnReanudar.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Gdx.app.log("clicked", "CLICK REINTENTAR PERDISTE");
+                    //Gdx.app.log("clicked", "CLICK REINTENTAR PERDISTE");
                     // REINTENTAR NIVEL
                     estado = EstadoJuego.JUGANDO;
                     musicaFondo.stop();
@@ -998,7 +998,7 @@ public abstract class PantallaNivel extends Pantalla {
             btnReintentar.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Gdx.app.log("clicked", "CLICK REINTENTAR PERDISTE");
+                    // Gdx.app.log("clicked", "CLICK REINTENTAR PERDISTE");
                     // REINTENTAR NIVEL
                     estado = EstadoJuego.JUGANDO;
                     musicaFondo.stop();
@@ -1022,7 +1022,7 @@ public abstract class PantallaNivel extends Pantalla {
             btnNextLevel.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Gdx.app.log("clicked", "CLICK SELECCION NIVEL PERDISTE");
+                    //Gdx.app.log("clicked", "CLICK SELECCION NIVEL PERDISTE");
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
@@ -1042,7 +1042,7 @@ public abstract class PantallaNivel extends Pantalla {
             btnSeleccionar.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Gdx.app.log("clicked", "CLICK SELECCION NIVEL PERDISTE");
+                    //Gdx.app.log("clicked", "CLICK SELECCION NIVEL PERDISTE");
                     // Regresa a la seleccion de nivel
                     musicaFondo.stop();
                     manager.unload(nombreMapa);
@@ -1063,7 +1063,7 @@ public abstract class PantallaNivel extends Pantalla {
             btnSalir.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Gdx.app.log("clicked", "CLICK SALIR PERDISTE");
+                    //Gdx.app.log("clicked", "CLICK SALIR PERDISTE");
                     // Regresa al menú
                     musicaFondo.stop();
                     manager.unload(nombreMapa);

@@ -44,6 +44,11 @@ public class Robot extends Objeto {
     private int vidas = 3;
     private final int TIEMPO_INV_INICIAL = 90;
     private int tiempoInv = 90;
+    private final int TIEMPO_RUN_INICIAL =600;
+    private int tiempoRun=600;
+
+
+
     private TextureRegion[][] texturaPersonaje;
 
     // Recibe una imagen con varios frames (ver marioSprite.png)
@@ -79,9 +84,9 @@ public class Robot extends Objeto {
         bodydef.type = type;
         bodydef.fixedRotation = true;
         bodydef.position.set((sprite.getX() + sprite.getWidth() / 2) / PantallaNivel.getPtM(),
-                (sprite.getY() + sprite.getHeight() / 2) / PantallaNivel.getPtM());
+                (sprite.getY() + sprite.getHeight() / 2-25) / PantallaNivel.getPtM());
         shape = new PolygonShape();
-        shape.setAsBox(sprite.getWidth() / 3 / PantallaNivel.getPtM(), sprite.getHeight() / 2 / PantallaNivel.getPtM());
+        shape.setAsBox((sprite.getWidth() / 3) / PantallaNivel.getPtM(), ((sprite.getHeight() / 2)-18) / PantallaNivel.getPtM());
         fix.shape = shape;
         body = world.createBody(bodydef);
         body.setUserData(this);
@@ -96,7 +101,7 @@ public class Robot extends Objeto {
     public void dibujar(SpriteBatch batch) {
         // Dibuja el personaje dependiendo del estadoMovimiento
         sprite.setPosition((body.getPosition().x * PantallaNivel.getPtM()) - sprite.getWidth() / 2,
-                (body.getPosition().y * PantallaNivel.getPtM()) - sprite.getHeight()/ 2);
+                (body.getPosition().y * PantallaNivel.getPtM()) - 4*sprite.getHeight()/ 10);
         switch (estadoMovimiento) {
             case MOV_DERECHA:
             case MOV_IZQUIERDA:
@@ -143,25 +148,37 @@ public class Robot extends Objeto {
                 moverVertical(mapa);
                 break;
         }
-        recuperar();
+        checarHabilidad();
 
     }
 
-    private void recuperar() {
-        if(this.getHabilidad()==Habilidad.INVULNERABLE){
-            if(tiempoInv==0){
-                this.setHabilidad(Habilidad.NADA);
-                tiempoInv=TIEMPO_INV_INICIAL;
-            }
-            else{
-                tiempoInv--;
-            }
+    private void checarHabilidad(){
+        switch(habilidad){
+            case INVULNERABLE:
+                if(tiempoInv==0){
+                    this.setHabilidad(Habilidad.NADA);
+                    tiempoInv=TIEMPO_INV_INICIAL;
+                }
+                else{
+                    tiempoInv--;
+                }
+            break;
+            case CORRER:
+                //Cuando está corriendo
+                if(tiempoRun==0){
+                    this.setHabilidad(Habilidad.NADA);
+                    tiempoRun=TIEMPO_RUN_INICIAL;
+                }
+                else{
+                    tiempoRun--;
+                }
+                break;
         }
     }
 
     private void moverVertical(TiledMap mapa) {
         if(estadoSalto==EstadoSalto.SUBIENDO)
-            body.applyForceToCenter(0f,800f,true);
+            body.applyForceToCenter(0f,1600f,true);
         estadoSalto=EstadoSalto.BAJANDO;
     }
 
@@ -169,40 +186,67 @@ public class Robot extends Objeto {
 
     // Mueve el personaje a la derecha/izquierda, prueba choques con paredes y puerta
     private void moverHorizontal(TiledMap mapa) {
-        if(estadoMovimiento==EstadoMovimiento.MOV_DERECHA) {
-            if(checarMovDer(mapa)) {
-                if (this.getHabilidad() != Habilidad.INVULNERABLE) {
-                    if (body.getLinearVelocity().x < 6f)
-                        body.applyForceToCenter(20f, 0f, true);
-                    else
-                        body.setLinearVelocity(6f, body.getLinearVelocity().y);
-                } else if (tiempoInv < TIEMPO_INV_INICIAL / 2) {
-                    if (body.getLinearVelocity().x < 6f)
-                        body.applyForceToCenter(20f, 0f, true);
-                    else
-                        body.setLinearVelocity(6f, body.getLinearVelocity().y);
-                }
-            }else{
-                body.setLinearVelocity(0f,body.getLinearVelocity().y);
-            }
-        }
+        if (estadoMovimiento == EstadoMovimiento.MOV_DERECHA) {
+            if (checarMovDer(mapa)) {
+                switch (this.getHabilidad()) {
+                    case NADA:
+                        if (body.getLinearVelocity().x < 6f)
+                            body.applyForceToCenter(20f, 0f, true);
+                        else
+                            body.setLinearVelocity(6f, body.getLinearVelocity().y);
+                        break;
 
-        else if(estadoMovimiento==EstadoMovimiento.MOV_IZQUIERDA) {
-            if(checarMovIzq(mapa)){
-                if(this.getHabilidad()!=Habilidad.INVULNERABLE) {
-                    if (body.getLinearVelocity().x > -6f)
-                        body.applyForceToCenter(-20f, 0f, true);
-                    else
-                        body.setLinearVelocity(-6f, body.getLinearVelocity().y);
-                } else if(tiempoInv < TIEMPO_INV_INICIAL/2){
-                    if (body.getLinearVelocity().x < -6f)
-                        body.applyForceToCenter(-20f, 0f, true);
-                    else
-                        body.setLinearVelocity(-6f, body.getLinearVelocity().y);
+                    case INVULNERABLE:
+                        if (tiempoInv < TIEMPO_INV_INICIAL / 2) {
+                            if (body.getLinearVelocity().x < 6f)
+                                body.applyForceToCenter(20f, 0f, true);
+                            else
+                                body.setLinearVelocity(6f, body.getLinearVelocity().y);
+                        }
+
+                    case CORRER:
+                        if (tiempoRun < TIEMPO_RUN_INICIAL) {
+                            //Lo que sea que pase cuando corre
+                            if (body.getLinearVelocity().x < 12f)
+                                body.applyForceToCenter(40f, 0f, true);
+                            else
+                            body.setLinearVelocity(12f, body.getLinearVelocity().y);
+                        }
+                    }
+                }else{
+                    body.setLinearVelocity(0f, body.getLinearVelocity().y);
                 }
-            }else{
-                body.setLinearVelocity(0f,body.getLinearVelocity().y);
             }
+            else if (estadoMovimiento == EstadoMovimiento.MOV_IZQUIERDA) {
+                if (checarMovIzq(mapa)) {
+                    switch (this.getHabilidad()) {
+                        case NADA:
+                            if (body.getLinearVelocity().x > -6f)
+                                body.applyForceToCenter(-20f, 0f, true);
+                            else
+                            body.setLinearVelocity(-6f, body.getLinearVelocity().y);
+                            break;
+                        case INVULNERABLE:
+                            if (tiempoInv < TIEMPO_INV_INICIAL / 2) {
+                                if (body.getLinearVelocity().x > -6f)
+                                    body.applyForceToCenter(-20f, 0f, true);
+                                else
+                                body.setLinearVelocity(-6f, body.getLinearVelocity().y);
+                            }
+                            break;
+                        case CORRER:
+                            if (tiempoRun < TIEMPO_RUN_INICIAL) {
+                                //Lo que sea que pase cuando corre
+                                if (body.getLinearVelocity().x > -12f)
+                                    body.applyForceToCenter(-40f, 0f, true);
+                                else
+                                body.setLinearVelocity(-12f, body.getLinearVelocity().y);
+                            }
+                            break;
+                    }
+                } else {
+                    body.setLinearVelocity(0f, body.getLinearVelocity().y);
+                }
         }
     }
 
@@ -253,7 +297,7 @@ public class Robot extends Objeto {
     }
 
     //Mejorar con or de celda izquierda, centro o derecha
-    public boolean recolectarMiniVi(TiledMap mapa) {
+    public String recolectarItem(TiledMap mapa) {
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
         int x;
         int y = (int)(sprite.getY()/64);
@@ -268,11 +312,17 @@ public class Robot extends Objeto {
                 if ("miniVi".equals(tipo) ) {
                     //Gdx.app.log("DEUS","VULT");
                     capa.setCell(x,y,null);// Borra el mini vi del mapa
-                    return true;
+                    return "miniVi";
+                } else if("correr".equals(tipo)){
+                    Gdx.app.log("RecolectarItem","corriendo");
+                    capa.setCell(x,y,null);
+                    this.setHabilidad(Habilidad.CORRER);
+                    Gdx.app.log("Habilidad actual:",""+this.getHabilidad());
+                    return "correr";
                 }
             }
         }
-        return false;
+        return "";
     }
 
     // Accesor de estadoMovimiento
@@ -345,7 +395,7 @@ public class Robot extends Objeto {
         bodydef.position.set((sprite.getX() + sprite.getWidth() / 2) / PantallaNivel.getPtM(),
                 (sprite.getY() + sprite.getHeight() / 2) / PantallaNivel.getPtM());
         shape = new PolygonShape();
-        shape.setAsBox(sprite.getWidth() / 3 / PantallaNivel.getPtM(), sprite.getHeight() / 2 / PantallaNivel.getPtM());
+        shape.setAsBox((sprite.getWidth() / 3) / PantallaNivel.getPtM(), ((sprite.getHeight() / 2)-18) / PantallaNivel.getPtM());
         fix.shape = shape;
         body = world.createBody(bodydef);
         body.setUserData(this);
