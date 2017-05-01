@@ -4,32 +4,32 @@
   <image source="Tilesv3.png" width="640" height="320"/>
   <tile id="0">
    <properties>
-    <property name="tipo" value="piso"/>
+    <property name="body" value="piso"/>
    </properties>
   </tile>
   <tile id="1">
    <properties>
-    <property name="tipo" value="piso"/>
+    <property name="body" value="piso"/>
    </properties>
   </tile>
   <tile id="2">
    <properties>
-    <property name="tipo" value="piso"/>
+    <property name="body" value="piso"/>
    </properties>
   </tile>
   <tile id="3">
    <properties>
-    <property name="tipo" value="piso"/>
+    <property name="body" value="piso"/>
    </properties>
   </tile>
   <tile id="4">
    <properties>
-    <property name="tipo" value="piso"/>
+    <property name="body" value="piso"/>
    </properties>
   </tile>
   <tile id="5">
    <properties>
-    <property name="tipo" value="piso"/>
+    <property name="body" value="piso"/>
    </properties>
   </tile>
   <tile id="7">
@@ -49,37 +49,37 @@
   </tile>
   <tile id="10">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="11">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="12">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="13">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="14">
    <properties>
-    <property name="tipo" value="piso"/>
+    <property name="body" value="piso"/>
    </properties>
   </tile>
   <tile id="15">
    <properties>
-    <property name="tipo" value="piso"/>
+    <property name="body" value="piso"/>
    </properties>
   </tile>
   <tile id="16">
    <properties>
-    <property name="tipo" value="piso"/>
+    <property name="body" value="piso"/>
    </properties>
   </tile>
   <tile id="17">
@@ -94,37 +94,37 @@
   </tile>
   <tile id="20">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="21">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="22">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="23">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="24">
    <properties>
-    <property name="tipo" value="techo"/>
+    <property name="body" value="techo"/>
    </properties>
   </tile>
   <tile id="25">
    <properties>
-    <property name="tipo" value="techo"/>
+    <property name="body" value="techo"/>
    </properties>
   </tile>
   <tile id="26">
    <properties>
-    <property name="tipo" value="techo"/>
+    <property name="body" value="techo"/>
    </properties>
   </tile>
   <tile id="27">
@@ -144,42 +144,42 @@
   </tile>
   <tile id="30">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="31">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="32">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="33">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="40">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="41">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="42">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
   <tile id="43">
    <properties>
-    <property name="tipo" value="columna"/>
+    <property name="body" value="columna"/>
    </properties>
   </tile>
  </tileset>
@@ -203,8 +203,8 @@
 34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
 34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
 44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
-15,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,16,16,16,16,16,16,16,16,38,39,40,40,40,40,40,40,40,0,0,0,0,0,34,
-25,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,27,26,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,16,16,16,16,16,16,16,16,16,16,16,48,49,50,50,50,50,50,50,50,0,0,0,0,0,34,
+15,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,16,16,16,16,16,16,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+25,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,27,26,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,16,16,16,16,16,16,16,16,16,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
 25,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,16,16,16,16,16,16,16,16,16,16,16,1,1,1,0,0,0,0,0,0,0,0,0,0,0,34,
 14,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2147483693,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2147483693,26,26,26,26,26,26,26,26,26,26,26,26,26,26,45,0,0,0,0,0,0,0,0,0,0,0,34,
 24,23,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,16,16,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
