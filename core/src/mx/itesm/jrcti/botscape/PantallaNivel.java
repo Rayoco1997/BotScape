@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -43,6 +45,7 @@ import java.util.ArrayList;
 public abstract class PantallaNivel extends Pantalla {
 
     private static final float PIXELS_TO_METERS = 64f;
+    private static final int TtoP = 64;
     private EstadoJuego estado = EstadoJuego.JUGANDO;
     private Robot robot;
     private FixtureDef fix;
@@ -67,16 +70,15 @@ public abstract class PantallaNivel extends Pantalla {
     private ImageButton btnSound;
     private Texture texturaMiniVI;
     private Texture texturaVidasVIU;
-    private Texture texturaViñeta;
-    private Image imgViñeta;
     private Camera camaraHUD;
     private Stage escenaVidasVIU;
     private String nombreMapa;
     private String nombreMusicaFondo;
-    private int TtoP = 64;
     private int ANCHO_MAPA;
     private int ALTO_MAPA;
     private int countMovCam=1;
+    private boolean contactoBanda = false;
+    private boolean contactoIman = false;
 
 
 
@@ -113,6 +115,10 @@ public abstract class PantallaNivel extends Pantalla {
 
     protected SpriteBatch getBatch(){
         return batch;
+    }
+
+    public static int getTtoP(){
+        return TtoP;
     }
 
     protected TiledMap getMapa(){
@@ -195,7 +201,7 @@ public abstract class PantallaNivel extends Pantalla {
         manager = ass;
     }
     protected void buscarMiniVis(){
-        if(getRobot().recolectarItem(getMapa()).equals("miniVi"))
+        if(getRobot().recolectarMiniVi(getMapa()))
             contadorMiniVis++;
     }
     protected int getCountMovCam(){
@@ -383,7 +389,7 @@ public abstract class PantallaNivel extends Pantalla {
         fix = new FixtureDef();
         fix.density=.3f;
         fix.restitution=.1f;
-        fix.friction=10f;
+        fix.friction=1f;
         robot = new Robot(VIUWalk_Cycle,x,y,world, BodyDef.BodyType.DynamicBody,fix);
     }
 
@@ -398,8 +404,7 @@ public abstract class PantallaNivel extends Pantalla {
         vistaHUD = new StretchViewport(ANCHO, ALTO, camaraHUD);
         escenaVidasVIU = new Stage(vistaHUD, batch);
         escenaHUD = new Stage(vistaHUD);
-        imgViñeta=new Image(texturaViñeta);
-        escenaHUD.addActor(imgViñeta);
+
         crearBotones();
 
         //CREANDO ICONO DE MINIVI Contador
@@ -448,7 +453,6 @@ public abstract class PantallaNivel extends Pantalla {
     public void cargarTexturasEscenciales(){
         VIUWalk_Cycle = manager.get("Personaje/VIUWalk_Cycle.png");
         texturaMiniVI = manager.get("NivelMiniVI.png");
-        texturaViñeta = manager.get("Viñeta.png");
         texturaBtnPausa = manager.get("NivelPausa.png");
         texturaBtnIzquierda = manager.get("Botones/MovIzqButton.png");
         texturaBtnDerecha =  manager.get("Botones/MovDerButton.png");
@@ -554,7 +558,11 @@ public abstract class PantallaNivel extends Pantalla {
                                 contact.getFixtureB().getBody().getUserData().equals("columna")))||
                 ((contact.getFixtureA().getBody().getUserData().equals("piso") ||
                         (contact.getFixtureA().getBody().getUserData().equals("columna")) &&
-                                contact.getFixtureB().getBody().getUserData() instanceof Robot))){
+                                contact.getFixtureB().getBody().getUserData() instanceof Robot)) ||
+                (contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+                        contact.getFixtureB().getBody().getUserData() instanceof Banda)||
+                (contact.getFixtureA().getBody().getUserData() instanceof Banda &&
+                        contact.getFixtureB().getBody().getUserData() instanceof Robot)){
             Vector2 punto = contact.getWorldManifold().getPoints()[0];
             if(punto.y*PIXELS_TO_METERS <= getRobot().sprite.getY()){
                 //Gdx.app.log("punto y " + punto.y*PIXELS_TO_METERS," robot y " + getRobot().sprite.getY());
@@ -587,11 +595,14 @@ public abstract class PantallaNivel extends Pantalla {
             public void beginContact(Contact contact) {
                 revisarTocarPiso(contact);
                 revisarDanoEnemigo(contact);
+                revisarInicioContactoBanda(contact);
+                revisarInicioContactoIman(contact);
             }
 
             @Override
             public void endContact(Contact contact) {
-
+                revisarFinContactoBanda(contact);
+                revisarFinContactoIman(contact);
             }
 
             @Override
@@ -605,6 +616,67 @@ public abstract class PantallaNivel extends Pantalla {
             }
         };
         getWorld().setContactListener(conList);
+    }
+
+    private void revisarFinContactoIman(Contact contact) {
+        if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+                contact.getFixtureB().getBody().getUserData().equals("sensorIman"))||
+
+                (contact.getFixtureA().getBody().getUserData().equals("sensorIman") &&
+                        contact.getFixtureB().getBody().getUserData() instanceof Robot)){
+
+            contactoIman = false;
+        }
+    }
+
+    private void revisarInicioContactoIman(Contact contact) {
+        if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+                contact.getFixtureB().getBody().getUserData().equals("sensorIman"))||
+
+                (contact.getFixtureA().getBody().getUserData().equals("sensorIman") &&
+                        contact.getFixtureB().getBody().getUserData() instanceof Robot)){
+
+            contactoIman = true;
+        }
+    }
+
+    protected void revisarFinContactoBanda(Contact contact){
+        if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+                contact.getFixtureB().getBody().getUserData().equals("sensorBanda"))||
+
+                (contact.getFixtureA().getBody().getUserData().equals("sensorBanda") &&
+                        contact.getFixtureB().getBody().getUserData() instanceof Robot)){
+
+            contactoBanda = false;
+        }
+    }
+
+    private void revisarInicioContactoBanda(Contact contact) {
+        if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+                contact.getFixtureB().getBody().getUserData().equals("sensorBanda"))||
+
+                (contact.getFixtureA().getBody().getUserData().equals("sensorBanda") &&
+                        contact.getFixtureB().getBody().getUserData() instanceof Robot)){
+
+            contactoBanda = true;
+        }
+    }
+
+    public void moverRobotConBanda(Banda banda){
+        if(contactoBanda){
+            Gdx.app.log("Banda","Debi haberme movido a un lado");
+            if(banda.esDerecha()){
+                getRobot().getBody().applyForceToCenter(60f,0f,true);
+            } else{
+                getRobot().getBody().applyForceToCenter(-60f,0f,true);
+            }
+        }
+    }
+
+    public void elevarRobotIman(Iman iman){
+        if(contactoIman){
+            getRobot().getBody().applyForceToCenter(0f,30f,true);
+        }
     }
 
     private void ActualizarEstadoNiveles(PantallaNivel nivel, int puntaje){

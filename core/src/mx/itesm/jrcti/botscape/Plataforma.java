@@ -41,7 +41,7 @@ public class Plataforma extends Objeto implements MovimientoAutomatico {
         bodyDef.type= BodyDef.BodyType.KinematicBody;
         shape = new PolygonShape();
         fix = new FixtureDef();
-        fix.friction = .01f;
+        fix.friction = 1.1f;
         fix.density = .1f;
         fix.restitution = 0f;
         bodyDef.fixedRotation = true;
