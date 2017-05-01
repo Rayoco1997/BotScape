@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,6 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+import javax.swing.plaf.TextUI;
 //import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 /**
@@ -29,6 +33,11 @@ public class PantallaConfiguracion extends Pantalla {
     private Texture texturaButtonRegresar;
     private Texture texturaButtonSonidoOff;
     private Texture texturaButtonSonidoOn;
+
+    private EscenaConfirmacion escenaConfirmacion;
+
+    //booleano para confirmacion
+    private boolean enConfirmacion=false;
 
 
     private ImageButton buttonMusica;
@@ -96,18 +105,21 @@ public class PantallaConfiguracion extends Pantalla {
         //ImageButton buttonSonido= new ImageButton(trdButtonSonido);
 
         //BOTON DE RESETEAR JUEGO
-        final Preferences estadoNiveles= Gdx.app.getPreferences("estadoNiveles");
+
         buttonReset= new ImageButton(trdButtonMusicaOff);
         buttonReset.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 Gdx.app.log("Aviso", "POS ME RESETEOL");
+                if (escenaConfirmacion==null) {
+                    escenaConfirmacion = new EscenaConfirmacion(vista, batch);
+                }
                 if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
                     sonidoBoton.play(volumenSonido);
                 }
-                estadoNiveles.putInteger("estado1",0);
-                estadoNiveles.putInteger("estado2",4);
-                estadoNiveles.putInteger("estado3",4);
-                estadoNiveles.flush();
+                //escenaConfirmacion.draw();
+                enConfirmacion= true;
+
+                Gdx.input.setInputProcessor(escenaConfirmacion);
 
             }
         });
@@ -220,18 +232,88 @@ public class PantallaConfiguracion extends Pantalla {
     @Override
     public void render(float delta) {
         borrarPantalla();
-
-        escenaPantallaConfig.draw();
-
-        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
-            if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
-                sonidoBoton.play(volumenSonido);
+        if(!enConfirmacion){
+            escenaPantallaConfig.draw();
+            if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+                if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                    sonidoBoton.play(volumenSonido);
+                }
+                juego.setScreen(new MenuPrincipal(juego,musica,estadoMusicaGeneral,estadoSonidoGeneral));
             }
-            juego.setScreen(new MenuPrincipal(juego,musica,estadoMusicaGeneral,estadoSonidoGeneral));
+        }else{
+            escenaPantallaConfig.draw();
+            escenaConfirmacion.draw();
+
         }
 
 
+
+
+
     }
+    protected class EscenaConfirmacion extends Stage
+    {
+        public EscenaConfirmacion(Viewport vista, SpriteBatch batch) {
+            super(vista, batch);
+            //Texture textoConirmacion= new Texture(Gdx.files.internal("Textos/ConfiguracionTextoConfirmacion.png"));
+            Pixmap pixmap = new Pixmap((int)(ANCHO*0.5f), (int)(ALTO*0.5f), Pixmap.Format.RGBA8888 );
+            pixmap.setColor( 0.4941f, 0.4980f, 0.5058f, 1.0f );
+            pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
+            Texture texturaRectangulo = new Texture( pixmap );
+            pixmap.dispose();
+            Image imgRectangulo = new Image(texturaRectangulo);
+            imgRectangulo.setPosition(ANCHO/2-imgRectangulo.getWidth()/2, ALTO/2-imgRectangulo.getHeight()/2);
+            this.addActor(imgRectangulo);
+
+            //BOTON DE SI
+            Texture texturaBtnSi= new Texture(Gdx.files.internal("Botones/PausaBtnMusicOnMini.png"));
+            TextureRegionDrawable trdBtnSi= new TextureRegionDrawable(new TextureRegion(texturaBtnSi));
+            ImageButton btnSi = new ImageButton(trdBtnSi);
+            btnSi.setPosition(ANCHO/2-btnSi.getWidth(),ALTO/2-btnSi.getHeight()*2);
+            btnSi.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    //RESETEA EL ESTADO DEL JUUEGO
+                    final Preferences estadoNiveles= Gdx.app.getPreferences("estadoNiveles");
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    estadoNiveles.putInteger("estado1",0);
+                    estadoNiveles.putInteger("estado2",4);
+                    estadoNiveles.putInteger("estado3",4);
+                    estadoNiveles.flush();
+                    // Regresa al menú
+                    Gdx.input.setInputProcessor(escenaPantallaConfig);
+                    enConfirmacion=false;
+                }
+            });
+            this.addActor(btnSi);
+
+            //BOTON DE NO
+            Texture textureBtnNo= new Texture(Gdx.files.internal("Botones/PausaBtnMusicOffMini.png"));
+            TextureRegionDrawable trdBtnNo= new TextureRegionDrawable(new TextureRegion(textureBtnNo));
+            ImageButton btnNo= new ImageButton(trdBtnNo);
+            btnNo.setPosition(ANCHO/2+10,ALTO/2-btnNo.getHeight()*2);
+            btnNo.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    //RESETEA EL ESTADO DEL JUUEGO
+                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                        sonidoBoton.play(volumenSonido);
+                    }
+                    Gdx.input.setInputProcessor(escenaPantallaConfig);
+                    enConfirmacion=false;
+                }
+            });
+            this.addActor(btnNo);
+            //TEXTO DE CONFIRMACION
+            Texture textoConirmacion= new Texture(Gdx.files.internal("Textos/ConfiguracionTextoConfirmacion.png"));
+            Image imgTextConfirmacion= new Image(textoConirmacion);
+            imgTextConfirmacion.setPosition(ANCHO/2-imgTextConfirmacion.getWidth()/2,ALTO/2);
+            this.addActor(imgTextConfirmacion);
+        }
+    }
+
 
     @Override
     public void pause() {
