@@ -2,10 +2,13 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 /**
  * Created by Cinthya on 21/04/2017.
@@ -17,17 +20,23 @@ public class Nivel3 extends PantallaNivel {
     Box2DDebugRenderer debugRenderer;
     Matrix4 debugMatrix;
 
-    private static final int ANCHO_MAPA=0;
-    private static final int ALTO_MAPA=0;
-    private int xInicialRobot;
-    private int yInicialRobot;
+    private static final int ANCHO_MAPA=5120;
+    private static final int ALTO_MAPA=2880;
+    private int xInicialRobot=100;
+    private int yInicialRobot=300;
 
-
+    //Texturas
     Sprite texturaFondo;
+    private Texture texturaFondoTutorial;
+    private Texture LUGWalk_Cycle;
 
-    public Nivel3(Juego j, EstadoMusica estadoMusicaGeneral, String nombreMapa, String nombreMusica, EstadoSonido estadoSonidoGeneral) {
-        super(j, estadoMusicaGeneral, nombreMapa, nombreMusica, estadoSonidoGeneral);
-        this.juego = j;
+    private FixtureDef fix;
+    private Enemigo enemigo1;
+    private Enemigo enemigo2;
+
+    public Nivel3(Juego j, EstadoMusica estadoMusicaGeneral,EstadoSonido estadoSonidoGeneral) {
+        super(j, estadoMusicaGeneral, "Mapas/Nivel3.tmx", "Sonidos/BringTheFoxhoundToMe.mp3",estadoSonidoGeneral);
+        this.juego=j;
         setManager(j.getAssetManager());
     }
 
@@ -44,6 +53,8 @@ public class Nivel3 extends PantallaNivel {
 
     @Override
     public void cargarTexturasExtras() {
+        texturaFondoTutorial = getManager().get("Fondos/Fondo2.jpg");
+        LUGWalk_Cycle = getManager().get("Personaje/LUG7 Walk_Cycle.png");
 
     }
 
@@ -53,12 +64,23 @@ public class Nivel3 extends PantallaNivel {
     }
 
     private void crearCuerpos() {
+        crearRobot(xInicialRobot,yInicialRobot);
+        crearPiso();
     }
 
     private void crearObjetos() {
+        crearMundo();
+        texturaFondo=new Sprite(texturaFondoTutorial);
+        texturaFondo.setPosition(0,0);
+        createCollisionListener();
+
+        //Debugger
+        debugRenderer = new Box2DDebugRenderer();
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void crearEnemigos() {
+
     }
 
     private void crearPiso() {

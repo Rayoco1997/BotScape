@@ -9,4 +9,5 @@ public enum Pantallas {
     SELECCION_NIVEL,
     NIVEL,
     NIVEL2,
+    NIVEL3
 }

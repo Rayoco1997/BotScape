@@ -256,24 +256,24 @@ public abstract class PantallaNivel extends Pantalla {
         //Revisar horizontal con tipo piso y techo
         for(int fila = 0; fila < mapHeight; fila++){
             for(int col = 0; col < mapWidth; col++) {
-                //Gdx.app.log("Recorro","fila " + fila + " columna " + col);
+                Gdx.app.log("Recorro","fila " + fila + " columna " + col);
                 if (capaArq.getCell(col, fila) != null) {
-                    //Gdx.app.log("Y ademas","Dije que no era null");
+                    Gdx.app.log("Y ademas","Dije que no era null");
                     Object body = capaArq.getCell(col, fila).getTile().getProperties().get("body");
                     if (body != null && (body.equals("piso") || body.equals("techo"))) {
-                        //Gdx.app.log("Leer mapa: ","Detecto piso en " + fila + ", " + col);
+                        Gdx.app.log("Leer mapa: ","Detecto piso en " + fila + ", " + col);
                         if (flagPrimero) {
                             count = 0;
                             xInicial = col * TtoP;
-                            //Gdx.app.log("Leer mapa:","Creo un body en fila " + fila + " columna " + col + " con xInicial en " + xInicial);
+                            Gdx.app.log("Leer mapa:","Creo un body en fila " + fila + " columna " + col + " con xInicial en " + xInicial);
                             flagPrimero = false;
                             count++;
                         } else {
-                            //Gdx.app.log("Leer mapa","Detecte piso en fila " + fila + " columna " +col);
+                            Gdx.app.log("Leer mapa","Detecte piso en fila " + fila + " columna " +col);
                             count++;
                         }
                     } else if(!flagPrimero) {
-                        //Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
+                        Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
                         flagPrimero = true;
                         cuadro = new PolygonShape();
                         if(col == 0) {
@@ -288,7 +288,7 @@ public abstract class PantallaNivel extends Pantalla {
                         bodyPiso.setUserData("piso");
                     }
                 } else if (!flagPrimero){
-                    //Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
+                    Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
                     flagPrimero = true;
                     cuadro = new PolygonShape();
                     if(col == 0) {
@@ -321,24 +321,24 @@ public abstract class PantallaNivel extends Pantalla {
 
         for(int col = 0; col < mapWidth; col++){
             for(int fila = 0; fila < mapHeight; fila++) {
-                //Gdx.app.log("Recorro","columna " + col + " fila " + fila);
+                Gdx.app.log("Recorro","columna " + col + " fila " + fila);
                 if (capaArq.getCell(col, fila) != null) {
-                    //Gdx.app.log("Y ademas","Dije que no era null");
+                    Gdx.app.log("Y ademas","Dije que no era null");
                     Object body = capaArq.getCell(col, fila).getTile().getProperties().get("body");
                     if (body != null && body.equals("columna")) {
-                        //Gdx.app.log("Leer mapa: ","Detecto columna en  columna" + col + ", fila " + fila);
+                        Gdx.app.log("Leer mapa: ","Detecto columna en  columna" + col + ", fila " + fila);
                         if (flagPrimero) {
                             count = 0;
                             yInicial = fila * TtoP;
-                            //Gdx.app.log("Leer mapa:","Creo un body columna en fila " + fila + " columna " + col + " con yInicial en " + yInicial);
+                            Gdx.app.log("Leer mapa:","Creo un body columna en fila " + fila + " columna " + col + " con yInicial en " + yInicial);
                             flagPrimero = false;
                             count++;
                         } else {
-                            //Gdx.app.log("Leer mapa","Detecte piso en fila " + fila + " columna " +col);
+                            Gdx.app.log("Leer mapa","Detecte piso en fila " + fila + " columna " +col);
                             count++;
                         }
                     } else if(!flagPrimero) {
-                        //Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
+                        Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
                         flagPrimero = true;
                         cuadro = new PolygonShape();
                         if(fila == 0) {
@@ -353,7 +353,7 @@ public abstract class PantallaNivel extends Pantalla {
                         bodyPiso.setUserData("columna");
                     }
                 } else if (!flagPrimero){
-                    //Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
+                    Gdx.app.log("Deje de detecar piso en ","fila " + fila + " columna " + col + " con count en " + count);
                     flagPrimero = true;
                     cuadro = new PolygonShape();
                     if(fila == 0) {
