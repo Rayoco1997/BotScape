@@ -236,7 +236,6 @@ public class Robot extends Objeto {
                             break;
                         case CORRER:
                             if (tiempoRun < TIEMPO_RUN_INICIAL) {
-                                //Lo que sea que pase cuando corre
                                 if (body.getLinearVelocity().x > -12f)
                                     body.applyForceToCenter(-40f, 0f, true);
                                 else
