@@ -24,7 +24,7 @@ public class Nivel3 extends PantallaNivel {
     private static final int ANCHO_MAPA=5120;
     private static final int ALTO_MAPA=2880;
     private int xInicialRobot=100;
-    private int yInicialRobot=300;
+    private int yInicialRobot=30*PantallaNivel.getTtoP();
 
     private int TOTAL_MINIVIS= 9;
 
@@ -122,7 +122,7 @@ public class Nivel3 extends PantallaNivel {
         //platf1 = new Plataforma(texturaPlataforma, 3, 3, 1984, 384,
                 //Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
         iman1= new Iman(texturaIman,2.5f ,2.5f ,37*PantallaNivel.getTtoP(),20*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
-        banda1= new Banda(texturaBandas,48*PantallaNivel.getTtoP(),30*PantallaNivel.getTtoP(),fix,getWorld(),false);
+        banda1= new Banda(texturaBandas,48*PantallaNivel.getTtoP(),29*PantallaNivel.getTtoP()+19,fix,getWorld(),false);
 
 
 

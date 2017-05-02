@@ -260,7 +260,7 @@ public abstract class PantallaNivel extends Pantalla {
                 if (capaArq.getCell(col, fila) != null) {
                     //Gdx.app.log("Y ademas","Dije que no era null");
                     Object body = capaArq.getCell(col, fila).getTile().getProperties().get("body");
-                    if (body != null && (body.equals("piso") || body.equals("techo"))) {
+                    if (body != null && (body.equals("piso") || body.equals("techo") || body.equals("puerta"))) {
                         //Gdx.app.log("Leer mapa: ","Detecto piso en " + fila + ", " + col);
                         if (flagPrimero) {
                             count = 0;
@@ -383,6 +383,10 @@ public abstract class PantallaNivel extends Pantalla {
         count = 0;
 
 
+
+
+
+
     }
 
     protected void crearRobot(int x, int y) {
@@ -394,7 +398,7 @@ public abstract class PantallaNivel extends Pantalla {
     }
 
     protected void crearMundo() {
-        world = new World(new Vector2(0f,-5f), true);
+        world = new World(new Vector2(0f,-8f), true);
     }
 
     protected void crearHUD() {
@@ -501,7 +505,7 @@ public abstract class PantallaNivel extends Pantalla {
     private void dibujarBtnIzq(Texture texturaBtnIzquierda, Stage escenaHUD) {
         TextureRegionDrawable trdBtnMovIzquierda = new TextureRegionDrawable(new TextureRegion(texturaBtnIzquierda));
         ImageButton btnMovIzq = new ImageButton(trdBtnMovIzquierda);
-        btnMovIzq.setPosition(ANCHO/8,50);
+        btnMovIzq.setPosition(ANCHO/9-10,50);
         escenaHUD.addActor(btnMovIzq);
         btnMovIzq.addListener(new InputListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
