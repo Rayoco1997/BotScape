@@ -69,6 +69,7 @@ public class MenuCreditos extends Pantalla {
         escenaMenuCreditos = new Stage(vista,batch);
         Image imgCreditos = new Image(fondoCreditos);
         escenaMenuCreditos.addActor(imgCreditos);
+
         //Botón para regresar al menú principal
         TextureRegionDrawable trdBtnBack = new TextureRegionDrawable(new TextureRegion(texturabtnBack));
         ImageButton btnBack = new ImageButton(trdBtnBack);
@@ -78,6 +79,8 @@ public class MenuCreditos extends Pantalla {
         fotoEquipo.setPosition(ANCHO/2-fotoEquipo.getWidth()/2,ALTO/2-fotoEquipo.getHeight()/2);
         Image imgTexto = new Image(textos);
         imgTexto.setPosition(ANCHO/2-imgTexto.getWidth()/2,ALTO/2-imgTexto.getHeight()/2);
+        escenaMenuCreditos.addActor(imgTexto);
+        escenaMenuCreditos.addActor(fotoEquipo);
         /*Image fotoRay = new Image(textureRay);
         fotoRay.setPosition(btnBack.getX()+btnBack.getWidth()+1*(ANCHO-btnBack.getWidth())/2-(ANCHO-btnBack.getWidth())/4-fotoRay.getWidth()/2,ALTO/2-3*ALTO/8);
         Image fotoTommy = new Image(textureTommy);
@@ -118,8 +121,7 @@ public class MenuCreditos extends Pantalla {
         escenaMenuCreditos.addActor(fotoZuren);
         escenaMenuCreditos.addActor(fotoCinth);*/
 
-        escenaMenuCreditos.addActor(imgTexto);
-        escenaMenuCreditos.addActor(fotoEquipo);
+
 
         //Dibujando datos en pantalla
         /*escenaMenuCreditos.addActor(textoCinth);

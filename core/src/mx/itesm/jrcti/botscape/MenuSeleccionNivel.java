@@ -126,13 +126,14 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click lvl2");
-                musica.stop();
+
                 if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
                     sonidoBoton.play(volumenSonido);
                 }
-                //if(estadoNiveles.getInteger("estado2")!=4) {
+                if(estadoNiveles.getInteger("estado2")!=4) {
+                    musica.stop();
                     juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL2, musica, EstadoMusica.REPRODUCCION, estadoMusicaGeneral, estadoSonidoGeneral));
-                //}
+                }
             }
         });
 
@@ -140,13 +141,14 @@ public class MenuSeleccionNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked","Me hicieron click lvl3");
-                musica.stop();
+
                 if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
                     sonidoBoton.play(volumenSonido);
                 }
-                //if(estadoNiveles.getInteger("estado3")!=4) {
+                if(estadoNiveles.getInteger("estado3")!=4) {
+                    musica.stop();
                     juego.setScreen(new PantallaCarga(juego, Pantallas.NIVEL3, musica, EstadoMusica.REPRODUCCION, estadoMusicaGeneral, estadoSonidoGeneral));
-                //}
+                }
             }
         });
 
