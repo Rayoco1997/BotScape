@@ -34,6 +34,8 @@ public class MenuCreditos extends Pantalla {
     private Texture textRay;
     private Texture textJulio;
     private Texture textZuren;
+    private Texture textos;
+    private Texture fotoGrupal;
 
 
     //SpriteBatch
@@ -72,6 +74,10 @@ public class MenuCreditos extends Pantalla {
         ImageButton btnBack = new ImageButton(trdBtnBack);
         btnBack.setPosition(10,10);
         //Posición fotos
+        Image fotoEquipo = new Image(texturaFotoEquipo);
+        fotoEquipo.setPosition(ANCHO/2-fotoEquipo.getWidth()/2,ALTO/2-fotoEquipo.getHeight()/2);
+        Image imgTexto = new Image(textos);
+        imgTexto.setPosition(ANCHO/2-imgTexto.getWidth()/2,ALTO/2-imgTexto.getHeight()/2);
         /*Image fotoRay = new Image(textureRay);
         fotoRay.setPosition(btnBack.getX()+btnBack.getWidth()+1*(ANCHO-btnBack.getWidth())/2-(ANCHO-btnBack.getWidth())/4-fotoRay.getWidth()/2,ALTO/2-3*ALTO/8);
         Image fotoTommy = new Image(textureTommy);
@@ -83,10 +89,10 @@ public class MenuCreditos extends Pantalla {
         Image fotoCinth = new Image(textureCinth);
         //Primero de arriba
         fotoCinth.setPosition(1*ANCHO/3-ANCHO/6-fotoCinth.getWidth()/2,ALTO-3*ALTO/8);*/
-        Image fotoEquipo= new Image(texturaFotoEquipo);
-        fotoEquipo.setPosition(ANCHO/2-fotoEquipo.getWidth()/2,btnBack.getHeight()+10);
+        /*Image fotoEquipo= new Image(texturaFotoEquipo);
+        fotoEquipo.setPosition(ANCHO/2-fotoEquipo.getWidth()/2,btnBack.getHeight()+10);*/
         //Posición de los datos
-        Image textoRay = new Image (textRay);
+        /*Image textoRay = new Image (textRay);
         textoRay.setPosition(fotoEquipo.getX()-textoRay.getWidth()/2,fotoEquipo.getY()+fotoEquipo.getHeight()-textoRay.getHeight());
 
         Image textoTommy = new Image (textTommy);
@@ -99,25 +105,28 @@ public class MenuCreditos extends Pantalla {
         textoZuren.setPosition(fotoEquipo.getX()+3*fotoEquipo.getWidth()/5,textoRay.getY()-textoZuren.getHeight()+30);
 
         Image textoJulio = new Image (textJulio);
-        textoJulio.setPosition(fotoEquipo.getX()+fotoEquipo.getWidth()-textoJulio.getWidth()/2,fotoEquipo.getY()+fotoEquipo.getHeight()-textoJulio.getHeight());
+        textoJulio.setPosition(fotoEquipo.getX()+fotoEquipo.getWidth()-textoJulio.getWidth()/2,fotoEquipo.getY()+fotoEquipo.getHeight()-textoJulio.getHeight());*/
 
 
 
         //Dibujando los actores en pantalla
         escenaMenuCreditos.addActor(btnBack);
-        escenaMenuCreditos.addActor(fotoEquipo);
+        //escenaMenuCreditos.addActor(fotoEquipo);
         /*escenaMenuCreditos.addActor(fotoRay);
         escenaMenuCreditos.addActor(fotoJulio);
         escenaMenuCreditos.addActor(fotoTommy);
         escenaMenuCreditos.addActor(fotoZuren);
         escenaMenuCreditos.addActor(fotoCinth);*/
 
+        escenaMenuCreditos.addActor(imgTexto);
+        escenaMenuCreditos.addActor(fotoEquipo);
+
         //Dibujando datos en pantalla
-        escenaMenuCreditos.addActor(textoCinth);
+        /*escenaMenuCreditos.addActor(textoCinth);
         escenaMenuCreditos.addActor(textoTommy);
         escenaMenuCreditos.addActor(textoRay);
         escenaMenuCreditos.addActor(textoJulio);
-        escenaMenuCreditos.addActor(textoZuren);
+        escenaMenuCreditos.addActor(textoZuren);*/
 
 
         btnBack.addListener( new ClickListener(){
@@ -139,8 +148,10 @@ public class MenuCreditos extends Pantalla {
     private void cargarTexturas(){
         fondoCreditos= new Texture("Fondos/PausaFondo.jpg");
         texturabtnBack=new Texture("Botones/SeleccionNivelBtnBack.png");
+        textos = new Texture("Creditos/Textos.png");
+        texturaFotoEquipo = new Texture("Creditos/FotoEquipoT.png");
         //Añadiendo textura de fotografías
-        texturaFotoEquipo= new Texture("Creditos/FotoEquipo.jpg");
+        //texturaFotoEquipo= new Texture("Creditos/FotoEquipo.jpg");
         /*textureRay= new Texture("Creditos/FotoRay.jpg");
         textureTommy= new Texture("Creditos/FotoTommy.jpg");
         textureJulio =new Texture("Creditos/FotoJulio.jpg");

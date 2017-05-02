@@ -58,7 +58,7 @@ public abstract class Pantalla implements Screen {
         estadoAyuda.flush();
 
         //Sonido boton
-        sonidoBoton = Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/UI/Radar.mp3"));
+        sonidoBoton = Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/UI/Mouse_press and release.mp3"));
 
     }
 

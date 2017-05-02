@@ -65,7 +65,9 @@ public abstract class PantallaNivel extends Pantalla {
     private StretchViewport vistaHUD;
     private Music musicaFondo;
     public Sound sonidoGanaste;
+    public Sound recolectarMiniVi;
     public Sound sonidoPerdiste;
+    public Sound sonidoPoderCorrer;
     private ImageButton btnMusic;
     private ImageButton btnSound;
     private Texture texturaMiniVI;
@@ -106,6 +108,8 @@ public abstract class PantallaNivel extends Pantalla {
         //CARGANDO LOS SONIDOS
         sonidoGanaste= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/Win/collect_item_14.mp3"));
         sonidoPerdiste= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/Lose/Impacts and Hits - Sub Zero 02.mp3"));
+        recolectarMiniVi = Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/UI/Radar.mp3"));
+        sonidoPoderCorrer = Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/In Game/Wet power up swoosh.mp3"));
     }
 
 
@@ -200,9 +204,15 @@ public abstract class PantallaNivel extends Pantalla {
     protected void setManager(AssetManager ass){
         manager = ass;
     }
-    protected void buscarMiniVis(){
-        if(getRobot().recolectarItem(getMapa()).equals("miniVi"))
+    protected void recolectar(){
+        if(getRobot().recolectarItem(getMapa()).equals("miniVi")) {
             contadorMiniVis++;
+            if(estadoSonidoGeneral == EstadoSonido.ENCENDIDO)
+                recolectarMiniVi.play();
+        } else if(getRobot().recolectarItem(getMapa()).equals("correr")){
+            if(estadoSonidoGeneral == EstadoSonido.ENCENDIDO)
+                sonidoPoderCorrer.play();
+        }
     }
     protected int getCountMovCam(){
         return countMovCam;
@@ -260,7 +270,7 @@ public abstract class PantallaNivel extends Pantalla {
                 if (capaArq.getCell(col, fila) != null) {
                     //Gdx.app.log("Y ademas","Dije que no era null");
                     Object body = capaArq.getCell(col, fila).getTile().getProperties().get("body");
-                    if (body != null && (body.equals("piso") || body.equals("techo"))) {
+                    if (body != null && (body.equals("piso") || body.equals("techo") || body.equals("puerta"))) {
                         //Gdx.app.log("Leer mapa: ","Detecto piso en " + fila + ", " + col);
                         if (flagPrimero) {
                             count = 0;
@@ -383,6 +393,10 @@ public abstract class PantallaNivel extends Pantalla {
         count = 0;
 
 
+
+
+
+
     }
 
     protected void crearRobot(int x, int y) {
@@ -394,7 +408,7 @@ public abstract class PantallaNivel extends Pantalla {
     }
 
     protected void crearMundo() {
-        world = new World(new Vector2(0f,-5f), true);
+        world = new World(new Vector2(0f,-8f), true);
     }
 
     protected void crearHUD() {
@@ -501,7 +515,7 @@ public abstract class PantallaNivel extends Pantalla {
     private void dibujarBtnIzq(Texture texturaBtnIzquierda, Stage escenaHUD) {
         TextureRegionDrawable trdBtnMovIzquierda = new TextureRegionDrawable(new TextureRegion(texturaBtnIzquierda));
         ImageButton btnMovIzq = new ImageButton(trdBtnMovIzquierda);
-        btnMovIzq.setPosition(ANCHO/8,50);
+        btnMovIzq.setPosition(ANCHO/9-10,50);
         escenaHUD.addActor(btnMovIzq);
         btnMovIzq.addListener(new InputListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){

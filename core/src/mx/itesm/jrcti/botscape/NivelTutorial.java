@@ -173,7 +173,7 @@ public class NivelTutorial extends PantallaNivel {
             /*iman.dibujar(getBatch());*/
             //iman.mover(600, 600, 600, 600);
 
-            buscarMiniVis();
+            recolectar();
             if(!palancaActivada) {
                 if(moverPalanca(getMapa())){
                     palancaActivada=true;

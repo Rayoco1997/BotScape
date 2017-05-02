@@ -118,7 +118,7 @@ public class Nivel2 extends PantallaNivel {
         banda1 = new Banda(texturaBanda, 7*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
         banda2 = new Banda(texturaBanda, 20*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
         banda3 = new Banda(texturaBanda, 32*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
-        iman = new Iman(texturaIman,3f,3f, 52*PantallaNivel.getTtoP(),42*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
+        iman = new Iman(texturaIman,3f,3f, 51*PantallaNivel.getTtoP(),42*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
         //iman = new Iman(texturaIman,2.5f,2.5f, 10*PantallaNivel.getTtoP(),10*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
 
         //Debugger
@@ -167,7 +167,7 @@ public class Nivel2 extends PantallaNivel {
             //Dibujando plataforma
             if(flagPlat) {
                 platf1.dibujar(getBatch());
-                platf1.mover(1536, 1536, 180, 870);
+                platf1.mover(1536, 1536, 150, 870);
             }
             platf2.dibujar(getBatch());
             platf2.mover(2560,3280,740,740);
@@ -180,7 +180,7 @@ public class Nivel2 extends PantallaNivel {
 
             iman.dibujar(getBatch());
             if(flagIman)
-                iman.mover(52*PantallaNivel.getTtoP(),52*PantallaNivel.getTtoP(),21*PantallaNivel.getTtoP(),43*PantallaNivel.getTtoP());
+                iman.mover(51*PantallaNivel.getTtoP(),52*PantallaNivel.getTtoP(),21*PantallaNivel.getTtoP(),43*PantallaNivel.getTtoP());
 
             enemigo1.dibujar(getBatch(),delta);
             enemigo1.mover(64,1024);
@@ -192,7 +192,7 @@ public class Nivel2 extends PantallaNivel {
             elevarRobotConIman(iman);
 
 
-            buscarMiniVis();
+            recolectar();
             moverPalanca(getMapa());
             //para mostrar el puntaje de mini vis
             getTexto().mostrarMensaje(getBatch(), Integer.toString(getContadorMiniVis()), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);
