@@ -17,8 +17,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 public class Nivel2 extends PantallaNivel {
 
     //Debuggers, handle with care
-    Box2DDebugRenderer debugRenderer;
-    Matrix4 debugMatrix;
+    /*Box2DDebugRenderer debugRenderer;
+    Matrix4 debugMatrix;*/
 
     private static final int ANCHO_MAPA=3840;
     private static final int ALTO_MAPA=2944;
@@ -120,7 +120,7 @@ public class Nivel2 extends PantallaNivel {
         //iman = new Iman(texturaIman,2.5f,2.5f, 10*PantallaNivel.getTtoP(),10*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
 
         //Debugger
-        debugRenderer = new Box2DDebugRenderer();
+        //debugRenderer = new Box2DDebugRenderer();
         Gdx.input.setCatchBackKey(true);
     }
 
@@ -154,12 +154,12 @@ public class Nivel2 extends PantallaNivel {
             getMapRenderer().setView(camara);
             getMapRenderer().render();
 
-            debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
+            /*debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
             debugRenderer.render(getWorld(),debugMatrix);
 
             //Debugging
             debugMatrix = getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),
-                    PantallaNivel.getPtM(), 0);
+                    PantallaNivel.getPtM(), 0);*/
 
             getBatch().begin();
             //Dibujando plataforma

@@ -27,8 +27,8 @@ import java.util.ArrayList;
 public class NivelTutorial extends PantallaNivel {
 
     //Debuggers, handle with care
-    Box2DDebugRenderer debugRenderer;
-    Matrix4 debugMatrix;
+    /*Box2DDebugRenderer debugRenderer;
+    Matrix4 debugMatrix;*/
 
 
     private static final int ANCHO_MAPA=3840;
@@ -38,10 +38,10 @@ public class NivelTutorial extends PantallaNivel {
     //Texturas
     Sprite texturaFondo;
 
-    private Texture texturaPlataforma;
+    private Texture texturaIman;
     private Texture texturaFondoTutorial;
     private Texture LUGWalk_Cycle;
-    private Plataforma plat1;
+    private Iman iman;
 
 
 
@@ -66,6 +66,7 @@ public class NivelTutorial extends PantallaNivel {
         super(j, estadoMusicaGeneral,"Mapas/Map_TutorialV2.tmx", "Sonidos/BringTheFoxhoundToMe.mp3",estadoSonidoGeneral);
         this.juego=j;
         setManager(j.getAssetManager());
+        setContadorMiniVis(0);
     }
 
     @Override
@@ -108,10 +109,10 @@ public class NivelTutorial extends PantallaNivel {
         createCollisionListener();
 
         //Debugger
-        debugRenderer = new Box2DDebugRenderer();
+        //debugRenderer = new Box2DDebugRenderer();
 
-        plat1 = new Plataforma(texturaPlataforma, 3, 3, 200, 120,
-                Plataforma.EstadoMovimiento.MOV_DERECHA, getWorld());
+        /*iman = new Iman(texturaIman, 3, 3, 300, 200,
+                Plataforma.EstadoMovimiento.MOV_DERECHA, getWorld());*/
 
         Gdx.input.setCatchBackKey(true);
     }
@@ -126,14 +127,15 @@ public class NivelTutorial extends PantallaNivel {
 
     @Override
     public void cargarTexturasExtras(){
-        texturaPlataforma = getManager().get("NivelPlataforma.png");
+        texturaIman = getManager().get("NivelIman.png");
         texturaFondoTutorial = getManager().get("Fondos/NivelTutorialFondo.jpg");
         LUGWalk_Cycle = getManager().get("Personaje/LUG7 Walk_Cycle.png");
     }
 
     @Override
     public void render(float delta) {
-        Gdx.app.log("Habilidad Actual",""+this.getRobot().getHabilidad());
+        long inicio = System.nanoTime();
+        long fin;
         borrarPantalla();
         actualizarCamara(ANCHO_MAPA, 0);
         getEstadoJuego();
@@ -142,6 +144,7 @@ public class NivelTutorial extends PantallaNivel {
         if (getEstadoJuego() == EstadoJuego.PAUSADO) {
             getEscenaPausa().draw();
         } else if (getEstadoJuego()== EstadoJuego.JUGANDO){
+
 
             getRobot().actualizar(getMapa());
             getBatch().begin();
@@ -153,20 +156,20 @@ public class NivelTutorial extends PantallaNivel {
             getMapRenderer().render();
 
 
-            debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
-            debugRenderer.render(getWorld(),debugMatrix);
+            /*debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
+            debugRenderer.render(getWorld(),debugMatrix);*/
 
 
             //Debugging
-            debugMatrix = getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),
-                    PantallaNivel.getPtM(), 0);
+            /*debugMatrix = getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),
+                    PantallaNivel.getPtM(), 0);*/
 
             //algo
             getBatch().begin();
-            enemigo.dibujar(getBatch());
+            enemigo.dibujar(getBatch(),delta);
             enemigo.mover(1600,2300);
-            plat1.dibujar(getBatch());
-            plat1.mover(100, 900, 100, 600);
+            /*iman.dibujar(getBatch());*/
+            //iman.mover(600, 600, 600, 600);
 
             buscarMiniVis();
             if(!palancaActivada) {
@@ -185,9 +188,7 @@ public class NivelTutorial extends PantallaNivel {
             getBatch().setProjectionMatrix(getCamaraHUD().combined);
             getEscenaHUD().draw();
             //Gdx.app.log("MI estado es:", ""+getEstadoJuego().toString());
-
         }
-
         if ((getRobot().sprite.getX()+getRobot().sprite.getWidth()/2)>ANCHO_MAPA){
             setEstadoJuego(EstadoJuego.GANADO);
             if(getEscenaGanaste()==null){
@@ -212,6 +213,8 @@ public class NivelTutorial extends PantallaNivel {
             getEscenaPerdiste().draw();
         }
 
+
+
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             //estado = estado == EstadoJuego.JUGANDO ? EstadoJuego.PAUSADO: EstadoJuego.JUGANDO;
             if(getEstadoJuego()== EstadoJuego.JUGANDO){
@@ -233,35 +236,32 @@ public class NivelTutorial extends PantallaNivel {
 
         }
 
-
+        fin = System.nanoTime();
+        //Gdx.app.log("render","Tiempo: " + (fin-inicio)/100);
 
     }
 
     @Override
     public boolean moverPalanca(TiledMap mapa) {
-        long inicio=System.nanoTime();
+
         TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
-        int x=(int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));
+        int x;
         int y = (int)(getRobot().sprite.getY()/64);
         TiledMapTileLayer.Cell celda;
         int cantPuntos=5;
         for(int i=0; i<cantPuntos; i++){
-            //x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));
+            x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));
             x= x-i*(int)getRobot().sprite.getWidth()/((cantPuntos-1)*64);
             celda = capa.getCell(x,y);
-            //Optimización detectada por Cinthya
-            //Usar lazy evaluation y reduce el tiempo de ciclo a la mitad
-            if (celda!=null && celda.getTile().getProperties().get("tipo").equals("palanca")) {
+            if (celda!=null) {
                 Object tipo = celda.getTile().getProperties().get("tipo");
-                //if ("palanca".equals(tipo) ) {
+                if ("palanca".equals(tipo) ) {
                     capa.setCell(x,y,celda.setFlipHorizontally(true));
                     mapa.getLayers().get(1).setVisible(!mapa.getLayers().get(1).isVisible());
                     return true;
-                //}
+                }
             }
         }
-        long fin=System.nanoTime();
-        //Gdx.app.log("Sin usar lazy evaluation","Tiempo: "+(fin-inicio)/1000);
         return false;
     }
 
