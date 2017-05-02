@@ -97,8 +97,8 @@ public class Nivel2 extends PantallaNivel {
                 getWorld(), BodyDef.BodyType.KinematicBody,fix);
         enemigo2 = new Enemigo(LUGWalk_Cycle,3f,1408,1536,Enemigo.EstadoMovimiento.MOV_DERECHA,
                 getWorld(), BodyDef.BodyType.KinematicBody,fix);
-        boss = new Geniallo(texturaBoss, 3f, 320, 400,
-                getWorld(), BodyDef.BodyType.KinematicBody,fix);
+        //boss = new Geniallo(texturaBoss, 3f, 320, 400,
+          //      getWorld(), BodyDef.BodyType.KinematicBody,fix);
     }
 
     private void crearObjetos() {
