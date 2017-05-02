@@ -115,7 +115,7 @@ public class MenuPrincipal extends Pantalla {
         //BOTON DE AYUDA
         TextureRegionDrawable trdBtnAyuda= new TextureRegionDrawable(new TextureRegion(texturaAyuda));
         ImageButton btnAyuda= new ImageButton(trdBtnAyuda);
-        btnAyuda.setPosition(0,ALTO-btnAyuda.getHeight());
+        btnAyuda.setPosition(btnConfig.getX()+btnAyuda.getWidth()+10,btnConfig.getY());
 
         escenaMenu.addActor(btnJugar);
         escenaMenu.addActor(btnCreditos);

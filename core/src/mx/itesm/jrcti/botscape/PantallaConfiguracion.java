@@ -33,6 +33,9 @@ public class PantallaConfiguracion extends Pantalla {
     private Texture texturaButtonRegresar;
     private Texture texturaButtonSonidoOff;
     private Texture texturaButtonSonidoOn;
+    private Texture texturaButtonReset;
+    private Texture texturaButtonNo;
+    private Texture texturaButtonYes;
 
     private EscenaConfirmacion escenaConfirmacion;
 
@@ -105,8 +108,8 @@ public class PantallaConfiguracion extends Pantalla {
         //ImageButton buttonSonido= new ImageButton(trdButtonSonido);
 
         //BOTON DE RESETEAR JUEGO
-
-        buttonReset= new ImageButton(trdButtonMusicaOff);
+        TextureRegionDrawable trdButtonReset= new TextureRegionDrawable(new TextureRegion(texturaButtonReset));
+        buttonReset= new ImageButton(trdButtonReset);
         buttonReset.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y){
                 Gdx.app.log("Aviso", "POS ME RESETEOL");
@@ -228,6 +231,9 @@ public class PantallaConfiguracion extends Pantalla {
         texturaButtonSonidoOn= new Texture("Botones/ConfiguracionBtnSoundOn.png");
         //texturaButtonSonido= new Texture("Botones/PausaButtonReanudar.png");
         texturaTextConfig= new Texture("Textos/OptionsText.png");
+        texturaButtonReset= new Texture(Gdx.files.internal("Botones/ConfiguracionBtnReset.png"));
+        texturaButtonYes= new Texture(Gdx.files.internal("Botones/ConfiguracionBtnYes.png"));
+        texturaButtonNo= new Texture(Gdx.files.internal("Botones/ConfiguracionBtnNo.png"));
     }
 
     @Override
@@ -267,8 +273,8 @@ public class PantallaConfiguracion extends Pantalla {
             this.addActor(imgRectangulo);
 
             //BOTON DE SI
-            Texture texturaBtnSi= new Texture(Gdx.files.internal("Botones/PausaBtnMusicOnMini.png"));
-            TextureRegionDrawable trdBtnSi= new TextureRegionDrawable(new TextureRegion(texturaBtnSi));
+            //Texture texturaBtnSi= new Texture(Gdx.files.internal("Botones/PausaBtnMusicOnMini.png"));
+            TextureRegionDrawable trdBtnSi= new TextureRegionDrawable(new TextureRegion(texturaButtonYes));
             ImageButton btnSi = new ImageButton(trdBtnSi);
             btnSi.setPosition(ANCHO/2-btnSi.getWidth(),ALTO/2-btnSi.getHeight()*2);
             btnSi.addListener(new ClickListener(){
@@ -291,8 +297,8 @@ public class PantallaConfiguracion extends Pantalla {
             this.addActor(btnSi);
 
             //BOTON DE NO
-            Texture textureBtnNo= new Texture(Gdx.files.internal("Botones/PausaBtnMusicOffMini.png"));
-            TextureRegionDrawable trdBtnNo= new TextureRegionDrawable(new TextureRegion(textureBtnNo));
+            //Texture textureBtnNo= new Texture(Gdx.files.internal("Botones/PausaBtnMusicOffMini.png"));
+            TextureRegionDrawable trdBtnNo= new TextureRegionDrawable(new TextureRegion(texturaButtonNo));
             ImageButton btnNo= new ImageButton(trdBtnNo);
             btnNo.setPosition(ANCHO/2+10,ALTO/2-btnNo.getHeight()*2);
             btnNo.addListener(new ClickListener(){
