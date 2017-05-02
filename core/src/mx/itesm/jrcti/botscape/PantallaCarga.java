@@ -147,6 +147,7 @@ public class PantallaCarga extends Pantalla{
     }
 
     private void cargarRecursosNivel2(){
+        manager.load("NivelBoss.png",Texture.class);
         manager.load("NivelIman.png",Texture.class);
         manager.load("NivelBandas.png", Texture.class);
         manager.load("Fondos/Fondo2.jpg",Texture.class);

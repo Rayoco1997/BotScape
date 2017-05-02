@@ -32,6 +32,7 @@ public class Nivel2 extends PantallaNivel {
     private Texture LUGWalk_Cycle;
     private Texture texturaIman;
     private Texture texturaBanda;
+    private Texture texturaBoss;
 
     //Objetos
     private Plataforma platf1;
@@ -47,6 +48,7 @@ public class Nivel2 extends PantallaNivel {
     private FixtureDef fix;
     private Enemigo enemigo1;
     private Enemigo enemigo2;
+    private Geniallo boss;
 
     private boolean flagPlat;
     private boolean flagIman;
@@ -65,6 +67,7 @@ public class Nivel2 extends PantallaNivel {
         LUGWalk_Cycle = getManager().get("Personaje/LUG7 Walk_Cycle.png");
         texturaIman = getManager().get("NivelIman.png");
         texturaBanda = getManager().get("NivelBandas.png");
+        texturaBoss = getManager().get("NivelBoss.png");
     }
 
     @Override
@@ -89,10 +92,12 @@ public class Nivel2 extends PantallaNivel {
 
     private void crearEnemigos() {
         fix = new FixtureDef();
-        fix.density=.1f;
+        fix.density = .1f;
         enemigo1 = new Enemigo(LUGWalk_Cycle,3f,64,832,Enemigo.EstadoMovimiento.MOV_DERECHA,
                 getWorld(), BodyDef.BodyType.KinematicBody,fix);
         enemigo2 = new Enemigo(LUGWalk_Cycle,3f,1408,1536,Enemigo.EstadoMovimiento.MOV_DERECHA,
+                getWorld(), BodyDef.BodyType.KinematicBody,fix);
+        boss = new Geniallo(texturaBoss, 3f, 320, 400,
                 getWorld(), BodyDef.BodyType.KinematicBody,fix);
     }
 
@@ -112,6 +117,7 @@ public class Nivel2 extends PantallaNivel {
         banda2 = new Banda(texturaBanda, 20*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
         banda3 = new Banda(texturaBanda, 32*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
         iman = new Iman(texturaIman,2.5f,2.5f, 52*PantallaNivel.getTtoP(),42*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
+        //iman = new Iman(texturaIman,2.5f,2.5f, 10*PantallaNivel.getTtoP(),10*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
 
         //Debugger
         debugRenderer = new Box2DDebugRenderer();
@@ -124,6 +130,7 @@ public class Nivel2 extends PantallaNivel {
         //Gdx.app.log("Cámara:   x "+camara.position.x,"  y "+camara.position.y);
         if(getRobot().getBody().getTransform().getPosition().y< 0.0f) {
             //Gdx.app.log("Cambio de posición"," a su posición inicial");
+            getEscenaHUD().getActors().get(getEscenaHUD().getActors().size - 1).remove();
             getRobot().morir();
             getRobot().reposicionar(xInicialRobot, yInicialRobot);
         }
@@ -177,6 +184,7 @@ public class Nivel2 extends PantallaNivel {
             enemigo1.mover(64,640);
             enemigo2.dibujar(getBatch(),delta);
             enemigo2.mover(1408,1984);
+            //boss.dibujar(getBatch());
 
             moverRobotConBanda(banda1);
             elevarRobotConIman(iman);
