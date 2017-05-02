@@ -123,16 +123,17 @@ public class PantallaConfiguracion extends Pantalla {
 
             }
         });
-        buttonReset.setPosition(ANCHO/2,0);
+
 
         //UBICANDO TODOS LOS BOTONES
         buttonRegresar.setPosition(10,10);
         imgTextConfig.setPosition(ANCHO/2- imgTextConfig.getWidth()/2,4*ALTO/5-imgTextConfig.getHeight()/2);
         btnMusicaX= ANCHO/2- buttonMusica.getWidth()/2;
-        btnMusicaY= ALTO/2-buttonMusica.getHeight()/2;
+        btnMusicaY= 3*ALTO/5;//ALTO/2-buttonMusica.getHeight()/2;
         buttonMusica.setPosition(btnMusicaX,btnMusicaY);
 
         buttonSonido.setPosition(buttonMusica.getX(),buttonMusica.getY()-2*buttonSonido.getHeight());
+        buttonReset.setPosition(btnMusicaX,buttonSonido.getY()-2*buttonReset.getHeight());
         //buttonSonido.setPosition(ANCHO/2- buttonSonido.getWidth()/2,2*ALTO/5-buttonSonido.getHeight()/2);
 
         //AGREGANDO A LA ESCENA

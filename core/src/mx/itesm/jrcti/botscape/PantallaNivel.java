@@ -679,6 +679,18 @@ public abstract class PantallaNivel extends Pantalla {
         }
     }
 
+    //PARA CALCULAR EL PUNTAJE DE LOS MINIVIS
+    public int CalcularPuntajeMiniVis(int puntaje, int total){
+        float porcentaje=puntaje*100/total;
+        if(porcentaje<90 && porcentaje>10){
+            return 2;
+        }else if (porcentaje<10){
+            return 1;
+        }else{
+            return 3;
+        }
+    }
+
     private void ActualizarEstadoNiveles(PantallaNivel nivel, int puntaje){
         String nivelEnJuego;
         Preferences estadoNiveles = Gdx.app.getPreferences("estadoNiveles");
@@ -694,11 +706,14 @@ public abstract class PantallaNivel extends Pantalla {
                 estadoNiveles.flush();
                 //Gdx.app.log("EL ESTADO DOS ESTABA EN BLOQUEADO", "AHORA LO DESBLOQUEO Y EL ESTADO ES: " + estadoNiveles.getInteger("estado2"));
             }
-        }else{
+        }else if(nivel instanceof Nivel2){
             nivelEnJuego= "estado2";
             if(estadoNiveles.getInteger("estado3")==4){
                 estadoNiveles.putInteger("estado3",0);
             }
+        }else{
+            nivelEnJuego= "estado3";
+
         }
 
         //CHECAR SI EL PUNTAJE QUE ME DIERON ES MAYOR A LO QUE YA HAY
@@ -884,8 +899,10 @@ public abstract class PantallaNivel extends Pantalla {
 
             if(nivel instanceof NivelTutorial){
                 nivelActual= Pantallas.NIVEL;
-            }else {
+            }else if(nivel instanceof Nivel2) {
                 nivelActual=Pantallas.NIVEL2;
+            }else{
+                nivelActual= Pantallas.NIVEL3;
             }
 
             //SELECCION DE NIVEL
@@ -983,9 +1000,11 @@ public abstract class PantallaNivel extends Pantalla {
             if(nivel instanceof NivelTutorial){
                 nivelActual= Pantallas.NIVEL;
                 nivelSiguiente=Pantallas.NIVEL2;
-            }else{
+            }else if(nivel instanceof Nivel2){
                 nivelActual=Pantallas.NIVEL2;
-                nivelSiguiente= nivelActual;
+                nivelSiguiente= Pantallas.NIVEL3;
+            }else{
+                nivelActual= Pantallas.NIVEL3;
             }
 
             // REINTENTAR
@@ -1011,28 +1030,32 @@ public abstract class PantallaNivel extends Pantalla {
                     juego.setScreen(new PantallaCarga(juego, nivelActual, musicaFondo, EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
                 }
             });
-            this.addActor(btnReintentar);
+
 
             //BOTON SIGUIENTE NIVEL
-
-            Texture texturaBtnNextLevel = manager.get("Botones/PantallaNextLevel.png");
-            TextureRegionDrawable trdNextLevel = new TextureRegionDrawable(new TextureRegion(texturaBtnNextLevel));
-            ImageButton btnNextLevel = new ImageButton(trdNextLevel);
-            btnNextLevel.setPosition(3*ANCHO / 4 , ALTO/2-btnNextLevel.getHeight());
-            btnNextLevel.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    //Gdx.app.log("clicked", "CLICK SELECCION NIVEL PERDISTE");
-                    // Regresa a la seleccion de nivel
-                    musicaFondo.stop();
-                    manager.unload(nombreMapa);
-                    if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
-                        sonidoBoton.play(volumenSonido);
+            if(!(nivel instanceof Nivel3)) {
+                Texture texturaBtnNextLevel = manager.get("Botones/PantallaNextLevel.png");
+                TextureRegionDrawable trdNextLevel = new TextureRegionDrawable(new TextureRegion(texturaBtnNextLevel));
+                ImageButton btnNextLevel = new ImageButton(trdNextLevel);
+                btnNextLevel.setPosition(3 * ANCHO / 4, ALTO / 2 - btnNextLevel.getHeight());
+                btnNextLevel.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        //Gdx.app.log("clicked", "CLICK SELECCION NIVEL PERDISTE");
+                        // Regresa a la seleccion de nivel
+                        musicaFondo.stop();
+                        manager.unload(nombreMapa);
+                        if (estadoSonidoGeneral == EstadoSonido.ENCENDIDO) {
+                            sonidoBoton.play(volumenSonido);
+                        }
+                        juego.setScreen(new PantallaCarga(juego, nivelSiguiente, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral, estadoSonidoGeneral));
                     }
-                    juego.setScreen(new PantallaCarga(juego, nivelSiguiente, musicaFondo, EstadoMusica.DENIDO, estadoMusicaGeneral,estadoSonidoGeneral));
-                }
-            });
-            this.addActor(btnNextLevel);
+                });
+                this.addActor(btnNextLevel);
+            }else{
+                btnReintentar.setPosition(btnReintentar.getX()+btnReintentar.getMinWidth(),btnReintentar.getY());
+            }
+            this.addActor(btnReintentar);
 
             //SELECCION DE NIVEL
             Texture texturaBtnSelecNivel = manager.get("Botones/PausaButtonSeleccionarNivel.png");
@@ -1077,7 +1100,7 @@ public abstract class PantallaNivel extends Pantalla {
 
             //DIBUJANDO LAS ESTRELLAS
             Texture texturaEstrella= manager.get("PantallaEstrella.png");
-            DibujaEstrellas(texturaEstrella,3);
+            DibujaEstrellas(texturaEstrella,puntaje);
 
 
             //TEXTO DE QUE GANO

@@ -25,6 +25,8 @@ public class Nivel2 extends PantallaNivel {
     private int xInicialRobot = 100;
     private int yInicialRobot = 300;
 
+    private int TOTAL_MINIVIS= 4;
+
     //Texturas
     Sprite texturaFondo;
     private Texture texturaPlataforma;
@@ -55,7 +57,7 @@ public class Nivel2 extends PantallaNivel {
     private boolean flagPuerta;
 
     public Nivel2(Juego j, EstadoMusica estadoMusicaGeneral,EstadoSonido estadoSonidoGeneral) {
-        super(j, estadoMusicaGeneral, "Mapas/Nivel2.tmx", "Sonidos/BringTheFoxhoundToMe.mp3",estadoSonidoGeneral);
+        super(j, estadoMusicaGeneral, "Mapas/Nivel2.tmx", "Sonidos/Challenging walls.mp3",estadoSonidoGeneral);
         this.juego=j;
         setManager(j.getAssetManager());
     }
@@ -206,7 +208,7 @@ public class Nivel2 extends PantallaNivel {
         if ((getRobot().sprite.getX()+getRobot().sprite.getWidth()/2)>ANCHO_MAPA){
             setEstadoJuego(EstadoJuego.GANADO);
             if(getEscenaGanaste()==null){
-                setEscenaGanaste(new EscenaGanaste(getVistaHUD(), getBatch(),this,2));
+                setEscenaGanaste(new EscenaGanaste(getVistaHUD(), getBatch(),this,super.CalcularPuntajeMiniVis(getContadorMiniVis(),TOTAL_MINIVIS)));
             }
             Gdx.input.setInputProcessor(getEscenaGanaste());
         }

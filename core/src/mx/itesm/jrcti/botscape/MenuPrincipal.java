@@ -105,12 +105,12 @@ public class MenuPrincipal extends Pantalla {
 
         TextureRegionDrawable trdBtnCreditos = new TextureRegionDrawable(new TextureRegion(texturaBtnCreditos));
         ImageButton btnCreditos =new ImageButton(trdBtnCreditos);
-        btnCreditos.setPosition(btnJugar.getX(), 15*ALTO/24-btnJugar.getHeight()*2);
+        btnCreditos.setPosition(btnJugar.getX(), 15*ALTO/24-btnJugar.getHeight()*1.8f);
 
         //boton de configuracion
         TextureRegionDrawable trdBtnConfig = new TextureRegionDrawable(new TextureRegion(texturaConfiguracion));
         ImageButton btnConfig = new ImageButton(trdBtnConfig);
-        btnConfig.setPosition(ANCHO-btnConfig.getWidth()-10,10);
+        btnConfig.setPosition(5*ANCHO/8 + btnJugar.getWidth()/8,10);
 
         //BOTON DE AYUDA
         TextureRegionDrawable trdBtnAyuda= new TextureRegionDrawable(new TextureRegion(texturaAyuda));
@@ -186,7 +186,7 @@ public class MenuPrincipal extends Pantalla {
         texturaTitulo = manager.get("Textos/PrincipalTitle.png");
         texturaConfiguracion= manager.get("Botones/OptionsButtonMenuPrin.png");
         //CAMBIAR ESTA TEXTURA
-        texturaAyuda= new Texture(Gdx.files.internal("Botones/PausaBtnMusicOnMini.png"));
+        texturaAyuda= new Texture(Gdx.files.internal("Botones/Ayuda.png"));
     }
 
     @Override

@@ -35,6 +35,8 @@ public class NivelTutorial extends PantallaNivel {
     private int xInicialRobot = 100;
     private int yInicialRobot = 300;
 
+    private int TOTAL_MINIVIS= 3;
+
     //Texturas
     Sprite texturaFondo;
 
@@ -192,7 +194,7 @@ public class NivelTutorial extends PantallaNivel {
         if ((getRobot().sprite.getX()+getRobot().sprite.getWidth()/2)>ANCHO_MAPA){
             setEstadoJuego(EstadoJuego.GANADO);
             if(getEscenaGanaste()==null){
-                setEscenaGanaste(new EscenaGanaste(getVistaHUD(), getBatch(),this,3));
+                setEscenaGanaste(new EscenaGanaste(getVistaHUD(), getBatch(),this,super.CalcularPuntajeMiniVis(getContadorMiniVis(),TOTAL_MINIVIS)));
             }
             Gdx.input.setInputProcessor(getEscenaGanaste());
         }

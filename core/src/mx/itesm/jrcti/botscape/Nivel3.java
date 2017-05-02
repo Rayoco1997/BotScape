@@ -26,6 +26,8 @@ public class Nivel3 extends PantallaNivel {
     private int xInicialRobot=100;
     private int yInicialRobot=300;
 
+    private int TOTAL_MINIVIS= 9;
+
     //Texturas
     Sprite texturaFondo;
     private Texture texturaFondoTutorial;
@@ -44,7 +46,7 @@ public class Nivel3 extends PantallaNivel {
     private Enemigo enemigo2;
 
     public Nivel3(Juego j, EstadoMusica estadoMusicaGeneral,EstadoSonido estadoSonidoGeneral) {
-        super(j, estadoMusicaGeneral, "Mapas/Nivel3.tmx", "Sonidos/BringTheFoxhoundToMe.mp3",estadoSonidoGeneral);
+        super(j, estadoMusicaGeneral, "Mapas/Nivel3.tmx", "Sonidos/BelowThePath(FinalBoss).mp3",estadoSonidoGeneral);
         this.juego=j;
         setManager(j.getAssetManager());
     }
@@ -211,7 +213,7 @@ public class Nivel3 extends PantallaNivel {
         if ((getRobot().sprite.getX()+getRobot().sprite.getWidth()/2)>ANCHO_MAPA){
             setEstadoJuego(EstadoJuego.GANADO);
             if(getEscenaGanaste()==null){
-                setEscenaGanaste(new EscenaGanaste(getVistaHUD(), getBatch(),this,2));
+                setEscenaGanaste(new EscenaGanaste(getVistaHUD(), getBatch(),this,super.CalcularPuntajeMiniVis(getContadorMiniVis(),TOTAL_MINIVIS)));
             }
             Gdx.input.setInputProcessor(getEscenaGanaste());
         }
