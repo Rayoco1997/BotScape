@@ -1,6 +1,7 @@
 package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,6 +26,7 @@ public class MenuPrincipal extends Pantalla {
     private Texture texturaBtnJugar;
     private Texture texturaTitulo;
     private Texture texturaConfiguracion;
+    private Texture texturaAyuda;
 
     //Dibujar
     private SpriteBatch batch;
@@ -41,6 +43,10 @@ public class MenuPrincipal extends Pantalla {
     private Music musica;
     //MANAGER
     private AssetManager manager;
+
+    private EscenaAyuda escenaAyuda;
+
+    Preferences estadoAyuda = Gdx.app.getPreferences("estadoAyuda");
 
 
     public MenuPrincipal (Juego juego, Music musicaFondo, EstadoMusica estadoMusicaGeneral, EstadoSonido estadoSonidoGeneral){
@@ -69,6 +75,7 @@ public class MenuPrincipal extends Pantalla {
     @Override
     public void show() {
         cargarTexturas();
+        estadoAyuda.putInteger("ayuda",0);
         crearObjetos();
         if(estadoMusicaGeneral!= EstadoMusica.APAGADO) {
             musica.play();
@@ -105,9 +112,15 @@ public class MenuPrincipal extends Pantalla {
         ImageButton btnConfig = new ImageButton(trdBtnConfig);
         btnConfig.setPosition(ANCHO-btnConfig.getWidth()-10,10);
 
+        //BOTON DE AYUDA
+        TextureRegionDrawable trdBtnAyuda= new TextureRegionDrawable(new TextureRegion(texturaAyuda));
+        ImageButton btnAyuda= new ImageButton(trdBtnAyuda);
+        btnAyuda.setPosition(0,ALTO-btnAyuda.getHeight());
+
         escenaMenu.addActor(btnJugar);
         escenaMenu.addActor(btnCreditos);
         escenaMenu.addActor(btnConfig);
+        escenaMenu.addActor(btnAyuda);
 
         btnJugar.addListener(new ClickListener(){
             @Override
@@ -147,6 +160,20 @@ public class MenuPrincipal extends Pantalla {
                 juego.setScreen(new PantallaConfiguracion(juego,musica,estadoMusicaGeneral,estadoSonidoGeneral));
             }
         });
+        btnAyuda.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("clicked","Me hicieron click CREDITOS");
+                //musica.pause();
+                if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                    sonidoBoton.play(volumenSonido);
+                }
+
+                estadoAyuda.putInteger("ayuda",1);
+                estadoAyuda.flush();
+
+            }
+        });
 
         Gdx.input.setInputProcessor(escenaMenu);
         Gdx.input.setCatchBackKey(false);
@@ -158,12 +185,24 @@ public class MenuPrincipal extends Pantalla {
         texturaBtnCreditos = manager.get("Botones/PrincipalBtnCredits.png");
         texturaTitulo = manager.get("Textos/PrincipalTitle.png");
         texturaConfiguracion= manager.get("Botones/OptionsButtonMenuPrin.png");
+        //CAMBIAR ESTA TEXTURA
+        texturaAyuda= new Texture(Gdx.files.internal("Botones/PausaBtnMusicOnMini.png"));
     }
 
     @Override
     public void render(float delta) {
         borrarPantalla();
-        escenaMenu.draw();
+        //Gdx.app.log("ESTADO DE LA AYUDA", "" + estadoAyuda.getInteger("ayuda",0));
+        if(estadoAyuda.getInteger("ayuda",0)==0) {
+            escenaMenu.draw();
+        }else{
+            if(escenaAyuda==null){
+                escenaAyuda= new EscenaAyuda(vista,batch,musica,estadoMusicaGeneral,estadoSonidoGeneral,this);
+
+            }
+            Gdx.input.setInputProcessor(escenaAyuda);
+            escenaAyuda.draw();
+        }
     }
 
     @Override
