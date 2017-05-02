@@ -40,6 +40,7 @@ public class Nivel2 extends PantallaNivel {
 
     private Banda banda1;
     private Banda banda2;
+    private Banda banda3;
 
     private Iman iman;
 
@@ -101,14 +102,15 @@ public class Nivel2 extends PantallaNivel {
         texturaFondo.setPosition(0,0);
         createCollisionListener();
 
-        platf1 = new Plataforma(texturaPlataforma, 3, 3, 1536, 192,
+        platf1 = new Plataforma(texturaPlataforma, 3, 3, 1536, 800,
                 Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
         platf2 = new Plataforma(texturaPlataforma, 2.7f, 2.7f, 2560, 740,
                 Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
         platf3 = new Plataforma(texturaPlataforma, 2.9f, 2.9f, 192, 1472,
                 Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
-        banda1 = new Banda(texturaBanda, 22*PantallaNivel.getTtoP(),33*PantallaNivel.getTtoP()+32,fix,getWorld(),true);
-        banda2 = new Banda(texturaBanda, 31*PantallaNivel.getTtoP(),33*PantallaNivel.getTtoP()+32,fix,getWorld(),true);
+        banda1 = new Banda(texturaBanda, 7*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
+        banda2 = new Banda(texturaBanda, 20*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
+        banda3 = new Banda(texturaBanda, 32*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
         iman = new Iman(texturaIman,2.5f,2.5f, 52*PantallaNivel.getTtoP(),42*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
 
         //Debugger
@@ -154,18 +156,22 @@ public class Nivel2 extends PantallaNivel {
 
             getBatch().begin();
             //Dibujando plataforma
-            platf1.dibujar(getBatch());
-            platf1.mover(1536,1536,192,870);
+            if(flagPlat) {
+                platf1.dibujar(getBatch());
+                platf1.mover(1536, 1536, 192, 870);
+            }
             platf2.dibujar(getBatch());
             platf2.mover(2560,3280,740,740);
             platf3.dibujar(getBatch());
-            platf3.mover(192,1344,1472,2176);
+            platf3.mover(192,1344,1472,1344);
 
             banda1.dibujar(getBatch(),delta);
             banda2.dibujar(getBatch(),delta);
+            banda3.dibujar(getBatch(),delta);
 
             iman.dibujar(getBatch());
-            iman.mover(52*PantallaNivel.getTtoP(),52*PantallaNivel.getTtoP(),21*PantallaNivel.getTtoP(),43*PantallaNivel.getTtoP());
+            if(flagIman)
+                iman.mover(52*PantallaNivel.getTtoP(),52*PantallaNivel.getTtoP(),21*PantallaNivel.getTtoP(),43*PantallaNivel.getTtoP());
 
             enemigo1.dibujar(getBatch(),delta);
             enemigo1.mover(64,640);
@@ -186,7 +192,7 @@ public class Nivel2 extends PantallaNivel {
             getWorld().step(delta,6,2);
             getBatch().setProjectionMatrix(getCamaraHUD().combined);
             getEscenaHUD().draw();
-            Gdx.app.log("MI estado de robot es:", ""+getRobot().getEstadoSalto());
+            //Gdx.app.log("MI estado de robot es:", ""+getRobot().getEstadoSalto());
         }
 
         if ((getRobot().sprite.getX()+getRobot().sprite.getWidth()/2)>ANCHO_MAPA){
@@ -235,7 +241,7 @@ public class Nivel2 extends PantallaNivel {
 
     @Override
     public boolean moverPalanca(TiledMap mapa) {
-        for(int j=3; j<=4;j++){
+        for(int j=3; j<=5;j++){
             TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(j);
             int x;
             int y = (int)(getRobot().sprite.getY()/64);
@@ -251,13 +257,15 @@ public class Nivel2 extends PantallaNivel {
                         capa.setCell(x,y,celda.setFlipHorizontally(true));
                         if(j==3){
                             //Gdx.app.log("ACA DEBO:"," APARECER UNA PLATAFORMA");
+                            flagPlat = true;
                         }
                         else if(j==4){
                             //Aqui abre la puerta
+                            Gdx.app.log("Palanca","Debloqueo la salida");
                             mapa.getLayers().get(1).setVisible(!mapa.getLayers().get(1).isVisible());
                         }
                         else if(j==5){
-
+                            flagIman = true;
                         }
                         return true;
                     }
