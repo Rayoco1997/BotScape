@@ -62,7 +62,7 @@ public class Banda extends Objeto {
         bodydef.fixedRotation =  true;
         bodydef.position.set((sprite.getX()+sprite.getWidth()/2)/PantallaNivel.getPtM()
             , (sprite.getY()+sprite.getHeight()/2)/PantallaNivel.getPtM());
-        shape.setAsBox(sprite.getWidth()/2/PantallaNivel.getPtM(),
+        shape.setAsBox((sprite.getWidth()/2-10)/PantallaNivel.getPtM(),
                 sprite.getHeight()/2/ PantallaNivel.getPtM());
         fix.shape = shape;
         body = world.createBody(bodydef);
@@ -78,7 +78,7 @@ public class Banda extends Objeto {
         bodydefSen.position.set((sprite.getX() + sprite.getWidth()/2)/PantallaNivel.getPtM()
                 , (sprite.getY()+sprite.getHeight()+5)/PantallaNivel.getPtM());
         shapeSen = new PolygonShape();
-        shapeSen.setAsBox(sprite.getWidth()/2/PantallaNivel.getPtM(),1/PantallaNivel.getPtM());
+        shapeSen.setAsBox((sprite.getWidth()/2-20)/PantallaNivel.getPtM(),1/PantallaNivel.getPtM());
         fixSen.shape = shapeSen;
         bodySen = world.createBody(bodydefSen);
         bodySen.setUserData("sensorBanda");
