@@ -197,7 +197,7 @@ public class Nivel3 extends PantallaNivel {
             moverRobotConBanda(banda1);
 
 
-            buscarMiniVis();
+            recolectar();
             moverPalanca(getMapa());
             //para mostrar el puntaje de mini vis
             getTexto().mostrarMensaje(getBatch(), Integer.toString(getContadorMiniVis()), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);

@@ -65,7 +65,9 @@ public abstract class PantallaNivel extends Pantalla {
     private StretchViewport vistaHUD;
     private Music musicaFondo;
     public Sound sonidoGanaste;
+    public Sound recolectarMiniVi;
     public Sound sonidoPerdiste;
+    public Sound sonidoPoderCorrer;
     private ImageButton btnMusic;
     private ImageButton btnSound;
     private Texture texturaMiniVI;
@@ -106,6 +108,8 @@ public abstract class PantallaNivel extends Pantalla {
         //CARGANDO LOS SONIDOS
         sonidoGanaste= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/Win/collect_item_14.mp3"));
         sonidoPerdiste= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/Lose/Impacts and Hits - Sub Zero 02.mp3"));
+        recolectarMiniVi = Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/UI/Radar.mp3"));
+        sonidoPoderCorrer = Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/In Game/Wet power up swoosh.mp3"));
     }
 
 
@@ -200,9 +204,15 @@ public abstract class PantallaNivel extends Pantalla {
     protected void setManager(AssetManager ass){
         manager = ass;
     }
-    protected void buscarMiniVis(){
-        if(getRobot().recolectarItem(getMapa()).equals("miniVi"))
+    protected void recolectar(){
+        if(getRobot().recolectarItem(getMapa()).equals("miniVi")) {
             contadorMiniVis++;
+            if(estadoSonidoGeneral == EstadoSonido.ENCENDIDO)
+                recolectarMiniVi.play();
+        } else if(getRobot().recolectarItem(getMapa()).equals("correr")){
+            if(estadoSonidoGeneral == EstadoSonido.ENCENDIDO)
+                sonidoPoderCorrer.play();
+        }
     }
     protected int getCountMovCam(){
         return countMovCam;
