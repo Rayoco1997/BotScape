@@ -25,7 +25,7 @@ public class Nivel2 extends PantallaNivel {
     private int xInicialRobot = 100;
     private int yInicialRobot = 300;
 
-    private int TOTAL_MINIVIS= 4;
+    private int TOTAL_MINIVIS= 3;
 
     //Texturas
     Sprite texturaFondo;
@@ -118,7 +118,7 @@ public class Nivel2 extends PantallaNivel {
         banda1 = new Banda(texturaBanda, 7*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
         banda2 = new Banda(texturaBanda, 20*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
         banda3 = new Banda(texturaBanda, 32*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
-        iman = new Iman(texturaIman,2.5f,2.5f, 52*PantallaNivel.getTtoP(),42*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
+        iman = new Iman(texturaIman,3f,3f, 52*PantallaNivel.getTtoP(),42*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
         //iman = new Iman(texturaIman,2.5f,2.5f, 10*PantallaNivel.getTtoP(),10*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
 
         //Debugger
@@ -167,7 +167,7 @@ public class Nivel2 extends PantallaNivel {
             //Dibujando plataforma
             if(flagPlat) {
                 platf1.dibujar(getBatch());
-                platf1.mover(1536, 1536, 192, 870);
+                platf1.mover(1536, 1536, 180, 870);
             }
             platf2.dibujar(getBatch());
             platf2.mover(2560,3280,740,740);
@@ -183,7 +183,7 @@ public class Nivel2 extends PantallaNivel {
                 iman.mover(52*PantallaNivel.getTtoP(),52*PantallaNivel.getTtoP(),21*PantallaNivel.getTtoP(),43*PantallaNivel.getTtoP());
 
             enemigo1.dibujar(getBatch(),delta);
-            enemigo1.mover(64,640);
+            enemigo1.mover(64,1024);
             enemigo2.dibujar(getBatch(),delta);
             enemigo2.mover(1408,1984);
             //boss.dibujar(getBatch());
@@ -272,7 +272,9 @@ public class Nivel2 extends PantallaNivel {
                         else if(j==4){
                             //Aqui abre la puerta
                             Gdx.app.log("Palanca","Debloqueo la salida");
-                            mapa.getLayers().get(1).setVisible(!mapa.getLayers().get(1).isVisible());
+                            if(mapa.getLayers().get(1).isVisible())
+                                mapa.getLayers().get(1).setVisible(false);
+
                         }
                         else if(j==5){
                             flagIman = true;
