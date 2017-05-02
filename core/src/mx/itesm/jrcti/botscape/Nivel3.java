@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -29,6 +30,14 @@ public class Nivel3 extends PantallaNivel {
     Sprite texturaFondo;
     private Texture texturaFondoTutorial;
     private Texture LUGWalk_Cycle;
+    private Texture texturaPlataforma;
+    private Texture texturaBandas;
+    private Texture texturaIman;
+
+    //Objetos
+    private Plataforma platf1;
+    private Iman iman1;
+    private Banda banda1;
 
     private FixtureDef fix;
     private Enemigo enemigo1;
@@ -55,11 +64,42 @@ public class Nivel3 extends PantallaNivel {
     public void cargarTexturasExtras() {
         texturaFondoTutorial = getManager().get("Fondos/Fondo2.jpg");
         LUGWalk_Cycle = getManager().get("Personaje/LUG7 Walk_Cycle.png");
+        texturaPlataforma = getManager().get("NivelPlataforma.png");
+        texturaIman = getManager().get("NivelIman.png");
+        texturaBandas= getManager().get("NivelBandas.png");
 
     }
 
     @Override
     public boolean moverPalanca(TiledMap mapa) {
+        TiledMapTileLayer capa = (TiledMapTileLayer)mapa.getLayers().get(2);
+        int x;
+        int y = (int)(getRobot().sprite.getY()/64);
+        TiledMapTileLayer.Cell celda;
+        int cantPuntos=5;
+        for(int i=0; i<cantPuntos; i++){
+            x= (int)(((getRobot().sprite.getX()+getRobot().sprite.getWidth())/64));
+            x= x-i*(int)getRobot().sprite.getWidth()/((cantPuntos-1)*64);
+            celda = capa.getCell(x,y);
+            if (celda!=null) {
+                Object tipo = celda.getTile().getProperties().get("tipo");
+                if ("palancaPuerta".equals(tipo) ) {
+                    capa.setCell(x,y,celda.setFlipHorizontally(true));
+                    Gdx.app.log("Nivel 3","Movi la palanca de la puerta, ahora debo abrirla");
+                    if(mapa.getLayers().get(1).isVisible())
+                        mapa.getLayers().get(1).setVisible(false);
+                    return true;
+                }else if("palancaBoss".equals(tipo) ){
+                    capa.setCell(x,y,celda.setFlipHorizontally(true));
+                    Gdx.app.log("Nivel 3","Movi la palanca del boss, ahora puedo ganar");
+                    if(mapa.getLayers().get(3).isVisible())
+                        mapa.getLayers().get(3).setVisible(false);
+                    return true;
+                }
+            }
+
+        }
+
         return false;
     }
 
@@ -69,10 +109,21 @@ public class Nivel3 extends PantallaNivel {
     }
 
     private void crearObjetos() {
+        fix = new FixtureDef();
+        fix.density=.1f;
         crearMundo();
         texturaFondo=new Sprite(texturaFondoTutorial);
         texturaFondo.setPosition(0,0);
         createCollisionListener();
+
+        //Objetos
+        //platf1 = new Plataforma(texturaPlataforma, 3, 3, 1984, 384,
+                //Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
+        iman1= new Iman(texturaIman,2.5f ,2.5f ,37*PantallaNivel.getTtoP(),20*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ARRIBA, getWorld());
+        banda1= new Banda(texturaBandas,48*PantallaNivel.getTtoP(),32*PantallaNivel.getTtoP(),fix,getWorld(),false);
+
+
+
 
         //Debugger
         debugRenderer = new Box2DDebugRenderer();
@@ -80,7 +131,12 @@ public class Nivel3 extends PantallaNivel {
     }
 
     private void crearEnemigos() {
-
+        fix = new FixtureDef();
+        fix.density=.1f;
+        enemigo1 = new Enemigo(LUGWalk_Cycle,3f,2560,256,Enemigo.EstadoMovimiento.MOV_DERECHA,
+                getWorld(), BodyDef.BodyType.KinematicBody,fix);
+        enemigo2 = new Enemigo(LUGWalk_Cycle,3f,640,896,Enemigo.EstadoMovimiento.MOV_DERECHA,
+                getWorld(), BodyDef.BodyType.KinematicBody,fix);
     }
 
     private void crearPiso() {
@@ -125,6 +181,19 @@ public class Nivel3 extends PantallaNivel {
             getBatch().begin();
 
             //Colocar objetos aquí
+            enemigo1.dibujar(getBatch(),delta);
+            enemigo1.mover(2560,3390);
+            enemigo2.dibujar(getBatch(),delta);
+            enemigo2.mover(1600,2240);
+            //platf1.dibujar(getBatch());
+            //platf1.mover(1984,4608,320,320);
+            iman1.dibujar(getBatch());
+            iman1.mover(2368,2368,20*PantallaNivel.getTtoP(),40*PantallaNivel.getTtoP());
+            elevarRobotConIman(iman1);
+
+            banda1.dibujar(getBatch(),delta);
+            moverRobotConBanda(banda1);
+
 
             buscarMiniVis();
             moverPalanca(getMapa());

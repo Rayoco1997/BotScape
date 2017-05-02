@@ -222,7 +222,6 @@ public class PantallaCarga extends Pantalla{
         manager.load("NivelEnemigo.png", Texture.class);
         manager.load("NivelPlataforma.png", Texture.class);
         manager.load("NivelBoton.png", Texture.class);
-        manager.load("NivelIman.png", Texture.class);
         manager.load("NivelMiniVI.png", Texture.class);
         manager.load("NivelPiso.png", Texture.class);
         manager.load("NivelEscalon.png", Texture.class);
