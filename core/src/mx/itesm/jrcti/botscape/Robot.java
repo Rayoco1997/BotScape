@@ -267,11 +267,24 @@ public class Robot extends Objeto {
     }
 
     private boolean checarMovIzq(TiledMap mapa){
-        TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(1);
-        if(capa.isVisible()) {
+        TiledMapTileLayer capa1 = (TiledMapTileLayer) mapa.getLayers().get(1);
+        TiledMapTileLayer capa2 = (TiledMapTileLayer) mapa.getLayers().get(3);
+        if(capa1.isVisible()) {
             int x = (int) (((body.getPosition().x*PantallaNivel.getPtM())-sprite.getWidth()/8) / 64);   // Convierte coordenadas del mundo en coordenadas del mapa
             int y = (int) ((sprite.getY() + sprite.getHeight())/ 64);
-            TiledMapTileLayer.Cell celdaIzq = capa.getCell(x, y);
+            TiledMapTileLayer.Cell celdaIzq = capa1.getCell(x, y);
+            if (celdaIzq != null) {
+                Object tipo = (String) celdaIzq.getTile().getProperties().get("tipo");
+                if ("puerta".equals(tipo)) {
+                    return false;  // Está chocando
+                }
+                else {return true;}
+            }
+        }
+        if(capa2.isVisible()) {
+            int x = (int) (((body.getPosition().x*PantallaNivel.getPtM())-sprite.getWidth()/8) / 64);   // Convierte coordenadas del mundo en coordenadas del mapa
+            int y = (int) ((sprite.getY() + sprite.getHeight())/ 64);
+            TiledMapTileLayer.Cell celdaIzq = capa2.getCell(x, y);
             if (celdaIzq != null) {
                 Object tipo = (String) celdaIzq.getTile().getProperties().get("tipo");
                 if ("puerta".equals(tipo)) {
