@@ -45,8 +45,8 @@ public class Iman extends Objeto implements MovimientoAutomatico {
         fix.restitution = 0f;
         bodyDef.fixedRotation = true;
         bodyDef.position.set((sprite.getX() + sprite.getWidth()/2)/PantallaNivel.getPtM()
-                ,(sprite.getY() + sprite.getHeight()/67)/PantallaNivel.getPtM());
-        shape.setAsBox(sprite.getWidth()/2/PantallaNivel.getPtM(),sprite.getHeight()/64/PantallaNivel.getPtM());
+                ,(sprite.getY() + sprite.getHeight()/120)/PantallaNivel.getPtM());
+        shape.setAsBox(sprite.getWidth()/2/PantallaNivel.getPtM(),sprite.getHeight()/128/PantallaNivel.getPtM());
         fix.shape = shape;
         body = world.createBody(bodyDef);
         body.setUserData(this);
@@ -59,9 +59,9 @@ public class Iman extends Objeto implements MovimientoAutomatico {
         bodyDefSen = new BodyDef();
         bodyDefSen.type = BodyDef.BodyType.KinematicBody;
         bodyDefSen.position.set((sprite.getX() + sprite.getWidth()/2)/PantallaNivel.getPtM()
-                ,(sprite.getY()-sprite.getHeight()/6)/PantallaNivel.getPtM());
+                ,(sprite.getY()-sprite.getHeight()/12)/PantallaNivel.getPtM());
         shapeSen = new PolygonShape();
-        shapeSen.setAsBox(sprite.getWidth()/2/PantallaNivel.getPtM(),350/PantallaNivel.getPtM());
+        shapeSen.setAsBox(sprite.getWidth()/2/PantallaNivel.getPtM(),175/PantallaNivel.getPtM());
         fixSen.shape = shapeSen;
         bodySen = world.createBody(bodyDefSen);
         bodySen.setUserData("sensorIman");
@@ -73,7 +73,7 @@ public class Iman extends Objeto implements MovimientoAutomatico {
     @Override
     public void mover(float xMin, float xMax, float yMin, float yMax) {
         sprite.setPosition((body.getPosition().x * PantallaNivel.getPtM()) - sprite.getWidth()/2,
-                (body.getPosition().y * PantallaNivel.getPtM())-sprite.getHeight()/50);
+                (body.getPosition().y * PantallaNivel.getPtM())-sprite.getHeight()/100);
 
 
         //Gdx.app.log("Body","x "+body.getPosition().x*PantallaNivel.getPtM() + " y " + body.getPosition().y*PantallaNivel.getPtM());

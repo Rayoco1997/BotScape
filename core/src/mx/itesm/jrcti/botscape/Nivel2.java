@@ -17,8 +17,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 public class Nivel2 extends PantallaNivel {
 
     //Debuggers, handle with care
-    /*Box2DDebugRenderer debugRenderer;
-    Matrix4 debugMatrix;*/
+    Box2DDebugRenderer debugRenderer;
+    Matrix4 debugMatrix;
 
     private static final int ANCHO_MAPA=3840;
     private static final int ALTO_MAPA=2944;
@@ -118,11 +118,11 @@ public class Nivel2 extends PantallaNivel {
         banda1 = new Banda(texturaBanda, 7*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
         banda2 = new Banda(texturaBanda, 20*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
         banda3 = new Banda(texturaBanda, 32*PantallaNivel.getTtoP()+22,33*PantallaNivel.getTtoP()+19,fix,getWorld(),true);
-        iman = new Iman(texturaIman,3f,3f, 51*PantallaNivel.getTtoP(),42*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
+        iman = new Iman(texturaIman,3f,3f, 51*PantallaNivel.getTtoP(),43*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
         //iman = new Iman(texturaIman,2.5f,2.5f, 10*PantallaNivel.getTtoP(),10*PantallaNivel.getTtoP(), Plataforma.EstadoMovimiento.MOV_ABAJO,getWorld());
 
         //Debugger
-        //debugRenderer = new Box2DDebugRenderer();
+        debugRenderer = new Box2DDebugRenderer();
         Gdx.input.setCatchBackKey(true);
     }
 
@@ -156,12 +156,12 @@ public class Nivel2 extends PantallaNivel {
             getMapRenderer().setView(camara);
             getMapRenderer().render();
 
-            /*debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
+            debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
             debugRenderer.render(getWorld(),debugMatrix);
 
             //Debugging
             debugMatrix = getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),
-                    PantallaNivel.getPtM(), 0);*/
+                    PantallaNivel.getPtM(), 0);
 
             getBatch().begin();
             //Dibujando plataforma
@@ -180,7 +180,7 @@ public class Nivel2 extends PantallaNivel {
 
             iman.dibujar(getBatch());
             if(flagIman)
-                iman.mover(51*PantallaNivel.getTtoP(),52*PantallaNivel.getTtoP(),21*PantallaNivel.getTtoP(),43*PantallaNivel.getTtoP());
+                iman.mover(51*PantallaNivel.getTtoP(),51*PantallaNivel.getTtoP(),20*PantallaNivel.getTtoP(),43*PantallaNivel.getTtoP());
 
             enemigo1.dibujar(getBatch(),delta);
             enemigo1.mover(64,1024);
