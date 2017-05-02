@@ -666,9 +666,9 @@ public abstract class PantallaNivel extends Pantalla {
         if(contactoBanda){
             //Gdx.app.log("Banda","Debi haberme movido a un lado");
             if(banda.esDerecha()){
-                getRobot().getBody().applyForceToCenter(60f,0f,true);
+                getRobot().getBody().applyForceToCenter(30f,0f,true);
             } else{
-                getRobot().getBody().applyForceToCenter(-60f,0f,true);
+                getRobot().getBody().applyForceToCenter(-30f,0f,true);
             }
         }
     }
