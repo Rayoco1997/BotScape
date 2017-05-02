@@ -76,11 +76,11 @@ public class MenuCreditos extends Pantalla {
         btnBack.setPosition(10,10);
         //Posición fotos
         Image fotoEquipo = new Image(texturaFotoEquipo);
-        fotoEquipo.setPosition(ANCHO/2-fotoEquipo.getWidth()/2,ALTO/2-fotoEquipo.getHeight()/2);
+        fotoEquipo.setPosition(ANCHO/2-fotoEquipo.getWidth()/2,(ALTO/2-fotoEquipo.getHeight()/2)-20);
         Image imgTexto = new Image(textos);
-        imgTexto.setPosition(ANCHO/2-imgTexto.getWidth()/2,ALTO/2-imgTexto.getHeight()/2);
-        escenaMenuCreditos.addActor(imgTexto);
+        imgTexto.setPosition(ANCHO/2-imgTexto.getWidth()/2,(ALTO/2-imgTexto.getHeight()/2)+20);
         escenaMenuCreditos.addActor(fotoEquipo);
+        escenaMenuCreditos.addActor(imgTexto);
         /*Image fotoRay = new Image(textureRay);
         fotoRay.setPosition(btnBack.getX()+btnBack.getWidth()+1*(ANCHO-btnBack.getWidth())/2-(ANCHO-btnBack.getWidth())/4-fotoRay.getWidth()/2,ALTO/2-3*ALTO/8);
         Image fotoTommy = new Image(textureTommy);
