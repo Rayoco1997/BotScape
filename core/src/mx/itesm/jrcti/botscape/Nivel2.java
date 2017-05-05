@@ -128,9 +128,11 @@ public class Nivel2 extends PantallaNivel {
 
     @Override
     protected void revisarMuertePorCaida() {
+
         //Gdx.app.log("x "+getRobot().sprite.getX(),"  y "+getRobot().sprite.getY());
         //Gdx.app.log("Cámara:   x "+camara.position.x,"  y "+camara.position.y);
         if(getRobot().getBody().getTransform().getPosition().y< 0.0f) {
+            Gdx.input.vibrate(500);
             //Gdx.app.log("Cambio de posición"," a su posición inicial");
             getEscenaHUD().getActors().get(getEscenaHUD().getActors().size - 1).remove();
             getRobot().morir();

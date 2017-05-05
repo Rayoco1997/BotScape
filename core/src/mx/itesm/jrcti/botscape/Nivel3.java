@@ -148,6 +148,7 @@ public class Nivel3 extends PantallaNivel {
     @Override
     protected void revisarMuertePorCaida() {
         if (getRobot().getBody().getTransform().getPosition().y < 0.0f) {
+            Gdx.input.vibrate(500);
             //Gdx.app.log("Cambio de posición"," a su posición inicial");
             getEscenaHUD().getActors().get(getEscenaHUD().getActors().size - 1).remove();
             getRobot().morir();

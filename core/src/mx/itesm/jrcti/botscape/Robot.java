@@ -387,6 +387,7 @@ public class Robot extends Objeto {
     }
 
     public void recibirDano(WorldManifold wm) {
+        Gdx.input.vibrate(500);
         Vector2 poc = new Vector2(0,0);
         setVidas(getVidas()-1);
         poc = wm.getPoints()[0];
