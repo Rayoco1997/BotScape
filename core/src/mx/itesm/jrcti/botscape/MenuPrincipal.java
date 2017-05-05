@@ -1,6 +1,7 @@
 package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -201,6 +202,15 @@ public class MenuPrincipal extends Pantalla {
 
             }
             Gdx.input.setInputProcessor(escenaAyuda);
+            Gdx.input.setCatchBackKey(true);
+            //Teclado
+            if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+                musica.pause();
+                if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
+                    sonidoBoton.play(volumenSonido);
+                }
+                juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musica,EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
+            }
             escenaAyuda.draw();
         }
     }

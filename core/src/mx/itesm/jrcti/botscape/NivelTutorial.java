@@ -177,6 +177,10 @@ public class NivelTutorial extends PantallaNivel {
             if(!palancaActivada) {
                 if(moverPalanca(getMapa())){
                     palancaActivada=true;
+                    if(estadoSonidoGeneral==EstadoSonido.ENCENDIDO){
+                        //sonidoPalanca.play(0.7f);
+                        sonidoPuerta.play(1.5f);
+                    }
                 }
             }
 

@@ -1,6 +1,7 @@
 package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -181,6 +182,7 @@ public abstract class Pantalla implements Screen {
                     }
                 }
             });
+
             this.addActor(btnBack);
             this.addActor(btnNext);
             this.addActor(btnFin);

@@ -246,7 +246,7 @@ public class MenuSeleccionNivel extends Pantalla {
             if (estadoSonidoGeneral== EstadoSonido.ENCENDIDO){
                 sonidoBoton.play(volumenSonido);
             }
-            juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musica,EstadoMusica.DENIDO,estadoMusicaGeneral,estadoSonidoGeneral));
+            juego.setScreen(new PantallaCarga(juego,Pantallas.MENU,musica,EstadoMusica.REPRODUCCION,estadoMusicaGeneral,estadoSonidoGeneral));
         }
     }
 
