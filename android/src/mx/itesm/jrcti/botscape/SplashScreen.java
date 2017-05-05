@@ -15,6 +15,7 @@ public class SplashScreen extends Activity implements MediaPlayer.OnCompletionLi
 {
     private VideoView videoView;
     public static Activity mActivityObj;
+    boolean iniciado=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -33,11 +34,14 @@ public class SplashScreen extends Activity implements MediaPlayer.OnCompletionLi
 
             @Override
             public boolean onTouch(View view, MotionEvent event) {
-
-                videoView.stopPlayback();
-                Intent intent = new Intent(SplashScreen.this, AndroidLauncher.class);
-                startActivity(intent);
-                finish();
+                if (!iniciado) {
+                    iniciado=true;
+                    videoView.stopPlayback();
+                    Intent intent = new Intent(SplashScreen.this, AndroidLauncher.class);
+                    startActivity(intent);
+                    finish();
+                    System.out.print("INICIA LOGO");
+                }
                 return true;
             }
         });
@@ -47,7 +51,7 @@ public class SplashScreen extends Activity implements MediaPlayer.OnCompletionLi
     @Override
     public void onCompletion(MediaPlayer mp)
     {
-
+        System.out.print("ACABA VIDEO Y PONE LOGO");
         Intent intent = new Intent(this, AndroidLauncher.class);
         startActivity(intent);
         finish();
