@@ -86,12 +86,22 @@ public class Nivel3 extends PantallaNivel {
             if (celda!=null) {
                 Object tipo = celda.getTile().getProperties().get("tipo");
                 if ("palancaPuerta".equals(tipo) ) {
+                    if(!celda.getFlipHorizontally()){
+                        if(estadoSonidoGeneral==EstadoSonido.ENCENDIDO){
+                            sonidoPuerta.play(1.5f);
+                        }
+                    }
                     capa.setCell(x,y,celda.setFlipHorizontally(true));
                     Gdx.app.log("Nivel 3","Movi la palanca de la puerta, ahora debo abrirla");
                     if(mapa.getLayers().get(1).isVisible())
                         mapa.getLayers().get(1).setVisible(false);
                     return true;
                 }else if("palancaBoss".equals(tipo) ){
+                    if(!celda.getFlipHorizontally()){
+                        if(estadoSonidoGeneral==EstadoSonido.ENCENDIDO){
+                            sonidoPuerta.play(1.5f);
+                        }
+                    }
                     capa.setCell(x,y,celda.setFlipHorizontally(true));
                     Gdx.app.log("Nivel 3","Movi la palanca del boss, ahora puedo ganar");
                     if(mapa.getLayers().get(3).isVisible())

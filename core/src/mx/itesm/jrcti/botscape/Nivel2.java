@@ -266,6 +266,23 @@ public class Nivel2 extends PantallaNivel {
                 if (celda!=null) {
                     Object tipo = celda.getTile().getProperties().get("tipo");
                     if ("palanca".equals(tipo) ) {
+                        //REPRODUCIENDO SONIDOS
+                        if(!celda.getFlipHorizontally()){
+                            if(j==3){
+                                if(estadoSonidoGeneral==EstadoSonido.ENCENDIDO){
+                                    sonidoPlataforma.play(0.4f);
+                                }
+                            }else if(j==4){
+                                if(estadoSonidoGeneral==EstadoSonido.ENCENDIDO){
+                                    sonidoPuerta.play(1.5f);
+                                }
+                            }else if(j==5){
+                                if (estadoSonidoGeneral == EstadoSonido.ENCENDIDO) {
+                                    sonidoIman.play(1.5f);
+                                }
+                            }
+                        }
+
                         capa.setCell(x,y,celda.setFlipHorizontally(true));
                         if(j==3){
                             //Gdx.app.log("ACA DEBO:"," APARECER UNA PLATAFORMA");
@@ -274,9 +291,10 @@ public class Nivel2 extends PantallaNivel {
                         else if(j==4){
                             //Aqui abre la puerta
                             Gdx.app.log("Palanca","Debloqueo la salida");
-                            if(mapa.getLayers().get(1).isVisible())
+                            if(mapa.getLayers().get(1).isVisible()) {
                                 mapa.getLayers().get(1).setVisible(false);
 
+                            }
                         }
                         else if(j==5){
                             flagIman = true;

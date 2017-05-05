@@ -90,6 +90,13 @@ public abstract class PantallaNivel extends Pantalla {
     private int contadorMiniVis=0;
     private Texto texto= new Texto();
 
+    //SONIDO EN LOS NIVELES
+    public Sound sonidoPalanca;
+    public Sound sonidoPlataforma;
+    public Sound sonidoIman;
+    public Sound sonidoPuerta;
+    //public Sound sonidoPoderCorrer;
+
 
 
     //Asset Manager
@@ -110,6 +117,10 @@ public abstract class PantallaNivel extends Pantalla {
         sonidoPerdiste= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/Lose/Impacts and Hits - Sub Zero 02.mp3"));
         recolectarMiniVi = Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/UI/Radar.mp3"));
         sonidoPoderCorrer = Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/In Game/Wet power up swoosh.mp3"));
+        sonidoPalanca= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/In Game/Sonido palanca.mp3"));
+        sonidoPlataforma=  Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/In Game/Sonido plataforma.mp3"));
+        sonidoIman= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/In Game/Iman sonido.mp3"));
+        sonidoPuerta= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/In Game/Sonido puerta.mp3"));
     }
 
 
@@ -205,13 +216,15 @@ public abstract class PantallaNivel extends Pantalla {
         manager = ass;
     }
     protected void recolectar(){
-        if(getRobot().recolectarItem(getMapa()).equals("miniVi")) {
+        String itemIdentificado= getRobot().recolectarItem(getMapa());
+        if(itemIdentificado.equals("miniVi")) {
             contadorMiniVis++;
             if(estadoSonidoGeneral == EstadoSonido.ENCENDIDO)
                 recolectarMiniVi.play();
-        } else if(getRobot().recolectarItem(getMapa()).equals("correr")){
+        }else if(itemIdentificado.equals("correr")){
+            Gdx.app.log("RECOLETE UN CORRER CHAVO", "MUAJAJAJA");
             if(estadoSonidoGeneral == EstadoSonido.ENCENDIDO)
-                sonidoPoderCorrer.play();
+                sonidoPoderCorrer.play(1.0f);
         }
     }
     protected int getCountMovCam(){
