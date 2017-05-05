@@ -59,7 +59,7 @@ public class Enemigo extends Objeto implements MovimientoAutomatico {
         bodydef.type = type;
         bodydef.fixedRotation = true;
         bodydef.position.set((sprite.getX() + sprite.getWidth() / 2) / PantallaNivel.getPtM(),
-                (sprite.getY() + sprite.getHeight() / 2) / PantallaNivel.getPtM());
+                (sprite.getY() +10+ sprite.getHeight() / 3) / PantallaNivel.getPtM());
         shape = new PolygonShape();
         shape.setAsBox(sprite.getWidth() / 4 / PantallaNivel.getPtM(), 2*sprite.getHeight() / 5 /PantallaNivel.getPtM());
         fix.shape = shape;
@@ -102,6 +102,9 @@ public class Enemigo extends Objeto implements MovimientoAutomatico {
     }
 
     public void dibujar(SpriteBatch batch, float delta){
+        sprite.setPosition((body.getPosition().x * PantallaNivel.getPtM()) - sprite.getWidth() / 2,
+                (body.getPosition().y * PantallaNivel.getPtM()) - 4*sprite.getHeight()/ 10+3);
+
         TextureRegion region = spriteAnimado.getKeyFrame(timerAnimacion);
 
         timerAnimacion += delta;
