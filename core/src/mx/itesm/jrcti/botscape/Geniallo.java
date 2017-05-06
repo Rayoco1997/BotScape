@@ -27,17 +27,19 @@ public class Geniallo extends Objeto implements MovimientoAutomatico{
     private float timerAnimacion;
 
     private EstadoMovimiento estadoMovimiento;
+    private boolean vivo ;
 
 
     public Geniallo(Texture texturaBoss, float speedX, float posX, float posY, World world, Geniallo.EstadoMovimiento primerMovimiento) {
         super(texturaBoss, posX, posY);
-        /*TextureRegion texturaCompleta = new TextureRegion(texturaBoss);
-        TextureRegion[][] texturaPersonaje = texturaCompleta.split();
+        TextureRegion texturaCompleta = new TextureRegion(texturaBoss);
+        TextureRegion[][] texturaPersonaje = texturaCompleta.split(680,576);
 
-        spriteAnimado = new Animation(0.10f,);
+        vivo = true;
+        spriteAnimado = new Animation(0.25f,texturaPersonaje[0][0], texturaPersonaje[0][1], texturaPersonaje[0][2], texturaPersonaje[0][3]);
         spriteAnimado.setPlayMode(Animation.PlayMode.LOOP);
         timerAnimacion = 0;
-        sprite = new Sprite(texturaPersonaje[][]);
+        sprite = new Sprite(texturaPersonaje[0][0]);
         sprite.setPosition(posX,posY);
         estadoMovimiento = primerMovimiento;
 
@@ -45,16 +47,18 @@ public class Geniallo extends Objeto implements MovimientoAutomatico{
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
         bodyDef.fixedRotation = true;
-        bodyDef.position.set();
+        bodyDef.position.set((sprite.getX() + 5*sprite.getWidth()/8+20)/PantallaNivel.getPtM(),
+                (sprite.getY()+sprite.getHeight()/2)/PantallaNivel.getPtM());
         fix = new FixtureDef();
         fix.density = 10f;
         fix.friction = 1f;
         circle = new CircleShape();
-        circle.setRadius();
+        circle.setRadius(240/PantallaNivel.getPtM());
+        fix.shape = circle;
         body = world.createBody(bodyDef);
         body.setUserData(this);
         body.createFixture(fix);
-        */
+
 
     }
 
@@ -68,10 +72,43 @@ public class Geniallo extends Objeto implements MovimientoAutomatico{
     @Override
     public void mover(float xMin, float xMax) {
 
+        switch (estadoMovimiento) {
+            case MOV_DERECHA:
+                if (sprite.getX() + sprite.getWidth()/2 >= xMax) {
+                    estadoMovimiento = EstadoMovimiento.MOV_IZQUIERDA;
+                    //System.out.println(this.getCentroX());
+                } else {
+                    //System.out.println(sprite.getX());
+                    body.setLinearVelocity(speedX,0f);
+                }
+                break;
+            case MOV_IZQUIERDA:
+                if (sprite.getX() + sprite.getWidth()/2 <= xMin) {
+                    estadoMovimiento = EstadoMovimiento.MOV_DERECHA;
+                } else {
+                    body.setLinearVelocity(-speedX,0f);
+                    break;
+                }
+
+        }
+        sprite.setPosition((body.getPosition().x*PantallaNivel.getPtM())-sprite.getWidth()/3,
+                (body.getPosition().y*PantallaNivel.getPtM())-3*sprite.getHeight()/7);
     }
 
-    public void dibujar(SpriteBatch batch, float delta){
+    public void dibujar(SpriteBatch batch, float delta) {
+        TextureRegion region = spriteAnimado.getKeyFrame(timerAnimacion);
+        timerAnimacion += delta;
 
+        batch.draw(region,sprite.getX(),sprite.getY());
+    }
+
+    public void morir(World world){
+        world.destroyBody(body);
+        vivo = false;
+    }
+
+    public boolean isVivo() {
+        return vivo;
     }
 
     public enum EstadoMovimiento{

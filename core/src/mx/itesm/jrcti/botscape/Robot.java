@@ -386,10 +386,10 @@ public class Robot extends Objeto {
         this.habilidad = habilidad;
     }
 
-    public void recibirDano(WorldManifold wm) {
+    public void recibirDano(WorldManifold wm, int dano) {
         Gdx.input.vibrate(500);
         Vector2 poc = new Vector2(0,0);
-        setVidas(getVidas()-1);
+        setVidas(getVidas()-dano);
         poc = wm.getPoints()[0];
        // Gdx.app.log("Daño","colision " + poc.toString());
        // Gdx.app.log("Daño","bodyGetX " + this.body.getPosition().x);

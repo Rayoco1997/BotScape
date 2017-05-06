@@ -218,6 +218,7 @@ public class PantallaCarga extends Pantalla{
     }
 
     private void cargarRecursosNivel3(){
+        manager.load("Personaje/GenialloWalk_Cycle.png",Texture.class);
         manager.load("NivelIman.png",Texture.class);
         manager.load("NivelBandas.png", Texture.class);
         manager.load("Fondos/Fondo3.jpg",Texture.class);

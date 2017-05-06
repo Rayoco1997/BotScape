@@ -18,13 +18,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 public class Nivel3 extends PantallaNivel {
 
     //Debuggers, handle with care
-    /*Box2DDebugRenderer debugRenderer;
-    Matrix4 debugMatrix;*/
+    Box2DDebugRenderer debugRenderer;
+    Matrix4 debugMatrix;
 
     private static final int ANCHO_MAPA=5120;
     private static final int ALTO_MAPA=2880;
-    private int xInicialRobot=100;
-    private int yInicialRobot=300;
+    private int xInicialRobot=2000;
+    private int yInicialRobot=30*PantallaNivel.getTtoP();
 
     private int TOTAL_MINIVIS= 9;
 
@@ -35,6 +35,7 @@ public class Nivel3 extends PantallaNivel {
     private Texture texturaPlataforma;
     private Texture texturaBandas;
     private Texture texturaIman;
+    private Texture texturaBoss;
 
     //Objetos
     private Plataforma platf1;
@@ -44,6 +45,7 @@ public class Nivel3 extends PantallaNivel {
     private FixtureDef fix;
     private Enemigo enemigo1;
     private Enemigo enemigo2;
+    private Geniallo jelloDeLimon;
 
     public Nivel3(Juego j, EstadoMusica estadoMusicaGeneral,EstadoSonido estadoSonidoGeneral) {
         super(j, estadoMusicaGeneral, "Mapas/Nivel3.tmx", "Sonidos/BelowThePath(FinalBoss).mp3",estadoSonidoGeneral);
@@ -69,6 +71,7 @@ public class Nivel3 extends PantallaNivel {
         texturaPlataforma = getManager().get("NivelPlataforma.png");
         texturaIman = getManager().get("NivelIman.png");
         texturaBandas= getManager().get("NivelBandas.png");
+        texturaBoss = getManager().get("Personaje/GenialloWalk_Cycle.png");
 
     }
 
@@ -106,6 +109,7 @@ public class Nivel3 extends PantallaNivel {
                     Gdx.app.log("Nivel 3","Movi la palanca del boss, ahora puedo ganar");
                     if(mapa.getLayers().get(3).isVisible())
                         mapa.getLayers().get(3).setVisible(false);
+                    jelloDeLimon.morir(getWorld());
                     return true;
                 }
             }
@@ -138,7 +142,7 @@ public class Nivel3 extends PantallaNivel {
 
 
         //Debugger
-        //debugRenderer = new Box2DDebugRenderer();
+        debugRenderer = new Box2DDebugRenderer();
         Gdx.input.setCatchBackKey(true);
     }
 
@@ -149,6 +153,7 @@ public class Nivel3 extends PantallaNivel {
                 getWorld(), BodyDef.BodyType.KinematicBody,fix);
         enemigo2 = new Enemigo(LUGWalk_Cycle,3f,640,896,Enemigo.EstadoMovimiento.MOV_DERECHA,
                 getWorld(), BodyDef.BodyType.KinematicBody,fix);
+        jelloDeLimon = new Geniallo(texturaBoss,2f,7*PantallaNivel.getTtoP(),28*PantallaNivel.getTtoP(),getWorld(),Geniallo.EstadoMovimiento.MOV_DERECHA);
     }
 
     private void crearPiso() {
@@ -184,12 +189,12 @@ public class Nivel3 extends PantallaNivel {
             getMapRenderer().setView(camara);
             getMapRenderer().render();
 
-            /*debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
+            debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
             debugRenderer.render(getWorld(),debugMatrix);
 
             //Debugging
             debugMatrix = getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),
-                    PantallaNivel.getPtM(), 0);*/
+                    PantallaNivel.getPtM(), 0);
 
             getBatch().begin();
 
@@ -207,6 +212,10 @@ public class Nivel3 extends PantallaNivel {
             banda1.dibujar(getBatch(),delta);
             moverRobotConBanda(banda1);
 
+            if(jelloDeLimon.isVivo()) {
+                jelloDeLimon.dibujar(getBatch(),delta);
+                jelloDeLimon.mover(8 * PantallaNivel.getTtoP(), 15 * PantallaNivel.getTtoP());
+            }
 
             recolectar();
             moverPalanca(getMapa());
@@ -232,7 +241,7 @@ public class Nivel3 extends PantallaNivel {
             getEscenaGanaste().draw();
         }
 
-        if(getRobot().getVidas()==0){
+        if(getRobot().getVidas()<=0){
             setEstadoJuego(EstadoJuego.PIERDE);
             if(getEscenaPerdiste()==null) {
                 setEscenaPerdiste(new EscenaPerdiste(getVistaHUD(), getBatch(),this));

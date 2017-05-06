@@ -576,6 +576,11 @@ public abstract class PantallaNivel extends Pantalla {
 
     private void revisarTocarPiso(Contact contact){
         if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+                contact.getFixtureB().getBody().getUserData() instanceof Iman)||
+                (contact.getFixtureA().getBody().getUserData() instanceof Iman &&
+                        contact.getFixtureB().getBody().getUserData() instanceof Robot) ||
+
+                (contact.getFixtureA().getBody().getUserData() instanceof Robot &&
                 contact.getFixtureB().getBody().getUserData() instanceof Plataforma)||
                 (contact.getFixtureA().getBody().getUserData() instanceof Plataforma &&
                         contact.getFixtureB().getBody().getUserData() instanceof Robot) ||
@@ -600,18 +605,32 @@ public abstract class PantallaNivel extends Pantalla {
     }
 
     private void revisarDanoEnemigo(Contact contact){
-        if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+        if(((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
                 contact.getFixtureB().getBody().getUserData() instanceof Enemigo)||
 
                 (contact.getFixtureA().getBody().getUserData() instanceof Enemigo &&
-                        contact.getFixtureB().getBody().getUserData() instanceof Robot)){
+                        contact.getFixtureB().getBody().getUserData() instanceof Robot))){
             if(getRobot().getHabilidad()!=Robot.Habilidad.INVULNERABLE) {
                 getEscenaHUD().getActors().get(getEscenaHUD().getActors().size-1).remove();
                 getRobot().setHabilidad(Robot.Habilidad.INVULNERABLE);
-                getRobot().recibirDano(contact.getWorldManifold());
+                getRobot().recibirDano(contact.getWorldManifold(),1);
 
             }
+        } else if((contact.getFixtureA().getBody().getUserData() instanceof Robot &&
+                contact.getFixtureB().getBody().getUserData() instanceof Geniallo)||
+
+        (contact.getFixtureA().getBody().getUserData() instanceof Geniallo &&
+                contact.getFixtureB().getBody().getUserData() instanceof Robot)){
+            if(getRobot().getHabilidad()!=Robot.Habilidad.INVULNERABLE) {
+                getEscenaHUD().getActors().get(getEscenaHUD().getActors().size-1).remove();
+                getEscenaHUD().getActors().get(getEscenaHUD().getActors().size-1).remove();
+                getRobot().setHabilidad(Robot.Habilidad.INVULNERABLE);
+                getRobot().recibirDano(contact.getWorldManifold(),2);
+
+            }
+
         }
+
     }
 
     protected abstract void revisarMuertePorCaida();
