@@ -16,8 +16,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
 
-import java.util.ArrayList;
-
 
 /**
  * Created by rayoc on 08/03/2017.
@@ -27,8 +25,11 @@ public class Robot extends Objeto {
     private final float VELOCIDAD_X = 4;      // Velocidad horizontal
 
     private Animation<TextureRegion> spriteAnimadoMov;         // Animación caminando
-    private Animation<TextureRegion> spriteAnimadoSalto;         // Animación saltando
-    private float timerAnimacion;                           // Tiempo para cambiar frames de la animación
+    private Animation<TextureRegion> spriteAnimadoSaltoSubiendo;         // Animación saltando subiendo
+    private Animation<TextureRegion> spriteAnimadoSaltoBajando;         // Animación saltando bajando
+    private float timerAnimacionMov;                           // Tiempo para cambiar frames de la animación
+    private float timerAnimacionSub;
+    private float timerAnimacionBaj;
 
     private EstadoMovimiento estadoMovimiento = EstadoMovimiento.QUIETO;
     private EstadoMovimiento ultimoEstadoMov = EstadoMovimiento.QUIETO;
@@ -46,6 +47,8 @@ public class Robot extends Objeto {
     private int tiempoInv = 90;
     private final int TIEMPO_RUN_INICIAL =600;
     private int tiempoRun=600;
+
+    private boolean debeAterrizar;
 
 
 
@@ -67,18 +70,23 @@ public class Robot extends Objeto {
                 texturaPersonaje[0][8], texturaPersonaje[0][9], texturaPersonaje[0][10],
                 texturaPersonaje[0][11], texturaPersonaje[0][12]);
         //Crea la animación de salto
-        spriteAnimadoSalto = new Animation(0.25f, texturaPersonaje[0][13],
+        spriteAnimadoSaltoSubiendo = new Animation(0.10f, texturaPersonaje[0][13],
                 texturaPersonaje[0][14], texturaPersonaje[0][15], texturaPersonaje[0][16],
-                texturaPersonaje[0][17], texturaPersonaje[0][18], texturaPersonaje[0][19],
-                texturaPersonaje[0][20], texturaPersonaje[0][21], texturaPersonaje[0][22],
-                texturaPersonaje[0][23], texturaPersonaje[0][24]);
+                texturaPersonaje[0][17], texturaPersonaje[0][18], texturaPersonaje[0][19]);
+        spriteAnimadoSaltoBajando = new Animation(0.12f, texturaPersonaje[0][21], texturaPersonaje[0][22], texturaPersonaje[0][23],
+                texturaPersonaje[0][24]);
         // Animación infinita
         spriteAnimadoMov.setPlayMode(Animation.PlayMode.LOOP);
+        spriteAnimadoSaltoSubiendo.setPlayMode(Animation.PlayMode.NORMAL);
+        spriteAnimadoSaltoBajando.setPlayMode(Animation.PlayMode.LOOP);
         // Inicia el timer que contará tiempo para saber qué frame se dibuja
-        timerAnimacion = 0;
+        timerAnimacionMov = 0f;
+        timerAnimacionSub = 0f;
+        timerAnimacionBaj = 0f;
         // Crea el sprite con el personaje quieto (idle)
         sprite = new Sprite(texturaPersonaje[0][0]);    // QUIETO
         sprite.setPosition(x, y);// Posición inicial
+
 
         bodydef = new BodyDef();
         bodydef.type = type;
@@ -99,39 +107,155 @@ public class Robot extends Objeto {
 
     // Dibuja el personaje
     public void dibujar(SpriteBatch batch) {
+        TextureRegion region;
+        boolean aterrizaje;
+
         // Dibuja el personaje dependiendo del estadoMovimiento
         sprite.setPosition((body.getPosition().x * PantallaNivel.getPtM()) - sprite.getWidth() / 2,
-                (body.getPosition().y * PantallaNivel.getPtM()) - 4*sprite.getHeight()/ 10);
-        switch (estadoMovimiento) {
-            case MOV_DERECHA:
-            case MOV_IZQUIERDA:
-                timerAnimacion += Gdx.graphics.getDeltaTime();
-                // Frame que se dibujará
-                TextureRegion region = spriteAnimadoMov.getKeyFrame(timerAnimacion);
-                if (estadoMovimiento == EstadoMovimiento.MOV_IZQUIERDA) {
-                    if (!region.isFlipX()) {
-                        region.flip(true, false);
-                    }
-                } else {
-                    if (region.isFlipX()) {
-                        region.flip(true, false);
-                    }
-                }
-                batch.draw(region, sprite.getX(), sprite.getY());
-                break;
-            case QUIETO:
-                if(ultimoEstadoMov==EstadoMovimiento.MOV_DERECHA){
-                    if(sprite.isFlipX())
-                        sprite.flip(true,false);
-                } else if(ultimoEstadoMov==EstadoMovimiento.MOV_IZQUIERDA){
-                    if(!sprite.isFlipX()){
-                        sprite.flip(true,false);
-                    }
-                }
+                (body.getPosition().y * PantallaNivel.getPtM()) - 4 * sprite.getHeight() / 10);
+        if ((body.getLinearVelocity().y <= 0.001f && body.getLinearVelocity().y >= -0.001f) || (estadoSalto == EstadoSalto.EN_PISO)){
+                switch (estadoMovimiento) {
+                    case MOV_DERECHA:
+                    case MOV_IZQUIERDA:
+                        timerAnimacionMov += Gdx.graphics.getDeltaTime();
+                        // Frame que se dibujará
+                        region = spriteAnimadoMov.getKeyFrame(timerAnimacionMov);
+                        if (estadoMovimiento == EstadoMovimiento.MOV_IZQUIERDA) {
+                            if (!region.isFlipX()) {
+                                region.flip(true, false);
+                            }
+                        } else {
+                            if (region.isFlipX()) {
+                                region.flip(true, false);
+                            }
+                        }
+                        batch.draw(region, sprite.getX(), sprite.getY());
+                        break;
+                    case QUIETO:
+                        if (ultimoEstadoMov == EstadoMovimiento.MOV_DERECHA) {
+                            if (sprite.isFlipX())
+                                sprite.flip(true, false);
+                        } else if (ultimoEstadoMov == EstadoMovimiento.MOV_IZQUIERDA) {
+                            if (!sprite.isFlipX()) {
+                                sprite.flip(true, false);
+                            }
+                        }
 
-                sprite.draw(batch); // Dibuja el sprite estático
-                break;
-        }
+                        sprite.draw(batch); // Dibuja el sprite estático
+                        break;
+                }
+                timerAnimacionSub = 0;
+                timerAnimacionBaj = 0;
+
+        } else {
+            //if(body.getLinearVelocity().y>0) {
+                if (!spriteAnimadoSaltoSubiendo.isAnimationFinished(timerAnimacionSub)) {
+                    timerAnimacionSub += Gdx.graphics.getDeltaTime();
+                } else {
+                    timerAnimacionSub -= 1 / 60f;
+                }
+                switch (estadoMovimiento) {
+                    case MOV_DERECHA:
+                    case MOV_IZQUIERDA:
+                        // Frame que se dibujará
+                        region = spriteAnimadoSaltoSubiendo.getKeyFrame(timerAnimacionSub);
+                        if (estadoMovimiento == EstadoMovimiento.MOV_IZQUIERDA) {
+                            if (!region.isFlipX()) {
+                                region.flip(true, false);
+                            }
+                        } else {
+                            if (region.isFlipX()) {
+                                region.flip(true, false);
+                            }
+                        }
+                        batch.draw(region, sprite.getX(), sprite.getY());
+                        break;
+                    case QUIETO:
+                        region = spriteAnimadoSaltoSubiendo.getKeyFrame(timerAnimacionSub);
+                        if (ultimoEstadoMov == EstadoMovimiento.MOV_DERECHA) {
+                            if (region.isFlipX())
+                                region.flip(true, false);
+                        } else if (ultimoEstadoMov == EstadoMovimiento.MOV_IZQUIERDA) {
+                            if (!region.isFlipX()) {
+                                region.flip(true, false);
+                            }
+                        }
+
+                        batch.draw(region, sprite.getX(), sprite.getY());
+                        break;
+                }
+            } /*else{
+                if (!spriteAnimadoSaltoBajando.isAnimationFinished(timerAnimacionBaj)) {
+                    timerAnimacionBaj += Gdx.graphics.getDeltaTime();
+                }
+                    switch (estadoMovimiento) {
+                        case MOV_DERECHA:
+                        case MOV_IZQUIERDA:
+                            // Frame que se dibujará
+                            region = spriteAnimadoSaltoBajando.getKeyFrame(timerAnimacionBaj);
+                            if (estadoMovimiento == EstadoMovimiento.MOV_IZQUIERDA) {
+                                if (!region.isFlipX()) {
+                                    region.flip(true, false);
+                                }
+                            } else {
+                                if (region.isFlipX()) {
+                                    region.flip(true, false);
+                                }
+                            }
+                            batch.draw(region, sprite.getX(), sprite.getY());
+                            break;
+                        case QUIETO:
+                            region = spriteAnimadoSaltoBajando.getKeyFrame(timerAnimacionBaj);
+                            if (ultimoEstadoMov == EstadoMovimiento.MOV_DERECHA) {
+                                if (region.isFlipX())
+                                    region.flip(true, false);
+                            } else if (ultimoEstadoMov == EstadoMovimiento.MOV_IZQUIERDA) {
+                                if (!region.isFlipX()) {
+                                    region.flip(true, false);
+                                }
+                            }
+
+                            batch.draw(region, sprite.getX(), sprite.getY());
+                            break;
+                    }
+
+                }*/
+
+        //}
+
+        /*if (!spriteAnimadoSaltoBajando.isAnimationFinished(timerAnimacionBaj)) {
+            timerAnimacionBaj += Gdx.graphics.getDeltaTime();
+            switch (estadoMovimiento) {
+                case MOV_DERECHA:
+                case MOV_IZQUIERDA:
+                    // Frame que se dibujará
+                    region = spriteAnimadoSaltoBajando.getKeyFrame(timerAnimacionBaj);
+                    if (estadoMovimiento == EstadoMovimiento.MOV_IZQUIERDA) {
+                        if (!region.isFlipX()) {
+                            region.flip(true, false);
+                        }
+                    } else {
+                        if (region.isFlipX()) {
+                            region.flip(true, false);
+                        }
+                    }
+                    batch.draw(region, sprite.getX(), sprite.getY());
+                    break;
+                case QUIETO:
+                    region = spriteAnimadoSaltoBajando.getKeyFrame(timerAnimacionBaj);
+                    if (ultimoEstadoMov == EstadoMovimiento.MOV_DERECHA) {
+                        if (region.isFlipX())
+                            region.flip(true, false);
+                    } else if (ultimoEstadoMov == EstadoMovimiento.MOV_IZQUIERDA) {
+                        if (!region.isFlipX()) {
+                            region.flip(true, false);
+                        }
+                    }
+
+                    batch.draw(region, sprite.getX(), sprite.getY());
+                    break;
+            }
+        }*/
     }
 
     // Actualiza el sprite, de acuerdo al estadoMovimiento y estadoSalto
@@ -249,6 +373,8 @@ public class Robot extends Objeto {
         }
     }
 
+
+
     private boolean checarMovDer(TiledMap mapa){
         TiledMapTileLayer capa = (TiledMapTileLayer) mapa.getLayers().get(1);
         if(capa.isVisible()) {
@@ -325,7 +451,6 @@ public class Robot extends Objeto {
 
         }
         setEstadoMovimiento(EstadoMovimiento.QUIETO);
-        //estadoMovimiento = EstadoMovimiento.QUIETO;
     }
 
     //Mejorar con or de celda izquierda, centro o derecha
@@ -378,6 +503,11 @@ public class Robot extends Objeto {
         this.estadoMovimiento = estadoMovimiento;
     }
     public void setEstadoSalto(EstadoSalto estadoSalto) {
+        if(estadoSalto == EstadoSalto.BAJANDO)
+            debeAterrizar = true;
+        else {
+            debeAterrizar = false;
+        }
         this.estadoSalto = estadoSalto;
     }
 
@@ -435,6 +565,10 @@ public class Robot extends Objeto {
         body.createFixture(fix);
         //this.sprite=new Sprite(texturaPersonaje[0][0]);
 
+    }
+
+    public void debeAterrizar(boolean debeAterrizar) {
+        this.debeAterrizar = debeAterrizar;
     }
 
     public enum EstadoMovimiento {
