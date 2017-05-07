@@ -104,12 +104,13 @@ public class Nivel3 extends PantallaNivel {
                         if(estadoSonidoGeneral==EstadoSonido.ENCENDIDO){
                             sonidoPuerta.play(1.5f);
                         }
+                        capa.setCell(x,y,celda.setFlipHorizontally(true));
+                        //Gdx.app.log("Nivel 3","Movi la palanca del boss, ahora puedo ganar");
+                        if(mapa.getLayers().get(3).isVisible())
+                            mapa.getLayers().get(3).setVisible(false);
+                        jelloDeLimon.morir(getWorld());
                     }
-                    capa.setCell(x,y,celda.setFlipHorizontally(true));
-                    Gdx.app.log("Nivel 3","Movi la palanca del boss, ahora puedo ganar");
-                    if(mapa.getLayers().get(3).isVisible())
-                        mapa.getLayers().get(3).setVisible(false);
-                    jelloDeLimon.morir(getWorld());
+
                     return true;
                 }
             }

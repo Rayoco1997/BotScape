@@ -96,7 +96,7 @@ public class MenuPrincipal extends Pantalla {
         escenaMenu.addActor(imgFondo);
 
         Image imgTitulo = new Image(texturaTitulo);
-        imgTitulo.setPosition(3*ANCHO/5,3*ALTO/4);
+        imgTitulo.setPosition(5*ANCHO/10+20,3*ALTO/4);
         escenaMenu.addActor(imgTitulo);
 
         //Botón
