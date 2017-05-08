@@ -1,5 +1,6 @@
 package mx.itesm.jrcti.botscape;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -29,15 +30,28 @@ public class Geniallo extends Objeto implements MovimientoAutomatico{
     private EstadoMovimiento estadoMovimiento;
     private boolean vivo ;
 
+    private Animation<TextureRegion> spriteAnimadoMuerte;
+    private boolean resetTimer;
 
-    public Geniallo(Texture texturaBoss, float speedX, float posX, float posY, World world, Geniallo.EstadoMovimiento primerMovimiento) {
+
+    public Geniallo(Texture texturaBoss, Texture texturaMuerto, float speedX, float posX, float posY, World world, Geniallo.EstadoMovimiento primerMovimiento) {
         super(texturaBoss, posX, posY);
         TextureRegion texturaCompleta = new TextureRegion(texturaBoss);
         TextureRegion[][] texturaPersonaje = texturaCompleta.split(680,576);
 
+        TextureRegion texturaMuerte = new TextureRegion(texturaMuerto);
+        TextureRegion[][] texturaExplotar = texturaMuerte.split(737,576);
+        Gdx.app.log("Geniallo","Me divido en " + texturaExplotar[0].length);
+
         vivo = true;
+        resetTimer = false;
         spriteAnimado = new Animation(0.25f,texturaPersonaje[0][0], texturaPersonaje[0][1], texturaPersonaje[0][2], texturaPersonaje[0][3]);
+        spriteAnimadoMuerte = new Animation(0.20f, texturaExplotar[0][0],texturaExplotar[0][1],texturaExplotar[0][2],texturaExplotar[0][3],texturaExplotar[0][4],
+                texturaExplotar[0][5],texturaExplotar[0][6],texturaExplotar[0][7],texturaExplotar[0][8],texturaExplotar[0][9],texturaExplotar[0][10],texturaExplotar[0][11],
+                texturaExplotar[0][12],texturaExplotar[0][13],texturaExplotar[0][14],texturaExplotar[0][15],texturaExplotar[0][16],texturaExplotar[0][17],
+                texturaExplotar[0][18],texturaExplotar[0][19]);
         spriteAnimado.setPlayMode(Animation.PlayMode.LOOP);
+        spriteAnimadoMuerte.setPlayMode(Animation.PlayMode.NORMAL);
         timerAnimacion = 0;
         sprite = new Sprite(texturaPersonaje[0][0]);
         sprite.setPosition(posX,posY);
@@ -96,15 +110,29 @@ public class Geniallo extends Objeto implements MovimientoAutomatico{
     }
 
     public void dibujar(SpriteBatch batch, float delta) {
-        TextureRegion region = spriteAnimado.getKeyFrame(timerAnimacion);
-        timerAnimacion += delta;
+        if (vivo) {
+            TextureRegion region = spriteAnimado.getKeyFrame(timerAnimacion);
+            timerAnimacion += delta;
 
-        batch.draw(region,sprite.getX(),sprite.getY());
+            batch.draw(region, sprite.getX(), sprite.getY());
+        } else {
+            if (resetTimer) {
+                timerAnimacion = 0;
+                resetTimer = false;
+            }
+            if(!spriteAnimadoMuerte.isAnimationFinished(timerAnimacion)) {
+                TextureRegion region = spriteAnimadoMuerte.getKeyFrame(timerAnimacion);
+                timerAnimacion += delta;
+                batch.draw(region, sprite.getX(), sprite.getY());
+            }
+        }
+
     }
 
     public void morir(World world){
         world.destroyBody(body);
         vivo = false;
+        resetTimer = true;
     }
 
     public boolean isVivo() {

@@ -27,8 +27,8 @@ import java.util.ArrayList;
 public class NivelTutorial extends PantallaNivel {
 
     //Debuggers, handle with care
-    Box2DDebugRenderer debugRenderer;
-    Matrix4 debugMatrix;
+    //Box2DDebugRenderer debugRenderer;
+    //Matrix4 debugMatrix;
 
 
     private static final int ANCHO_MAPA=3840;
@@ -111,7 +111,7 @@ public class NivelTutorial extends PantallaNivel {
         createCollisionListener();
 
         //Debugger
-        debugRenderer = new Box2DDebugRenderer();
+        //debugRenderer = new Box2DDebugRenderer();
 
         /*iman = new Iman(texturaIman, 3, 3, 300, 200,
                 Plataforma.EstadoMovimiento.MOV_DERECHA, getWorld());*/
@@ -158,13 +158,13 @@ public class NivelTutorial extends PantallaNivel {
             getMapRenderer().render();
 
 
-            debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
+            /*debugMatrix=getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),PantallaNivel.getPtM(),0);
             debugRenderer.render(getWorld(),debugMatrix);
 
 
             //Debugging
             debugMatrix = getBatch().getProjectionMatrix().cpy().scale(PantallaNivel.getPtM(),
-                    PantallaNivel.getPtM(), 0);
+                    PantallaNivel.getPtM(), 0);*/
 
             //algo
             getBatch().begin();
