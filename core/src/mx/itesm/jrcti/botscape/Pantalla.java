@@ -87,20 +87,20 @@ public abstract class Pantalla implements Screen {
             Texture txtNext= new Texture(Gdx.files.internal("Botones/AyudaDerecha.png"));
             TextureRegionDrawable trdNext= new TextureRegionDrawable(new TextureRegion(txtNext));
             final ImageButton btnNext= new ImageButton(trdNext);
-            btnNext.setPosition(ANCHO-btnNext.getWidth(),ALTO/2-btnNext.getHeight()/2);
+            btnNext.setPosition(ANCHO-btnNext.getWidth(),ALTO/2-btnNext.getHeight()/2-100);
 
             //BOTON DE BACK
             Texture txtBack= new Texture(Gdx.files.internal("Botones/AyudaIzquierda.png"));
             TextureRegionDrawable trdBack= new TextureRegionDrawable(new TextureRegion(txtBack));
             final ImageButton btnBack= new ImageButton(trdBack);
-            btnBack.setPosition(0,ALTO/2-btnNext.getHeight()/2);
+            btnBack.setPosition(0,ALTO/2-btnNext.getHeight()/2-100);
             btnBack.setVisible(false);
 
             //BOTON DE FIN
             Texture txtFin= new Texture(Gdx.files.internal("Botones/AyudaPalomita.png"));
             TextureRegionDrawable trdFin= new TextureRegionDrawable(new TextureRegion(txtFin));
             final ImageButton btnFin= new ImageButton(trdFin);
-            btnFin.setPosition(ANCHO-btnNext.getWidth(),ALTO/2-(btnNext.getHeight()/2)*2);
+            btnFin.setPosition(ANCHO-btnNext.getWidth(),ALTO/2-(btnNext.getHeight()/2)*2-100);
             btnFin.setVisible(false);
 
             //LISTENERS

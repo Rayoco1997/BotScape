@@ -2,6 +2,7 @@ package mx.itesm.jrcti.botscape;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -47,10 +48,13 @@ public class Nivel3 extends PantallaNivel {
     private Enemigo enemigo2;
     private Geniallo jelloDeLimon;
 
+    private Sound explosionGeniallo;
+
     public Nivel3(Juego j, EstadoMusica estadoMusicaGeneral,EstadoSonido estadoSonidoGeneral) {
         super(j, estadoMusicaGeneral, "Mapas/Nivel3.tmx", "Sonidos/BelowThePath(FinalBoss).mp3",estadoSonidoGeneral);
         this.juego=j;
         setManager(j.getAssetManager());
+        explosionGeniallo= Gdx.audio.newSound(Gdx.files.internal("Sonidos/Sound Effects/In Game/ExplosionGeniallo.mp3"));
     }
 
     @Override
@@ -104,11 +108,15 @@ public class Nivel3 extends PantallaNivel {
                         if(estadoSonidoGeneral==EstadoSonido.ENCENDIDO){
                             sonidoPuerta.play(1.5f);
                         }
+
+                        explosionGeniallo.play();
                         capa.setCell(x,y,celda.setFlipHorizontally(true));
                         //Gdx.app.log("Nivel 3","Movi la palanca del boss, ahora puedo ganar");
                         if(mapa.getLayers().get(3).isVisible())
                             mapa.getLayers().get(3).setVisible(false);
                         jelloDeLimon.morir(getWorld());
+
+
                     }
 
                     return true;
@@ -221,7 +229,7 @@ public class Nivel3 extends PantallaNivel {
             recolectar();
             moverPalanca(getMapa());
             //para mostrar el puntaje de mini vis
-            getTexto().mostrarMensaje(getBatch(), Integer.toString(getContadorMiniVis()), camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);
+            getTexto().mostrarMensaje(getBatch(), Integer.toString(getContadorMiniVis()) , camara.position.x+ANCHO/2-50, camara.position.y+ALTO/2-40);
             getRobot().dibujar(getBatch());
             getBatch().end();
 
