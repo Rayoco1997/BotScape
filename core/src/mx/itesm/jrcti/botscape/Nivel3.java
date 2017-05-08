@@ -24,8 +24,8 @@ public class Nivel3 extends PantallaNivel {
 
     private static final int ANCHO_MAPA=5120;
     private static final int ALTO_MAPA=2880;
-    private int xInicialRobot=2000;
-    private int yInicialRobot=30*PantallaNivel.getTtoP();
+    private int xInicialRobot=100;
+    private int yInicialRobot=300;
 
     private int TOTAL_MINIVIS= 9;
 
