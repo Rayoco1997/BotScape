@@ -115,7 +115,7 @@ public class Geniallo extends Objeto implements MovimientoAutomatico{
             timerAnimacion += delta;
 
             batch.draw(region, sprite.getX(), sprite.getY());
-        } else {
+        }/* else {
             if (resetTimer) {
                 timerAnimacion = 0;
                 resetTimer = false;
@@ -125,7 +125,7 @@ public class Geniallo extends Objeto implements MovimientoAutomatico{
                 timerAnimacion += delta;
                 batch.draw(region, sprite.getX(), sprite.getY());
             }
-        }
+        }*/
 
     }
 

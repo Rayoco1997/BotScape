@@ -222,7 +222,6 @@ public class PantallaCarga extends Pantalla{
         manager.load("Personaje/GenialloDeath_Cycle.png",Texture.class);
         manager.load("NivelIman.png",Texture.class);
         manager.load("NivelBandas.png", Texture.class);
-        manager.load("Fondos/Fondo3.jpg",Texture.class);
         manager.load("Mapas/Tilesv3.png", Texture.class);
         manager.load("Mapas/Nivel3.tmx", TiledMap.class);
         manager.load("Personaje/VIUWalk_Cycle.png", Texture.class);

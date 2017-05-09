@@ -31,7 +31,9 @@ public class Nivel3 extends PantallaNivel {
 
     //Texturas
     Sprite texturaFondo;
+    Sprite texturaFondo1;
     private Texture texturaFondoTutorial;
+    private Texture texturaFondoTutorial1;
     private Texture LUGWalk_Cycle;
     private Texture texturaPlataforma;
     private Texture texturaBandas;
@@ -71,7 +73,8 @@ public class Nivel3 extends PantallaNivel {
 
     @Override
     public void cargarTexturasExtras() {
-        texturaFondoTutorial = getManager().get("Fondos/Fondo3.jpg");
+        texturaFondoTutorial = new Texture("Fondos/Fondo31.jpg");
+        texturaFondoTutorial1 = new Texture("Fondos/Fondo32.jpg");
         LUGWalk_Cycle = getManager().get("Personaje/LUG7 Walk_Cycle.png");
         texturaPlataforma = getManager().get("NivelPlataforma.png");
         texturaIman = getManager().get("NivelIman.png");
@@ -141,6 +144,8 @@ public class Nivel3 extends PantallaNivel {
         crearMundo();
         texturaFondo=new Sprite(texturaFondoTutorial);
         texturaFondo.setPosition(0,0);
+        texturaFondo1=new Sprite(texturaFondoTutorial1);
+        texturaFondo1.setPosition(2560,0);
         createCollisionListener();
 
         //Objetos
@@ -196,6 +201,7 @@ public class Nivel3 extends PantallaNivel {
             getRobot().actualizar(getMapa());
             getBatch().begin();
             texturaFondo.draw(getBatch());
+            texturaFondo1.draw(getBatch());
             getBatch().end();
             getMapRenderer().setView(camara);
             getMapRenderer().render();
@@ -223,8 +229,8 @@ public class Nivel3 extends PantallaNivel {
             banda1.dibujar(getBatch(),delta);
             moverRobotConBanda(banda1);
 
-            jelloDeLimon.dibujar(getBatch(),delta);
             if(jelloDeLimon.isVivo()) {
+                jelloDeLimon.dibujar(getBatch(),delta);
                 jelloDeLimon.mover(8 * PantallaNivel.getTtoP(), 15 * PantallaNivel.getTtoP());
             }
 
