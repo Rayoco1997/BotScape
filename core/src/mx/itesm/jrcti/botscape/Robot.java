@@ -54,15 +54,22 @@ public class Robot extends Objeto {
 
     private TextureRegion[][] texturaPersonaje;
 
+    private TextureRegion[][] texturaPersonaje1;
+
     // Recibe una imagen con varios frames (ver marioSprite.png)
     public Robot(Texture textura, float x, float y, World world, BodyDef.BodyType type,
                  FixtureDef fix) {
         super(textura, x, y);
         // Lee la textura como región
-        TextureRegion texturaCompleta = new TextureRegion(textura);
+        TextureRegion texturaCompleta = new TextureRegion(new Texture("Personaje/VIUWalk_Cycle1.png"));
+        TextureRegion texturaCompleta1 = new TextureRegion(new Texture("Personaje/VIUWalk_Cycle2.png"));
+
         this.world = world;
         this.fix=fix;
         texturaPersonaje = texturaCompleta.split(233, 195);
+        texturaPersonaje1 = texturaCompleta1.split(233, 195);
+
+
         // Crea la animación con tiempo de 0.10 segundos entre frames.
         spriteAnimadoMov = new Animation(0.10f, texturaPersonaje[0][1],
                 texturaPersonaje[0][2], texturaPersonaje[0][3], texturaPersonaje[0][4],
@@ -70,15 +77,13 @@ public class Robot extends Objeto {
                 texturaPersonaje[0][8], texturaPersonaje[0][9], texturaPersonaje[0][10],
                 texturaPersonaje[0][11], texturaPersonaje[0][12]);
         //Crea la animación de salto
-        spriteAnimadoSaltoSubiendo = new Animation(0.10f, texturaPersonaje[0][13],
-                texturaPersonaje[0][14], texturaPersonaje[0][15], texturaPersonaje[0][16],
-                texturaPersonaje[0][17], texturaPersonaje[0][18], texturaPersonaje[0][19]);
-        spriteAnimadoSaltoBajando = new Animation(0.12f, texturaPersonaje[0][21], texturaPersonaje[0][22], texturaPersonaje[0][23],
-                texturaPersonaje[0][24]);
+        spriteAnimadoSaltoSubiendo = new Animation(0.10f, texturaPersonaje1[0][0],
+                texturaPersonaje1[0][1], texturaPersonaje1[0][2], texturaPersonaje1[0][3],
+                texturaPersonaje1[0][4], texturaPersonaje1[0][5], texturaPersonaje1[0][6]);
+
         // Animación infinita
         spriteAnimadoMov.setPlayMode(Animation.PlayMode.LOOP);
         spriteAnimadoSaltoSubiendo.setPlayMode(Animation.PlayMode.NORMAL);
-        spriteAnimadoSaltoBajando.setPlayMode(Animation.PlayMode.LOOP);
         // Inicia el timer que contará tiempo para saber qué frame se dibuja
         timerAnimacionMov = 0f;
         timerAnimacionSub = 0f;
